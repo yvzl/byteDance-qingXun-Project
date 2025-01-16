@@ -1,3 +1,4 @@
+<!--DialogContainer.vue-->
 <script setup lang="ts">
 //import { ref } from 'vue';
 defineProps({
@@ -6,7 +7,7 @@ defineProps({
 </script>
 
 <template>
-    <div>this is {{msg}}</div>
+    <div>this is DialogContainer</div>
 </template>
 
 <style scoped>

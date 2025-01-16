@@ -9,9 +9,10 @@ npm run dev
 1. .vue文件的顺序为 script -> template -> style
 1. script使用 setup语法和TS
 1. 文件夹 名采用小写，文件 名首字母大写
+1. 所有模块都要写清楚运行过程原理，注释函数的作用，让其他人能理解整个项目的运行，做好答辩准备
 ## 模块拆分
 1. **内联对话框容器 (DialogContainer**)
-    *   包括 InputBox 和 MessageList
+    *   包括 InputBox 和 MessageList 参考https://vercel.com/docs/getting-started-with-vercel/projects-deployments的搜索框
     *   要求实现管理对话框的三种显示状态（收缩、展开、对话）。
         *   收缩形态：表现为一个单一的输入框，点击后展开弹框进入第二形态
         *   展开形态：表现为支持对话的弹框模式，用户输入问题后，立即进入该形态
