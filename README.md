@@ -1,6 +1,8 @@
 本项目是一个由 Vue3 + Vite3 + TypeScript、Axios4 和 Coze API 搭建的 LLM 对话框组件。
 项目启动命令：
 ```bash
+git pull
+
 npm install
 npm run dev
 ```
