@@ -1,4 +1,4 @@
-import Service from './Axios'; // 引入 axios 实例
+/*import Service from './Axios'; // 引入 axios 实例
 import { CozeAPI } from '@coze/api';
 
 class LLMInteraction {
@@ -29,4 +29,4 @@ class LLMInteraction {
         return await this.sendMessage(input);
     }
 }
-export default LLMInteraction;
+export default LLMInteraction;*/

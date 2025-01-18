@@ -1,51 +1,43 @@
-import Result from '../model/Result';
-import axios, { Axios, } from 'axios';
-import { CozeAPI } from '@coze/api';
+import axios, { AxiosInstance,  } from 'axios';
+import { config } from './config';
 
-
-// 手动声明模块类型（如果需要）
-// declare module '@coze/api' {
-//     export class CozeAPI {
-//         constructor(options: { token: string; baseURL: string });
-//         chat: {
-//             stream(options: { bot_id: string; user_id: string }): Promise<any>;
-//         };
-//     }
-// }
-
-const apiClient = new CozeAPI({
-    token: '{token}', // 确保替换为实际的 token
-    baseURL: 'https://api.coze.cn'
-});
-
-const res = await apiClient.chat.stream({
-    bot_id: '{bot_id}', // 确保替换为实际的 bot_id
-    user_id: '{user_id}' // 确保替换为实际的 user_id
-});
-class Service {
-    private baseURL: string = "http://localhost:8080";
-    private service: Axios;
-
+// 创建Axios实例
+const apiClient: AxiosInstance = axios.create({
+  baseURL: config.getBaseUrl,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${config.getPat}`,
     
-    constructor() {
-        // 创建axios实例
-        this.service = axios.create({
-            baseURL: this.baseURL, // api的base_url
-            timeout: 10000 // 请求超时时间
-        });
-    }
-    public async get(url: string, params: any = null): Promise<Result<any>> {
-        try {
-            const response = await this.service.get(url, { params });
-            return response.data as Result<any>;
-        } catch (error) {
-            return {
-                code: 500,
-                msg: '请求失败',
-                data: null
-            };
-        }
-    }
-}
-// 全局导出一个axios实例
-export default new Service();
+  },
+  
+});
+
+
+// 封装请求方法
+export const createChat = async (data: any, conversationId?: string) => {
+  const url = conversationId
+    ? `/bots/${config.getBotId}/conversations/${conversationId}/messages`
+    : `/bots/${config.getBotId}/conversations`;
+  try {
+    const response = await apiClient.post(url, data);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating chat:', error);
+    throw error;
+  }
+};
+
+export const streamChat = async (data: any, conversationId?: string) => {
+  const url = conversationId
+    ? `/bots/${config.getBotId}/conversations/${conversationId}/messages/stream`
+    : `/bots/${config.getBotId}/conversations/messages/stream`;
+  try {
+    const response = await apiClient.post(url, data, {
+      responseType: 'stream',
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error streaming chat:', error);
+    throw error;
+  }
+};
