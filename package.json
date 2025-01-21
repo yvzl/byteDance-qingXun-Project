@@ -12,7 +12,11 @@
   "dependencies": {
     "@coze/api": "^1.0.17",
     "axios": "^1.7.9",
-    "vue": "^3.5.12"
+    "pinia": "^2.3.1",
+    "pinia-plugin-persistedstate": "^4.2.0",
+    "sass": "^1.83.4",
+    "vue": "^3.5.12",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

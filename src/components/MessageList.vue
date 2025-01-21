@@ -10,6 +10,6 @@ defineProps({
     <div>this is MessageList</div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 
 </style>

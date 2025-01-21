@@ -9,8 +9,7 @@ import {
   type FileObject,
   RoleType,
 } from '@coze/api';
-
-import { config } from '../util/config';
+import { config } from '@/util/config';
 
 const Coze = ref<CozeAPI | null>(null);//这里声明Coze用于尝试调用API
 const botInfo = ref<BotInfo>();

@@ -10,6 +10,6 @@ defineProps({
     <div>this is DialogContainer</div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+@use "@/assets/styles/DialogContainer.module";
 </style>

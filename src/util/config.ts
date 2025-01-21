@@ -1,7 +1,5 @@
 import { CozeAPI } from '@coze/api';
 
-
-
 export const config = {
     //先将设置参数写死进行测试
     initConfig(): void {
@@ -14,11 +12,6 @@ export const config = {
       localStorage.getItem('baseUrl') || '',
     getPat: () => localStorage.getItem('PAT') || '',
     getBotId: () => localStorage.getItem('BotId') || '',
-
-
-    
-
-
 };
 
 //export const headers = {
