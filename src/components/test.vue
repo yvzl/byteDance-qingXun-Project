@@ -1,4 +1,3 @@
-
 <template>
     <div>this is {{msg}}</div>
 </template>
