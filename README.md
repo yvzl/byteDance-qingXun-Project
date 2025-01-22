@@ -90,3 +90,9 @@ npm run dev
 
 扣子 API 通过访问令牌进行 API 请求的鉴权。所有的 API 请求都必须在请求头的 `Authorization` 参数中包含你的访问令牌（Access Token）。
 Authorization: Bearer $Access_Token
+限额
+当前扣子 API免费供开发者使用，每个空间的 API请求限额如下
+·QPS(每秒发送的请求数):2
+·QPM(每分钟发送的请求数):60
+QPD(每天发送的请求数):3000
+注意：2024年8月15日之后，扣子 API 的免费额度为每个账号 100 次 API 调用。一旦累计调用次数超过免费额度，此账号将无法继续使用任何扣子 API。

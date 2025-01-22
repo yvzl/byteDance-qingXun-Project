@@ -14,6 +14,9 @@ export const config = {
       localStorage.getItem('baseUrl') || '',
     getPat: () => localStorage.getItem('PAT') || '',
     getBotId: () => localStorage.getItem('BotId') || '',
+    setBaseUrl: (url: string) => localStorage.setItem('baseUrl', url),
+    setPat: (pat: string) => localStorage.setItem('PAT', pat),
+    setBotId: (botId: string) => localStorage.setItem('BotId', botId),
 
 
     
@@ -31,7 +34,7 @@ export const config = {
 //    "query": "分析这个链接:https://www.douyin.com/video/6982833428400049446",
 //    "stream": true,
 //}
-/*
+ /*
 export const payload = {
 
 }

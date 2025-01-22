@@ -3,7 +3,7 @@ import { config } from './config';
 
 // 创建Axios实例
 const apiClient: AxiosInstance = axios.create({
-  baseURL: config.getBaseUrl,
+  baseURL: config.getBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${config.getPat}`,
