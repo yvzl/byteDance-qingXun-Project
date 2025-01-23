@@ -1,4 +1,4 @@
-import {md} from "@/utils"
+import {md} from "src/util"
 
 // 测试 markdown 转 html
 
