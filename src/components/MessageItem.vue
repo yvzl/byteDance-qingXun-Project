@@ -10,6 +10,6 @@ defineProps({
     <div>this is MessageItem</div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+@use "@/assets/styles/MessageItem.module";
 </style>

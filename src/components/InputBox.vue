@@ -10,6 +10,6 @@ defineProps({
     <div>this is InputBox</div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+@use "@/assets/styles/InputBox.module";
 </style>

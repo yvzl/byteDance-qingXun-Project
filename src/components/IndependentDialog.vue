@@ -10,6 +10,6 @@ defineProps({
     <div>this is IndependentDialog</div>
 </template>
 
-<style scoped>
-
+<style scoped lang="scss">
+@use "@/assets/styles/IndependentDialog.module";
 </style>
