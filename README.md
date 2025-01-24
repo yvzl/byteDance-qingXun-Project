@@ -11,9 +11,11 @@ npm run dev
 在开发过程中我们约定如下内容：
 1. .vue文件的顺序为 script -> template -> style
 1. script使用 setup语法和TS
+1. CSS采用原生的，不使用Tailwind CSS或者sass
 1. 文件夹 名采用小写，文件 名首字母大写
 1. 在App.vue中，只做页面的骨架
 1. 所有模块都要写清楚运行过程原理，注释函数的作用，让其他人能理解整个项目的运行，做好答辩准备
+
 ## 模块拆分
 1. **内联对话框容器 (DialogContainer**)
     *   包括 InputBox 和 MessageList 参考https://vercel.com/docs/getting-started-with-vercel/projects-deployments的搜索框
@@ -96,3 +98,7 @@ Authorization: Bearer $Access_Token
 ·QPM(每分钟发送的请求数):60
 QPD(每天发送的请求数):3000
 注意：2024年8月15日之后，扣子 API 的免费额度为每个账号 100 次 API 调用。一旦累计调用次数超过免费额度，此账号将无法继续使用任何扣子 API。
+
+## 合并冲突解决
+合并分支的时候，只要打开一次就已经向main分支发起请求了，这个时候仓库所有者会收到合并消息邮件，如果出现合并冲突，则需要审查者手动调整合并冲突
+此时需要审查者根据项目需求审查原有代码和传入代码，选择性的合并，然后提交代码。
