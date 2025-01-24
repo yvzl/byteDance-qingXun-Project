@@ -11,7 +11,6 @@ npm run dev
 在开发过程中我们约定如下内容：
 1. .vue文件的顺序为 script -> template -> style
 1. script使用 setup语法和TS
-1. CSS采用原生的，不使用Tailwind CSS或者sass
 1. 文件夹 名采用小写，文件 名首字母大写
 1. 在App.vue中，只做页面的骨架
 1. 所有模块都要写清楚运行过程原理，注释函数的作用，让其他人能理解整个项目的运行，做好答辩准备

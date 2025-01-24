@@ -7,8 +7,8 @@ import {
   type FileObject,
   RoleType,
 } from '@coze/api';
-import { config } from './config';
-import  LLM  from './LLM';
+import { config } from '../config';
+import  LLM  from '../LLM';
 
 class LLMInteraction implements LLM {
   
