@@ -1,15 +1,7 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
-import {
-  type BotInfo,
-  ChatEventType,
-  CozeAPI,
-  type CreateChatData,
-  type EnterMessage,
-  type FileObject,
-  RoleType,
-} from '@coze/api';
-import { config } from '@/util/config';
+import {onBeforeMount, ref} from 'vue';
+import {type BotInfo, CozeAPI, type EnterMessage, type FileObject, RoleType,} from '@coze/api';
+import {config} from '@/utils/config';
 
 const Coze = ref<CozeAPI | null>(null);//这里声明Coze用于尝试调用API
 const botInfo = ref<BotInfo>();
@@ -35,10 +27,9 @@ const onSettingsChange = () => { //重新初始化 API 客户端。
     if (!Coze.value) {
       return;
     }
-    const res = await Coze.value.bots.retrieve({
+    botInfo.value = await Coze.value.bots.retrieve({
       bot_id: config.getBotId(),
     });
-    botInfo.value=res;
   };
 
 onBeforeMount(() => {
@@ -127,9 +118,9 @@ const printSetting = () => {
     <p v-if="error" style="color: red;">{{ error.message || 'An error occurred' }}</p>
   </div>
   <form action="">
-    <input type="text" placeholder="BaseUrl"></input>
-    <input type="text" placeholder="PAT"></input>
-    <input type="text" placeholder="BotId"></input>
+    <input type="text" placeholder="BaseUrl" />
+    <input type="text" placeholder="PAT" />
+    <input type="text" placeholder="BotId" />
   </form>
 </template>
 
