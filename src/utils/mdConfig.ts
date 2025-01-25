@@ -7,8 +7,8 @@ const md = MarkdownIt()
 
 md.use(await Shiki({
     themes: {
-        light: 'vitesse-light',
-        dark: 'vitesse-dark',
+        light: 'github-dark',
+        dark: 'github-dark',
     }
 }))
 
