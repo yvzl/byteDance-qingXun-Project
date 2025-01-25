@@ -1,42 +1,61 @@
 <script setup lang="ts">
 import Coze from '@/components/CozeAPITest.vue';
-import test from '@/components/test.vue';
+
+import IndependentDialog from '@/components/IndependentDialog.vue';
+import DialogContainer from '@/components/DialogContainer.vue';
 </script>
 
 <template>
-  <div class="home">
-    <div class="list">
-      <test msg="大大"  />
+  <Coze_API_test>
+    <div>
+      <Coze />
     </div>
-    <Coze_API_test>
-      <div>
-        <Coze />sss
+  </Coze_API_test>
+
+  <div class="home">
+    <div class="main">
+      <div class="header">
+        <DialogContainer /> <!-- 这里是内联对话框 --->
       </div>
-    </Coze_API_test>
+      <IndependentDialog />
+    </div>
+
+
   </div>
+
+
+
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-.list {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+}
+
+.home {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.main{
+  border: #646cff38 1px solid;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
 
 }
-Coze_API_test{
+
+Coze_API_test {
   display: flex;
   position: absolute;
   top: 0;
