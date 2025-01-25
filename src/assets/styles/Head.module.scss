@@ -1,0 +1,12 @@
+.head {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #50647aff;
+  border-radius: 100%;
+  padding: 5px;
+  background-color: #32333dff;
+
+  > img {
+    width: 100%;
+  }
+}
