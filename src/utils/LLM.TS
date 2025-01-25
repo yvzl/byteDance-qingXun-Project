@@ -23,13 +23,13 @@ interface LLM {
     createMessage: (query: string, fileInfo?: FileObject) => EnterMessage[];
   
     /**
-     * 流式聊天的方法。
+     * 流式聊天的方法设置为private，暂时只提供chat方法进行对话测试
      * @param query - 用户输入的查询字符串。
      * @param conversationId - 可选的对话ID。
      * @param onUpdate - 消息更新时的回调函数。
      * @param onSuccess - 消息成功时的回调函数。
      * @param onCreated - 对话创建时的回调函数。
-     */
+     *
     streamingChat: ({
       query,
       conversationId,
@@ -42,7 +42,7 @@ interface LLM {
       onUpdate: (delta: string) => void;
       onSuccess: (delta: string) => void;
       onCreated: (data: CreateChatData) => void;
-    }) => Promise<void>;
+    }) => Promise<void>;*/
   
     /**
      * 聊天的方法。

@@ -8,20 +8,20 @@ import {
   RoleType,
 } from '@coze/api';
 import { config } from '../config';
-import  LLM  from '../LLM';
+import LLM from '../LLM';
 
 class LLMInteraction implements LLM {
-  
-  private  Coze: CozeAPI | null = null;
-  private  botInfo: BotInfo| undefined;
-  private  fileInfoRef: FileObject | undefined;
 
-  public  onSettingsChange() : void {
+  private Coze: CozeAPI | null = null;
+  private botInfo: BotInfo | undefined;
+  private fileInfoRef: FileObject | undefined;
+
+  public onSettingsChange(): void {
     this.initClient();
     this.getBotInfo();
   };
 
-  private  initClient = () => {
+  private initClient = () => {
     const baseUrl = config.getBaseUrl();
     const pat = config.getPat();
     this.Coze = new CozeAPI({
@@ -31,17 +31,16 @@ class LLMInteraction implements LLM {
     });
   };
   //获取机器人信息
-  private  getBotInfo = async () => {
+  private getBotInfo = async () => {
     if (!this.Coze) {
       return;
     }
-    const res = await this.Coze.bots.retrieve({
+    this.botInfo = await this.Coze.bots.retrieve({
       bot_id: config.getBotId(),
     });
-    this.botInfo = res;
   };
 
-  public  createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
+  public createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
     const baseMessage: EnterMessage = {
       role: RoleType.User,
       type: 'question',
@@ -68,8 +67,27 @@ class LLMInteraction implements LLM {
       },
     ];
   };
+   // 上传文件方法
+   public uploadFile = async (file?: File) => { //uploadFile方法用于上传文件
+    if (!this.Coze) {
+      throw new Error('Client not initialized');
+    }
+    if (!file) {
+      this.fileInfoRef = undefined;
+      return;
+    }
+    console.log('Uploading file');
+    this.fileInfoRef = await this.Coze.files
+      .upload({
+        file,
+      })
+      .finally(() => {
+        console.log('File uploaded');
+      });
+       
+  };
 
-  public  streamingChat = async ({
+  private streamingChat = async ({
     query,
     conversationId,
     onUpdate,
@@ -87,7 +105,7 @@ class LLMInteraction implements LLM {
     }
 
     const botId = config.getBotId();
-    const messages = this.createMessage(query, this.fileInfoRef);
+    const messages = this.createMessage(query, this?.fileInfoRef);
 
     const v = await this.Coze.chat.stream({
       bot_id: botId,
@@ -100,7 +118,7 @@ class LLMInteraction implements LLM {
     let msg = '';
 
     for await (const part of v) {
-      if (part.event === ChatEventType.CONVERSATION_CHAT_CREATED) {
+      if (part.event === ChatEventType.CONVERSATION_CHAT_CREATED) {//这里根据流式返回的不同事件类型进行处理
         console.log('[START]');
         onCreated(part.data);
       } else if (part.event === ChatEventType.CONVERSATION_MESSAGE_DELTA) {
@@ -123,7 +141,14 @@ class LLMInteraction implements LLM {
     console.log('=== End of Streaming Chat ===');
   };
 
-  public  chat = async (query: string): Promise<any> => {
+ 
+
+  public chat = async (query: string,fileInfoRef?:File | undefined): Promise<any> => {
+
+    if(fileInfoRef){
+      this.uploadFile(fileInfoRef);
+    }
+    
     let response: any = null;
     let error: any = null;
     try {
@@ -147,13 +172,13 @@ class LLMInteraction implements LLM {
     }
   };
 
-  public  setConfig = (baseUrl: string, pat: string, botId: string) => {
+  public setConfig = (baseUrl: string, pat: string, botId: string) => {
     config.setBaseUrl(baseUrl);
     config.setPat(pat);
     config.setBotId(botId);
   };
 
-  public  printSetting = () => {
+  public printSetting = () => {
     console.log('BaseUrl:', config.getBaseUrl());
     console.log('PAT:', config.getPat());
     console.log('BotId:', config.getBotId());
