@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from 'vue';
+import {onBeforeMount, ref} from 'vue';
 import {
   type BotInfo,
   ChatEventType,
@@ -10,7 +10,7 @@ import {
   RoleType,
 } from '@coze/api';
 
-import { config } from '../utils/config';
+import {config} from '@/utils/config';
 
 const Coze = ref<CozeAPI | null>(null);//这里声明Coze用于尝试调用API
 const botInfo = ref<BotInfo>();
@@ -18,29 +18,29 @@ const fileInfoRef = ref<FileObject | undefined>();
 const query = ref('你好');
 
 const onSettingsChange = () => { //重新初始化 API 客户端。
-    initClient();//初始化 API 客户端
-    getBotInfo();//获取机器人信息
-  };
-  const initClient = () => {
+  initClient();//初始化 API 客户端
+  getBotInfo();//获取机器人信息
+};
+const initClient = () => {
   const baseUrl = config.getBaseUrl(); // 从配置中获取基础 URL
   const pat = config.getPat(); // 从配置中获取个人访问令牌 (PAT)
-   Coze.value = new CozeAPI({
+  Coze.value = new CozeAPI({
     token: pat, // 设置个人访问令牌
     baseURL: baseUrl, // 设置基础 URL
     allowPersonalAccessTokenInBrowser: true, // 允许在浏览器中使用个人访问令牌
   });
 };
 
-  //获取机器人信息
-  const getBotInfo = async () => {
-    if (!Coze.value) {
-      return;
-    }
-    const res = await Coze.value.bots.retrieve({
-      bot_id: config.getBotId(),
-    });
-    botInfo.value=res;
-  };
+//获取机器人信息
+const getBotInfo = async () => {
+  if (!Coze.value) {
+    return;
+  }
+  const res = await Coze.value.bots.retrieve({
+    bot_id: config.getBotId(),
+  });
+  botInfo.value = res;
+};
 
 onBeforeMount(() => {
   initClient();
@@ -63,42 +63,42 @@ const error = ref<any>(null);
 const createMessage = (
     query: string,
     fileInfo?: FileObject,
-  ): EnterMessage[] => {
-    const baseMessage: EnterMessage = {
-      role: RoleType.User,
-      type: 'question',
-    };
+): EnterMessage[] => {
+  const baseMessage: EnterMessage = {
+    role: RoleType.User,
+    type: 'question',
+  };
 
-    if (fileInfo) {
-      return [
-        {
-          ...baseMessage,
-          content: [
-            { type: 'text', text: query },
-            { type: 'file', file_id: fileInfo.id },
-          ],
-          content_type: 'object_string',
-        },
-      ];
-    }
-
+  if (fileInfo) {
     return [
       {
         ...baseMessage,
-        content: [{ type: 'text', text: query }],
-        content_type: 'text',
+        content: [
+          {type: 'text', text: query},
+          {type: 'file', file_id: fileInfo.id},
+        ],
+        content_type: 'object_string',
       },
     ];
-  };
-  const messages = createMessage(query.value, fileInfoRef.value); // 创建消息对象
-  
-  const streamingChat = async ({
-  query,
-  conversationId,
-  onUpdate,
-  onSuccess,
-  onCreated,
-}: {
+  }
+
+  return [
+    {
+      ...baseMessage,
+      content: [{type: 'text', text: query}],
+      content_type: 'text',
+    },
+  ];
+};
+const messages = createMessage(query.value, fileInfoRef.value); // 创建消息对象
+
+const streamingChat = async ({
+                               query,
+                               conversationId,
+                               onUpdate,
+                               onSuccess,
+                               onCreated,
+                             }: {
   query: string;
   conversationId?: string;
   onUpdate: (delta: string) => void;
@@ -130,7 +130,7 @@ const createMessage = (
       msg += part.data.content;
       onUpdate(msg);
     } else if (part.event === ChatEventType.CONVERSATION_MESSAGE_COMPLETED) {
-      const { role, type, content: msgContent } = part.data;
+      const {role, type, content: msgContent} = part.data;
       if (role === 'assistant' && type === 'answer') {
         msg += '\n';
         onSuccess(msg);
@@ -195,7 +195,7 @@ const [agent] = useXAgent({
     },
   });
 */
-  const testChat = async () => {
+const testChat = async () => {
   try {
     await streamingChat({
       query: query.value,
@@ -244,20 +244,18 @@ const printSetting = () => {
 
     <!-- 显示错误信息 -->
     <p v-if="error" style="color: red;">{{ error.message || 'An error occurred' }}</p>
+    <form @submit.prevent="setConfig">
+      <input v-model="baseUrlInput" type="text" placeholder="BaseUrl"/>
+      <br/>
+      <input v-model="patInput" type="text" placeholder="PAT"/>
+      <br/>
+      <input v-model="botIdInput" type="text" placeholder="BotId"/>
+      <br/>
+      <button type="submit">设置配置</button>
+    </form>
   </div>
-  <form @submit.prevent="setConfig">
-    <input v-model="baseUrlInput" type="text" placeholder="BaseUrl" />
-    <input v-model="patInput" type="text" placeholder="PAT" />
-    <input v-model="botIdInput" type="text" placeholder="BotId" />
-    <button type="submit">设置配置</button>
-  </form>
 </template>
 
-<style>
-.coze-api-test {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
+<style scoped lang="scss">
+@use "@/assets/styles/CozeAPITest.module";
 </style>
