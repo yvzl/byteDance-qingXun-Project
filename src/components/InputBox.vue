@@ -1,13 +1,14 @@
 <!--InputBox.vue-->
 <script setup lang="ts">
-//import { ref } from 'vue';
 defineProps({
-    msg: String
+  msg: String
 });
 </script>
 
 <template>
+  <div class="input-box">
     <div>this is InputBox</div>
+  </div>
 </template>
 
 <style scoped lang="scss">
