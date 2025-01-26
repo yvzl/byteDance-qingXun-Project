@@ -51,7 +51,7 @@ const chatWithCoze = async (mes: any, file?: File) => {
   }/*
   
   好像不能直接通过一个方法实现与Coze对话，只能在组件中调用streamingChat 并按 onUpdate, onSuccess, onCreated 三个方法进行处理
-  但是如果不通过一个方法调用 Coze ，可能会在实现其他功能的时候出现麻烦
+  但是如果不通过一个方法调用 Coze ，可能会在实现其他功能如内联对话框的时候出现麻烦
   
   LLMInteraction.chat(mes).then((res: string) => {
         console.log(res);

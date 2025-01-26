@@ -50,7 +50,7 @@ onBeforeMount(() => {
 const response = ref<any>(null);
 const error = ref<any>(null);
 
-//
+//*
 const createMessage = (
     query: string,
     fileInfo?: FileObject,
@@ -81,8 +81,6 @@ const createMessage = (
     },
   ];
 };
-const messages = createMessage(query.value, fileInfoRef.value); // 创建消息对象
-
 const streamingChat = async ({
                                query,
                                conversationId,
