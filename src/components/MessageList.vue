@@ -1,10 +1,10 @@
 <!--MessageList.vue-->
 <script setup lang="ts">
-import { type Content, ContentType} from "@/types"
+import { type Message, ContentType} from "@/types"
 import MessageChat from "@/components/MessageChat.vue";
 import MessageUser from "@/components/MessageUser.vue";
 
-defineProps<{ data: Content[] }>()
+defineProps<{ data: Message["content"] }>()
 
 </script>
 
