@@ -47,15 +47,6 @@ onBeforeMount(() => {
   config.initConfig();
 });
 
-const apiClient = new CozeAPI({
-  token: import.meta.env.VUE_APP_COZE_API_TOKEN,//由于个人令牌不能暴露在前端，否则会导致组件不加载，因此采取全局变量的方式引入
-  baseURL: 'https://api.coze.cn',
-  allowPersonalAccessTokenInBrowser: true,
-  headers: {
-    Authorization: `Bearer ${import.meta.env.VUE_APP_COZE_API_TOKEN}`,
-  },
-});
-
 const response = ref<any>(null);
 const error = ref<any>(null);
 

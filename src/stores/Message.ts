@@ -10,7 +10,7 @@ export const messageStore = defineStore("messageStore", () => {
         content: [{
             id: "1",
             type: 0,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            value: "这里的0表示用户"
         }, {
             id: "2",
             type: 1,
@@ -50,11 +50,11 @@ export const messageStore = defineStore("messageStore", () => {
         }]
     }])
 
-    const messageId = ref<Message['id']>("1")
+    const messageId = ref<Message['id']>("1")//我觉得这里可以通过设计历史对话box，点击切换 全局对话ID，来控制不同的会话窗口 
     return {
         data,
         messageId,
     }
 }, {
-    persist: true,
+    persist: false,//持久化先关闭
 })

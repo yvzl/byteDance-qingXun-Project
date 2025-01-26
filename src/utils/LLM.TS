@@ -64,6 +64,12 @@ interface LLM {
      * 打印配置的方法。
      */
     printSetting: () => void;
+
+    /**
+     * 上传文件的方法。
+     * @param file - 要上传的文件。
+     */
+    uploadFile: (file?: File) => Promise<void>;
 }
 
 export default LLM;
