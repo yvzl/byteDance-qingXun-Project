@@ -11,15 +11,19 @@ import {config} from '../config';
 import LLM from '../LLM';
 
 class LLMInteraction implements LLM {
-
     private Coze: CozeAPI | null = null;
     private botInfo: BotInfo | undefined;
     private fileInfoRef: FileObject | undefined;
 
+    constructor() {
+        this.initClient();
+        this.getBotInfo();
+    }
+
     public onSettingsChange(): void {
         this.initClient();
         this.getBotInfo();
-    };
+    }
 
     private initClient = () => {
         const baseUrl = config.getBaseUrl();
@@ -29,8 +33,8 @@ class LLMInteraction implements LLM {
             baseURL: baseUrl,
             allowPersonalAccessTokenInBrowser: true,
         });
-    };
-    //获取机器人信息
+    }
+
     private getBotInfo = async () => {
         if (!this.Coze) {
             return;
@@ -38,7 +42,7 @@ class LLMInteraction implements LLM {
         this.botInfo = await this.Coze.bots.retrieve({
             bot_id: config.getBotId(),
         });
-    };
+    }
 
     public createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
         const baseMessage: EnterMessage = {
@@ -66,9 +70,9 @@ class LLMInteraction implements LLM {
                 content_type: 'text',
             },
         ];
-    };
-    // 上传文件方法
-    public uploadFile = async (file?: File) => { //uploadFile方法用于上传文件
+    }
+
+    public uploadFile = async (file?: File) => {
         if (!this.Coze) {
             throw new Error('Client not initialized');
         }
@@ -84,16 +88,15 @@ class LLMInteraction implements LLM {
             .finally(() => {
                 console.log('File uploaded');
             });
+    }
 
-    };
-
-    private streamingChat = async ({
-                                       query,
-                                       conversationId,
-                                       onUpdate,
-                                       onSuccess,
-                                       onCreated,
-                                   }: {
+    public streamingChat = async ({
+        query,
+        conversationId,
+        onUpdate,
+        onSuccess,
+        onCreated,
+    }: {
         query: string;
         conversationId?: string;
         onUpdate: (delta: string) => void;
@@ -105,7 +108,7 @@ class LLMInteraction implements LLM {
         }
 
         const botId = config.getBotId();
-        const messages = this.createMessage(query, this?.fileInfoRef);
+        const messages = this.createMessage(query, this.fileInfoRef);
 
         const v = await this.Coze.chat.stream({
             bot_id: botId,
@@ -118,7 +121,7 @@ class LLMInteraction implements LLM {
         let msg = '';
 
         for await (const part of v) {
-            if (part.event === ChatEventType.CONVERSATION_CHAT_CREATED) {//这里根据流式返回的不同事件类型进行处理
+            if (part.event === ChatEventType.CONVERSATION_CHAT_CREATED) {
                 console.log('[START]');
                 onCreated(part.data);
             } else if (part.event === ChatEventType.CONVERSATION_MESSAGE_DELTA) {
@@ -139,16 +142,11 @@ class LLMInteraction implements LLM {
             }
         }
         console.log('=== End of Streaming Chat ===');
-    };
+    }
 
+    public chat = async (query: string, fileInfoRef?: File | undefined): Promise<string> => {
 
-    public chat = async (query: string, fileInfoRef?: File | undefined): Promise<any> => {
-
-        if (fileInfoRef) {
-            this.uploadFile(fileInfoRef);
-        }
-
-        let response: any = null;
+        let response: string = '';
         let error: any = null;
         try {
             await this.streamingChat({
@@ -167,21 +165,21 @@ class LLMInteraction implements LLM {
         } catch (err) {
             error = err;
             console.error('API Error:', err);
-            return error;
+            throw error;
         }
-    };
+    }
 
     public setConfig = (baseUrl: string, pat: string, botId: string) => {
         config.setBaseUrl(baseUrl);
         config.setPat(pat);
         config.setBotId(botId);
-    };
+    }
 
     public printSetting = () => {
         console.log('BaseUrl:', config.getBaseUrl());
         console.log('PAT:', config.getPat());
         console.log('BotId:', config.getBotId());
-    };
+    }
 }
 
-export default LLMInteraction;
+export default new LLMInteraction();
