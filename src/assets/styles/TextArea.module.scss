@@ -1,0 +1,13 @@
+@import "@/assets/styles/mixins";
+
+.text-area {
+  > textarea {
+    width: 100%;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    resize: none;
+    @include scrollBar(#555, rgba(255, 255, 255, .2));
+  }
+}

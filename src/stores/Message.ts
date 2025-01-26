@@ -10,7 +10,7 @@ export const messageStore = defineStore("messageStore", () => {
         content: [{
             id: "1",
             type: 0,
-            value: "这里的0表示用户"
+            value: "这里的 0 表示用户"
         }, {
             id: "2",
             type: 1,
@@ -23,37 +23,57 @@ export const messageStore = defineStore("messageStore", () => {
             id: "4",
             type: 1,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "5",
             type: 0,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "6",
             type: 1,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "7",
             type: 0,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "8",
             type: 1,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "9",
             type: 0,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        },{
+        }, {
             id: "10",
             type: 1,
             value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }]
     }])
+    // 会话的 id
+    const messageId = ref<Message['id']>("1")
 
-    const messageId = ref<Message['id']>("1")//我觉得这里可以通过设计历史对话box，点击切换 全局对话ID，来控制不同的会话窗口 
+    // 切换对话 id
+    const changeMessageId = (id: Message["id"]) => messageId.value = id
+
+    // 查找对应会话的 Content
+    const findContent = (id: Message["id"]) => data.value.find(item => item.id === id)?.content;
+
+    // 查找对应会话 Content 的长度
+    const getContentLength = (id: Message["id"]) => findContent(id)?.length || 0
+
+    // 更新对应会话的 Content
+    const updateContent = (id: Message["id"], ...args: Message["content"]) => {
+        const currentMessageList = findContent(id)
+        if (!currentMessageList) return
+        currentMessageList.push(...args);
+    }
     return {
         data,
         messageId,
+        findContent,
+        changeMessageId,
+        updateContent,
+        getContentLength
     }
 }, {
     persist: false,//持久化先关闭

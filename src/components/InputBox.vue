@@ -1,63 +1,74 @@
-<!--InputBox.vue-->
 <script setup lang="ts">
-import { watch } from "fs";
-import {ref} from "vue";
-import { messageStore } from "@/stores/Message";
-import { storeToRefs } from "pinia";
-import { defineEmits } from 'vue';
+import {ref, computed} from "vue"
+import TextArea from "@/components/TextArea.vue";
+import Upload from "@/components/Upload.vue";
+import Send from "@/components/Send.vue";
+import LLMInteraction from "@/utils/impl/LLMInteraction";
+import {CreateChatData} from "@coze/api";
+import {messageStore} from "@/stores";
+import {storeToRefs} from "pinia";
 
+const store = messageStore()
+const {updateContent, getContentLength} = store
+const {messageId} = storeToRefs(store)
 
-//inpuBox直接与store通信，表示新增消息
-const store = messageStore();
-const { data, messageId } = storeToRefs(store);
-const emit = defineEmits(['chatWithCoze'])
-const mes = ref("");
-const fileInfo = ref<File|undefined>(undefined);
+const value = ref<string>("")
+const state = computed<boolean>(() => /^\s*$/g.test(value.value))
 
-const submit = () => {
-  if (mes.value.trim() === "") return;
+const response = ref<any>(null)
+const query = ref("你好");
 
-  // 通过messageId 获取当前消息列表
-  const currentMessageList = data.value.find(item => item.id === messageId.value)?.content || [];
+const send = async () => {
+  sendMsg()
+  await chatWithCoze()
+}
 
-  // 添加新消息
-  const newMessage = {
-    id: String(currentMessageList.length + 1),
-    type: 0, // 0 表示用户消息
-    value: mes.value
-  };
+// 发送消息
+const sendMsg = () => {
+  const id = getContentLength(messageId.value) + 1 + ""
+  updateContent(messageId.value, {
+    id,
+    type: 0,
+    value: value.value,
+  })
+  value.value = ""
+}
 
-  currentMessageList.push(newMessage);
+// chat 答复
+const chatWithCoze = async () => {
+  try {
+    await LLMInteraction.streamingChat({
+      query: query.value,
+      onUpdate: (delta: string) => {
+        response.value = delta;
+      },
+      onSuccess: (delta: string) => {
+        response.value = delta;
+      },
+      onCreated: (data: CreateChatData) => {
+        console.log('Chat created:', data);
+      },
+    });
 
-  // 更新 store 中的消息列表
-  data.value = data.value.map(item => 
-    item.id === messageId.value ? { ...item, content: currentMessageList } : item
-  );
-  emit('chatWithCoze', mes,fileInfo);
+    if (response.value.trim() === "") return;
 
-  mes.value = ""; // 清空输入框
-};
-
-const file = () => {
-  console.log("file");
-};
-const clear = () => {
-  mes.value = "";
-};
+    const id = getContentLength(messageId.value) + 1 + ""
+    updateContent(messageId.value, {
+      id,
+      type: 1,
+      value: response.value
+    })
+  } catch (err) {
+    console.error('API Error:', err);
+  }
+}
 </script>
 
 <template>
   <div class="input-box">
-    <svg @click="file"
-    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file">
-      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-    </svg>
-    <textarea v-model="mes" type="text" class="input" placeholder="请输入内容..."></textarea>
-    <button @click="submit">提交</button>
-    <button @click="clear">清空</button>
-
+    <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
+    <Upload :size="28" style="margin-left: 20px"/>
+    <Send @send="send" :state="state" :size="24" style="margin-left: 20px"/>
   </div>
 </template>
 

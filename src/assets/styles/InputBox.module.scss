@@ -1,29 +1,8 @@
 .input-box {
   width: 80%;
-  height: 15%;
-  border-radius: 10px;
-  margin-bottom: 1.25%;
+  padding: 15px;
+  border-radius: 24px;
+  background-color: #404045ff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border: #414158 2px solid;
-  background-color: #edf0f7;
-
-  .input {
-    width: 80%;
-    height: 80%;
-    resize:none;
-    outline: none;
-    border: none;
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    border-radius: 10px;
-    font-weight: 400;
-    color: rgba(5, 5, 5, 0.87);
-    font-size: medium;
-    padding: 1%;
-    padding-left: 2%;
-    margin-left: 1%;
-    
-  }
 }

@@ -2,14 +2,15 @@
 import MessageItem from '@/components/MessageItem.vue'
 import chatHead from "@/assets/images/head.png"
 import Head from "@/components/Head.vue";
+import {ContentType} from "@/types";
 
-defineProps<{ value: string }>()
+defineProps<{ value: string, type: ContentType }>()
 </script>
 
 <template>
   <div class="message-chat">
-    <Head style="margin-right: 12px" :src="chatHead"/>
-    <MessageItem :value="value"/>
+    <Head :src="chatHead"/>
+    <MessageItem :value="value" :type="type"/>
   </div>
 </template>
 

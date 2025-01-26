@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@coze/api": "^1.0.17",
+    "@icon-park/vue-next": "^1.4.2",
     "@shikijs/markdown-it": "^2.1.0",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.9",
