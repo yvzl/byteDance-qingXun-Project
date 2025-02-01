@@ -8,9 +8,9 @@ import type {Message} from "@/types";
 
 const store = messageStore()
 const {findContent} = store
-const {messageId} = storeToRefs(store)
+const {activeMessageId} = storeToRefs(store)
 
-const messageData = computed<Message["content"]>(() => findContent(messageId.value) || []) // 通过 id 查找当前会话
+const messageData = computed<Message["content"]>(() => findContent(activeMessageId.value) || []) // 通过 id 查找当前会话
 </script>
 
 <template>

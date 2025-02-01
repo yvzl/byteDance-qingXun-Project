@@ -1,6 +1,7 @@
+
 enum ContentType {
-    user,
-    chat,
+    user = "user", 
+    assistant = "assistant",
 }
 
 interface Message {
@@ -12,11 +13,12 @@ interface Message {
 
 interface Content {
     id: string
-    type: ContentType
+    role: ContentType
     value: string
 }
 
 export {
     Message,
-    ContentType
+    ContentType,
+    Content,
 }

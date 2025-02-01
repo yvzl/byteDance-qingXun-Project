@@ -10,9 +10,9 @@ defineProps<{ data: Message["content"] }>()
 <template>
   <div class="message-list">
     <ul>
-      <li v-for="{id, type, value} in data" :class="{[ContentType[type]]: true}" :key="id">
-        <MessageUser :value="value" :type="type" v-if="type === ContentType['user']"/>
-        <MessageChat :value="value" :type="type" v-else-if="type === ContentType['chat']"/>
+      <li v-for="{id, role, value} in data" :class="{[ContentType[role]]: true}" :key="id">
+        <MessageUser :value="value" :type="role" v-if="role === ContentType['user']"/>
+        <MessageChat :value="value" :type="role" v-else-if="role === ContentType['assistant']"/>
       </li>
     </ul>
   </div>

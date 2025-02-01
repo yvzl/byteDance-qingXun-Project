@@ -7,10 +7,11 @@ import LLMInteraction from "@/utils/impl/LLMInteraction";
 import {CreateChatData} from "@coze/api";
 import {messageStore} from "@/stores";
 import {storeToRefs} from "pinia";
+import {ContentType, type Content} from "@/types";
 
 const store = messageStore()
 const {updateContent, getContentLength} = store
-const {messageId} = storeToRefs(store)
+const {activeMessageId} = storeToRefs(store)
 
 const value = ref<string>("")
 const state = computed<boolean>(() => /^\s*$/g.test(value.value))
@@ -25,12 +26,13 @@ const send = async () => {
 
 // 发送消息
 const sendMsg = () => {
-  const id = getContentLength(messageId.value) + 1 + ""
-  updateContent(messageId.value, {
+  const id = getContentLength(activeMessageId.value) + 1 + ""
+  updateContent(activeMessageId.value, {
     id,
-    type: 0,
+    role: ContentType.user,
     value: value.value,
   })
+  query.value = value.value;// value放在inputArea，为了发送消息时清空输入框，这里保存query
   value.value = ""
 }
 
@@ -45,17 +47,44 @@ const chatWithCoze = async () => {
       onSuccess: (delta: string) => {
         response.value = delta;
       },
-      onCreated: (data: CreateChatData) => {
-        console.log('Chat created:', data);
-      },
+      onCreated: (data: CreateChatData) => {//这里的data是Coze的流式返回部分，该对象携带conversation_id
+          /*setConversationsItems((prev: Content[]) => {
+            const exist = prev.find(
+              item => item.id === data.conversation_id || item.id === '0',
+            );
+            activeMessageId.value = data.conversation_id;
+
+            if (!exist) {
+              return [
+                ...prev,
+                {
+                  key: data.conversation_id,
+                  label: query ?? '',
+                },
+              ];
+            } else {
+              if (exist.id === '0') {
+                const newConversationsItems = prev.map(item => {
+                  if (item.id === '0') {
+                    return { id: data.conversation_id, value: query ?? '' };
+                  }
+                  return item;
+                });
+
+                return newConversationsItems;
+              }
+              return prev;
+            }
+          });*/
+        },
     });
 
     if (response.value.trim() === "") return;
 
-    const id = getContentLength(messageId.value) + 1 + ""
-    updateContent(messageId.value, {
+    const id = getContentLength(activeMessageId.value) + 1 + ""
+    updateContent(activeMessageId.value, {
       id,
-      type: 1,
+      role: ContentType.assistant,
       value: response.value
     })
   } catch (err) {

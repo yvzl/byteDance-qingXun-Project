@@ -7,8 +7,11 @@ import {
     type FileObject,
     RoleType,
 } from '@coze/api';
-import {config} from '../config';
+import { config } from '../config';
 import LLM from '../LLM';
+import { type Content } from '@/types';
+import { messageStore } from '@/stores/Message';
+import { storeToRefs } from "pinia";
 
 class LLMInteraction implements LLM {
     private Coze: CozeAPI | null = null;
@@ -45,31 +48,47 @@ class LLMInteraction implements LLM {
     }
 
     public createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
+        const store = messageStore();
+        const { updateContent, getContentLength, findContent } = store;
+        const { activeMessageId } = storeToRefs(store);
+
         const baseMessage: EnterMessage = {
             role: RoleType.User,
             type: 'question',
         };
+        
+        const res: EnterMessage[] = [];
+        for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
+            const foundContent = findContent(activeMessageId.value);
+            if (Array.isArray(foundContent) && foundContent[i]?.value) {
+                res.push({
+                    role: foundContent[i].role as unknown as RoleType,  //https://www.coze.cn/open/docs/developer_guides/create_conversation 参考这里实现上下文联系
+                    //https://www.coze.cn/open/docs/developer_guides/chat_v3#2bb94adb 参考这里实现携带上下文
+                    
+                    content: [
+                        { type: 'text', text: foundContent[i].value },
+                    ],
+                    content_type: 'text',
+                });
+            }
+        }
+        console.log('res: EnterMessage[]:', res);
+
 
         if (fileInfo) {
             return [
                 {
                     ...baseMessage,
                     content: [
-                        {type: 'text', text: query},
-                        {type: 'file', file_id: fileInfo.id},
+                        { type: 'text', text: query },
+                        { type: 'file', file_id: fileInfo.id },
                     ],
                     content_type: 'object_string',
                 },
             ];
         }
 
-        return [
-            {
-                ...baseMessage,
-                content: [{type: 'text', text: query}],
-                content_type: 'text',
-            },
-        ];
+        return res;
     }
 
     public uploadFile = async (file?: File) => {
@@ -113,7 +132,7 @@ class LLMInteraction implements LLM {
         const v = await this.Coze.chat.stream({
             bot_id: botId,
             auto_save_history: true,
-            additional_messages: messages,
+            additional_messages: messages,// 如果 additional_messages 中有多条消息，则最后一条会作为本次用户 Query，其他消息为上下文。
             conversation_id: conversationId,
         });
         console.log('API Response:', v);
@@ -128,7 +147,7 @@ class LLMInteraction implements LLM {
                 msg += part.data.content;
                 onUpdate(msg);
             } else if (part.event === ChatEventType.CONVERSATION_MESSAGE_COMPLETED) {
-                const {role, type, content: msgContent} = part.data;
+                const { role, type, content: msgContent } = part.data;
                 if (role === 'assistant' && type === 'answer') {
                     msg += '\n';
                     onSuccess(msg);
@@ -183,3 +202,5 @@ class LLMInteraction implements LLM {
 }
 
 export default new LLMInteraction();
+
+

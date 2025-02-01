@@ -7,7 +7,7 @@ const emit = defineEmits(["send"])
 
 <template>
   <div @click="!state && emit('send')" :class="{send: true, disable: state}">
-    <Send theme="outline" :size="size" />
+    <Send theme="outline" :state=state :size="size"/>
   </div>
 </template>
 
