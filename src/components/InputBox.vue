@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, computed} from "vue"
+import {ref, computed, onMounted} from "vue"
 import TextArea from "@/components/TextArea.vue";
 import Upload from "@/components/Upload.vue";
 import Send from "@/components/Send.vue";
@@ -62,13 +62,26 @@ const chatWithCoze = async () => {
     console.error('API Error:', err);
   }
 }
+
+// enter键触发发送事件
+const sendBtn = ref(null)
+
+const handleKeydown = (e:any)=>{
+  if(e.key ==='Enter') {
+    send()
+  }
+}
+
+onMounted(()=>{
+  window.addEventListener('keydown',handleKeydown)
+})
 </script>
 
 <template>
   <div class="input-box">
     <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
     <Upload :size="28" style="margin-left: 20px"/>
-    <Send @send="send" :state="state" :size="24" style="margin-left: 20px"/>
+    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" ref="sendBtn" />
   </div>
 </template>
 
