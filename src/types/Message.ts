@@ -1,3 +1,5 @@
+import { FileObject } from "@coze/api"
+
 enum ContentType {
     user = "user", 
     assistant = "assistant",
@@ -7,13 +9,14 @@ interface Message {
     id: string
     date: Date
     name: string
-    content: Content[] // 对于每一个会话都携带本会话的所有对话内容
+    content: Content[]
 }
 
 interface Content {
     id: string
     role: ContentType
     value: string
+    fileInfo?: FileObject
 }
 
 export {

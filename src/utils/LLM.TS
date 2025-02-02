@@ -45,13 +45,6 @@ interface LLM {
      }) => Promise<void>;*/
 
     /**
-     * 聊天的方法。
-     * @param query - 用户输入的查询字符串。
-     * @returns 返回聊天的响应。
-     */
-    chat: (query: string) => Promise<any>;
-
-    /**
      * 设置配置的方法。
      * @param baseUrl - 基础URL。
      * @param pat - 个人访问令牌。
@@ -68,7 +61,7 @@ interface LLM {
      * 上传文件的方法。
      * @param file - 要上传的文件。
      */
-    uploadFile: (file?: File) => Promise<void>;
+    uploadFile: (file?: File) => Promise<FileObject | undefined>;
 }
 
 export default LLM;

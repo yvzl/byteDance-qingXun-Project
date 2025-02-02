@@ -147,5 +147,8 @@ API。
 1. 智能体对话的实现：streamingChat调用API
 1. markdown解析：markdown-it
 1. 文件上传
+支持上传的文件格式：
+文档：DOC、DOCX、XLS、XLSX、PPT、PPTX、PDF...
+图片：JPG、JPG2、PNG、GIF...
 1. 上下文结合推理
 

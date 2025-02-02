@@ -41,6 +41,7 @@ const calcHeight = () => {
   textAreaStyle.value = {
     height: `${height}px`,
     overflow: scrollHeight > maxHeight ? 'auto' : 'hidden',
+    color: 'white',
   };
 };
 

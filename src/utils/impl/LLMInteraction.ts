@@ -7,11 +7,11 @@ import {
     type FileObject,
     RoleType,
 } from '@coze/api';
-import { config } from '../config';
-import {coze} from "@/configs"
+import { coze } from "@/configs"
 import LLM from '../LLM';
 import { messageStore } from '@/stores/Message';
 import { storeToRefs } from "pinia";
+import { ContentType } from '@/types';
 
 class LLMInteraction implements LLM {
     private Coze: CozeAPI | null = null;
@@ -29,7 +29,7 @@ class LLMInteraction implements LLM {
     }
 
     private initClient = () => {
-        const {url, pat} = coze
+        const { url, pat } = coze
         this.Coze = new CozeAPI({
             token: pat,
             baseURL: url,
@@ -39,55 +39,51 @@ class LLMInteraction implements LLM {
 
     private getBotInfo = async () => {
         if (!this.Coze) return;
-        const {botId} = coze
-        this.botInfo = await this.Coze.bots.retrieve({bot_id: botId});
+        const { botId } = coze
+        this.botInfo = await this.Coze.bots.retrieve({ bot_id: botId });
     }
 
-    public createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
+    public createMessage = (): EnterMessage[] => {
         const store = messageStore();
-        const { updateContent, getContentLength, findContent } = store;
+        const { getContentLength, findContent } = store;
         const { activeMessageId } = storeToRefs(store);
 
         const baseMessage: EnterMessage = {
             role: RoleType.User,
             type: 'question',
         };
-        
+
         const res: EnterMessage[] = [];
-        for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
-            const foundContent = findContent(activeMessageId.value);
-            if (Array.isArray(foundContent) && foundContent[i]?.value) {
-                res.push({
-                    role: foundContent[i].role as unknown as RoleType,  //https://www.coze.cn/open/docs/developer_guides/create_conversation 参考这里实现上下文联系
-                    //https://www.coze.cn/open/docs/developer_guides/chat_v3#2bb94adb 参考这里实现携带上下文
-                    
-                    content: [
-                        { type: 'text', text: foundContent[i].value },
-                    ],
-                    content_type: 'text',
-                });
+
+        const foundContent = findContent(activeMessageId.value);
+        if (Array.isArray(foundContent)) {
+            for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
+                if (foundContent[i].fileInfo) {
+                    res.push({
+                        role: foundContent[i].role as unknown as RoleType,
+                        content: [
+                            { type: 'text', text: foundContent[i].value },
+                            { type: 'file', file_id: foundContent[i].fileInfo?.id || '' }
+                        ],
+                        content_type: 'object_string',
+                    });
+                } else {
+                    res.push({
+                        role: foundContent[i].role as unknown as RoleType,
+                        content: [
+                            { type: 'text', text: foundContent[i].value },
+                        ],
+                        content_type: 'text',
+                    });
+                }
             }
         }
-        console.log('res: EnterMessage[]:', res);
-
-
-        if (fileInfo) {
-            return [
-                {
-                    ...baseMessage,
-                    content: [
-                        { type: 'text', text: query },
-                        { type: 'file', file_id: fileInfo.id },
-                    ],
-                    content_type: 'object_string',
-                },
-            ];
-        }
-
+        console.log('本次对话上下文:', res);
         return res;
     }
+    
 
-    public uploadFile = async (file?: File) => {
+    public uploadFile = async (file?: File): Promise<FileObject | undefined> => {
         if (!this.Coze) {
             throw new Error('Client not initialized');
         }
@@ -103,7 +99,10 @@ class LLMInteraction implements LLM {
             .finally(() => {
                 console.log('File uploaded');
             });
+
+        return this.fileInfoRef;
     }
+
 
     public streamingChat = async ({
         query,
@@ -121,8 +120,8 @@ class LLMInteraction implements LLM {
         if (!this.Coze) {
             return;
         }
-        const {botId} = coze
-        const messages = this.createMessage(query, this.fileInfoRef);
+        const { botId } = coze
+        const messages = this.createMessage();
 
         const v = await this.Coze.chat.stream({
             bot_id: botId,
@@ -158,41 +157,18 @@ class LLMInteraction implements LLM {
         console.log('=== End of Streaming Chat ===');
     }
 
-    public chat = async (query: string, fileInfoRef?: File | undefined): Promise<string> => {
 
-        let response: string = '';
-        let error: any = null;
-        try {
-            await this.streamingChat({
-                query,
-                onUpdate: (delta: string) => {
-                    response = delta;
-                },
-                onSuccess: (delta: string) => {
-                    response = delta;
-                },
-                onCreated: (data: CreateChatData) => {
-                    console.log('Chat created:', data);
-                },
-            });
-            return response;
-        } catch (err) {
-            error = err;
-            console.error('API Error:', err);
-            throw error;
-        }
-    }
 
     public setConfig = (baseUrl: string, pat: string, botId: string) => {
-        config.setBaseUrl(baseUrl);
-        config.setPat(pat);
-        config.setBotId(botId);
+        coze.setBaseUrl(baseUrl);
+        coze.setPat(pat);
+        coze.setBotId(botId);
     }
 
     public printSetting = () => {
-        console.log('BaseUrl:', config.getBaseUrl());
-        console.log('PAT:', config.getPat());
-        console.log('BotId:', config.getBotId());
+        console.log('BaseUrl:', coze.getBaseUrl());
+        console.log('PAT:', coze.getPat());
+        console.log('BotId:', coze.getBotId());
     }
 }
 

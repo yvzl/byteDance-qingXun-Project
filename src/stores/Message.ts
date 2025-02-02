@@ -1,6 +1,7 @@
 import {ref} from 'vue'
 import {defineStore} from "pinia";
 import  { type Message ,ContentType} from "@/types"
+import { FileObject } from '@coze/api';
 
 export const messageStore = defineStore("messageStore", () => {
     const data = ref<Message[]>([{

@@ -4,7 +4,7 @@ import TextArea from "@/components/TextArea.vue";
 import Upload from "@/components/Upload.vue";
 import Send from "@/components/Send.vue";
 import LLMInteraction from "@/utils/impl/LLMInteraction";
-import {CreateChatData} from "@coze/api";
+import {CreateChatData, FileObject} from "@coze/api";
 import {messageStore} from "@/stores";
 import {storeToRefs} from "pinia";
 import {ContentType, type Content} from "@/types";
@@ -15,7 +15,7 @@ const {activeMessageId} = storeToRefs(store)
 
 const value = ref<string>("")
 const state = computed<boolean>(() => /^\s*$/g.test(value.value))
-
+const fileInfo = ref<FileObject | undefined>(undefined)
 const response = ref<any>(null)
 const query = ref("你好");
 
@@ -31,9 +31,11 @@ const sendMsg = () => {
     id,
     role: ContentType.user,
     value: value.value,
+    fileInfo: fileInfo.value
   })
   query.value = value.value;// value放在inputArea，为了发送消息时清空输入框，这里保存query
   value.value = ""
+  fileInfo.value = undefined; // 清空文件信息
 }
 
 // chat 答复
