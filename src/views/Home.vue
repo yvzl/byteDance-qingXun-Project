@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import Coze from '@/components/CozeAPITest.vue';
+import SideBar from '@/components/SideBar.vue'
 import Main from '@/components/Main.vue';
 </script>
 
 <template>
   <div class="home">
-    <Coze/>
+    <SideBar/>
     <Main/>
   </div>
 </template>

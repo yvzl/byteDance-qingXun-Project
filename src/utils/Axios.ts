@@ -1,21 +1,23 @@
 import axios, {AxiosInstance,} from 'axios';
-import {config} from './config';
+import {coze} from "@/configs"
+
+const {url, pat, botId} = coze
 
 // 创建Axios实例
 const apiClient: AxiosInstance = axios.create({
-    baseURL: config.getBaseUrl(),
+    baseURL: url,
     headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${config.getPat}`,
+        Authorization: `Bearer ${pat}`,
     },
 });
 
 
 // 封装请求方法
-export const createChat = async (data: any, conversationId?: string) => {
+const createChat = async (data: any, conversationId?: string) => {
     const url = conversationId
-        ? `/bots/${config.getBotId}/conversations/${conversationId}/messages`
-        : `/bots/${config.getBotId}/conversations`;
+        ? `/bots/${botId}/conversations/${conversationId}/messages`
+        : `/bots/${botId}/conversations`;
     try {
         const response = await apiClient.post(url, data);
         return response.data;
@@ -25,10 +27,10 @@ export const createChat = async (data: any, conversationId?: string) => {
     }
 };
 
-export const streamChat = async (data: any, conversationId?: string) => {
+const streamChat = async (data: any, conversationId?: string) => {
     const url = conversationId
-        ? `/bots/${config.getBotId}/conversations/${conversationId}/messages/stream`
-        : `/bots/${config.getBotId}/conversations/messages/stream`;
+        ? `/bots/${botId}/conversations/${conversationId}/messages/stream`
+        : `/bots/${botId}/conversations/messages/stream`;
     try {
         const response = await apiClient.post(url, data, {
             responseType: 'stream',
@@ -39,3 +41,8 @@ export const streamChat = async (data: any, conversationId?: string) => {
         throw error;
     }
 };
+
+export {
+    createChat,
+    streamChat,
+}

@@ -1,5 +1,4 @@
 import {
-    type CreateChatData,
     type EnterMessage,
     type FileObject,
 } from '@coze/api';

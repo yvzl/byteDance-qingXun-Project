@@ -8,8 +8,8 @@ import {
     RoleType,
 } from '@coze/api';
 import { config } from '../config';
+import {coze} from "@/configs"
 import LLM from '../LLM';
-import { type Content } from '@/types';
 import { messageStore } from '@/stores/Message';
 import { storeToRefs } from "pinia";
 
@@ -29,22 +29,18 @@ class LLMInteraction implements LLM {
     }
 
     private initClient = () => {
-        const baseUrl = config.getBaseUrl();
-        const pat = config.getPat();
+        const {url, pat} = coze
         this.Coze = new CozeAPI({
             token: pat,
-            baseURL: baseUrl,
+            baseURL: url,
             allowPersonalAccessTokenInBrowser: true,
         });
     }
 
     private getBotInfo = async () => {
-        if (!this.Coze) {
-            return;
-        }
-        this.botInfo = await this.Coze.bots.retrieve({
-            bot_id: config.getBotId(),
-        });
+        if (!this.Coze) return;
+        const {botId} = coze
+        this.botInfo = await this.Coze.bots.retrieve({bot_id: botId});
     }
 
     public createMessage = (query: string, fileInfo?: FileObject): EnterMessage[] => {
@@ -125,8 +121,7 @@ class LLMInteraction implements LLM {
         if (!this.Coze) {
             return;
         }
-
-        const botId = config.getBotId();
+        const {botId} = coze
         const messages = this.createMessage(query, this.fileInfoRef);
 
         const v = await this.Coze.chat.stream({

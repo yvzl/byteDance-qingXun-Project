@@ -47,41 +47,44 @@ const chatWithCoze = async () => {
       onSuccess: (delta: string) => {
         response.value = delta;
       },
-      onCreated: (data: CreateChatData) => {//这里的data是Coze的流式返回部分，该对象携带conversation_id
-          /*setConversationsItems((prev: Content[]) => {
-            const exist = prev.find(
-              item => item.id === data.conversation_id || item.id === '0',
-            );
-            activeMessageId.value = data.conversation_id;
+      onCreated: (data: CreateChatData) => {
+        console.log(data)
 
-            if (!exist) {
-              return [
-                ...prev,
-                {
-                  key: data.conversation_id,
-                  label: query ?? '',
-                },
-              ];
-            } else {
-              if (exist.id === '0') {
-                const newConversationsItems = prev.map(item => {
-                  if (item.id === '0') {
-                    return { id: data.conversation_id, value: query ?? '' };
-                  }
-                  return item;
-                });
+        //这里的data是Coze的流式返回部分，该对象携带conversation_id
+        /*setConversationsItems((prev: Content[]) => {
+          const exist = prev.find(
+            item => item.id === data.conversation_id || item.id === '0',
+          );
+          activeMessageId.value = data.conversation_id;
 
-                return newConversationsItems;
-              }
-              return prev;
+          if (!exist) {
+            return [
+              ...prev,
+              {
+                key: data.conversation_id,
+                label: query ?? '',
+              },
+            ];
+          } else {
+            if (exist.id === '0') {
+              const newConversationsItems = prev.map(item => {
+                if (item.id === '0') {
+                  return { id: data.conversation_id, value: query ?? '' };
+                }
+                return item;
+              });
+
+              return newConversationsItems;
             }
-          });*/
-        },
+            return prev;
+          }
+        });*/
+      },
     });
 
     if (response.value.trim() === "") return;
 
-    const id = getContentLength(activeMessageId.value) + 1 + ""
+    const id = `${getContentLength(activeMessageId.value) + 1}`
     updateContent(activeMessageId.value, {
       id,
       role: ContentType.assistant,
@@ -95,14 +98,14 @@ const chatWithCoze = async () => {
 // enter键触发发送事件
 const sendBtn = ref(null)
 
-const handleKeydown = (e:any)=>{
-  if(e.key ==='Enter') {
+const handleKeydown = (e: any) => {
+  if (e.key === 'Enter') {
     send()
   }
 }
 
-onMounted(()=>{
-  window.addEventListener('keydown',handleKeydown)
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -110,7 +113,8 @@ onMounted(()=>{
   <div class="input-box">
     <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
     <Upload :size="28" style="margin-left: 20px"/>
-    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" ref="sendBtn" />
+    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" ref="sendBtn"/>
+
   </div>
 </template>
 
