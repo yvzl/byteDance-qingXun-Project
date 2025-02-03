@@ -23,7 +23,9 @@ const send = async () => {
   sendMsg()
   await chatWithCoze()
 }
-
+const uploadFile = async (childFileInfo: FileObject | undefined) => {
+  fileInfo.value = childFileInfo;
+}
 // 发送消息
 const sendMsg = () => {
   const id = getContentLength(activeMessageId.value) + 1 + ""
@@ -114,7 +116,7 @@ onMounted(() => {
 <template>
   <div class="input-box">
     <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
-    <Upload :size="28" style="margin-left: 20px"/>
+    <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px"/>
     <Send @send="send" :state="state" :size="24" style="margin-left: 20px" ref="sendBtn"/>
 
   </div>

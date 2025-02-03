@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
     type BotInfo,
     ChatEventType,
@@ -11,7 +12,6 @@ import { coze } from "@/configs"
 import LLM from '../LLM';
 import { messageStore } from '@/stores/Message';
 import { storeToRefs } from "pinia";
-import { ContentType } from '@/types';
 
 class LLMInteraction implements LLM {
     private Coze: CozeAPI | null = null;
@@ -48,22 +48,20 @@ class LLMInteraction implements LLM {
         const { getContentLength, findContent } = store;
         const { activeMessageId } = storeToRefs(store);
 
-        const baseMessage: EnterMessage = {
-            role: RoleType.User,
-            type: 'question',
-        };
-
         const res: EnterMessage[] = [];
 
         const foundContent = findContent(activeMessageId.value);
         if (Array.isArray(foundContent)) {
             for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
                 if (foundContent[i].fileInfo) {
+                     console.log('emitFileInfoFunc', foundContent[i].fileInfo);
+
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
+                            { type: 'file', file_id: foundContent[i].fileInfo?.data?.id || '' }, //在uploadFile之后Coze会通过该id获取文件信息
                             { type: 'text', text: foundContent[i].value },
-                            { type: 'file', file_id: foundContent[i].fileInfo?.id || '' }
+                            
                         ],
                         content_type: 'object_string',
                     });
@@ -83,7 +81,7 @@ class LLMInteraction implements LLM {
     }
     
 
-    public uploadFile = async (file?: File): Promise<FileObject | undefined> => {
+    public uploadFile = async (file?: File): Promise<FileObject | undefined> => { //参考这里 https://www.coze.cn/open/playground/upload_file
         if (!this.Coze) {
             throw new Error('Client not initialized');
         }
@@ -92,13 +90,23 @@ class LLMInteraction implements LLM {
             return;
         }
         console.log('Uploading file');
-        this.fileInfoRef = await this.Coze.files
-            .upload({
-                file,
-            })
-            .finally(() => {
-                console.log('File uploaded');
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post(`${this.Coze.baseURL}/v1/files/upload`, formData, {//原有的Coze方法返回不完全，只能返回infoData，但其实还包括code，因此改成axios请求
+                headers: {
+                    'Authorization': `Bearer ${this.Coze.token}`,
+                    'Content-Type': 'multipart/form-data'
+                }
             });
+            this.fileInfoRef = response.data;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        } finally {
+            console.log('File uploaded');
+        }
 
         return this.fileInfoRef;
     }
@@ -121,7 +129,7 @@ class LLMInteraction implements LLM {
             return;
         }
         const { botId } = coze
-        const messages = this.createMessage();
+        let messages = this.createMessage();
 
         const v = await this.Coze.chat.stream({
             bot_id: botId,

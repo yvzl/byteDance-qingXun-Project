@@ -16,7 +16,7 @@ interface Content {
     id: string
     role: ContentType
     value: string
-    fileInfo?: FileObject
+    fileInfo?: any
 }
 
 export {
