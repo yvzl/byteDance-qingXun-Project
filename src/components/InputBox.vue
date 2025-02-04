@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from "vue"
+import { ref, computed, onMounted } from "vue"
 import TextArea from "@/components/TextArea.vue";
 import Upload from "@/components/Upload.vue";
 import Send from "@/components/Send.vue";
 import LLMInteraction from "@/utils/impl/LLMInteraction";
-import {CreateChatData, FileObject} from "@coze/api";
-import {messageStore} from "@/stores";
-import {storeToRefs} from "pinia";
-import {ContentType, type Content} from "@/types";
+import { CreateChatData, FileObject } from "@coze/api";
+import { messageStore } from "@/stores";
+import { storeToRefs } from "pinia";
+import { ContentType, type Content } from "@/types";
 
 const store = messageStore()
-const {updateContent, getContentLength} = store
-const {activeMessageId} = storeToRefs(store)
+const { addContent, getContentLength,updateContent } = store
+const { activeMessageId } = storeToRefs(store)
 
 const value = ref<string>("")
 const state = computed<boolean>(() => /^\s*$/g.test(value.value))
@@ -25,11 +25,12 @@ const send = async () => {
 }
 const uploadFile = async (childFileInfo: FileObject | undefined) => {
   fileInfo.value = childFileInfo;
+  console.log(childFileInfo)
 }
 // 发送消息
 const sendMsg = () => {
   const id = getContentLength(activeMessageId.value) + 1 + ""
-  updateContent(activeMessageId.value, {
+  addContent(activeMessageId.value, {
     id,
     role: ContentType.user,
     value: value.value,
@@ -47,6 +48,7 @@ const chatWithCoze = async () => {
       query: query.value,
       onUpdate: (delta: string) => {
         response.value = delta;
+        updateContent(response.value);
       },
       onSuccess: (delta: string) => {
         response.value = delta;
@@ -54,57 +56,51 @@ const chatWithCoze = async () => {
       onCreated: (data: CreateChatData) => {
         console.log(data)
 
-        //这里的data是Coze的流式返回部分，该对象携带conversation_id
-        /*setConversationsItems((prev: Content[]) => {
-          const exist = prev.find(
-            item => item.id === data.conversation_id || item.id === '0',
-          );
-          activeMessageId.value = data.conversation_id;
-
-          if (!exist) {
-            return [
-              ...prev,
-              {
-                key: data.conversation_id,
-                label: query ?? '',
-              },
-            ];
-          } else {
-            if (exist.id === '0') {
-              const newConversationsItems = prev.map(item => {
-                if (item.id === '0') {
-                  return { id: data.conversation_id, value: query ?? '' };
-                }
-                return item;
-              });
-
-              return newConversationsItems;
-            }
-            return prev;
-          }
-        });*/
+        const id = `${getContentLength(activeMessageId.value) + 1}`
+        addContent(activeMessageId.value, { //直接用创建会话表示
+          id,
+          role: ContentType.assistant,
+          value: ""
+        })
       },
     });
 
     if (response.value.trim() === "") return;
-
-    const id = `${getContentLength(activeMessageId.value) + 1}`
-    updateContent(activeMessageId.value, {
-      id,
-      role: ContentType.assistant,
-      value: response.value
-    })
+    /*
+        const id = `${getContentLength(activeMessageId.value) + 1}`
+        addContent(activeMessageId.value, { //这里流式打印完成的时候才会更新Content，导致AI不能做到流式回答
+          id,
+          role: ContentType.assistant,
+          value: response.value
+        })**/
   } catch (err) {
     console.error('API Error:', err);
   }
 }
 
 // enter键触发发送事件
-const sendBtn = ref(null)
+const isSending = ref(false)
+const debounceTimeout = ref<any | null>(null)
+// 防抖发送方法
+const debounceSend = () => {
+  if (isSending.value) return
 
-const handleKeydown = (e: any) => {
-  if (e.key === 'Enter') {
-    send()
+  isSending.value = true
+  send().finally(() => {
+    // 使用 setTimeout 保证最小间隔
+    debounceTimeout.value = setTimeout(() => {
+      isSending.value = false
+      debounceTimeout.value = null
+    }, 500) // 500ms 间隔
+  })
+}
+const handleKeydown = (e: KeyboardEvent) => {
+  // 排除组合键和输入法状态
+  if (e.isComposing || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return
+
+  if (e.key === 'Enter' && !e.repeat) { // 检查 e.repeat 属性
+    e.preventDefault()
+    debounceSend()
   }
 }
 
@@ -114,10 +110,14 @@ onMounted(() => {
 </script>
 
 <template>
+  <div class="file-display" v-if="fileInfo">
+    <div class="file-name">fileInfo.file_name: {{ fileInfo.file_name }}</div>
+  </div>
   <div class="input-box">
-    <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
-    <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px"/>
-    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" ref="sendBtn"/>
+
+    <TextArea v-model="value" placeholder="请输入内容..." width="100%" />
+    <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px" />
+    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" />
 
   </div>
 </template>

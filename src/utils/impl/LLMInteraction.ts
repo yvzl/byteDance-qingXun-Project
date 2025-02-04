@@ -59,7 +59,7 @@ class LLMInteraction implements LLM {
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
-                            { type: 'file', file_id: foundContent[i].fileInfo?.data?.id || '' }, //在uploadFile之后Coze会通过该id获取文件信息
+                            { type: 'file', file_id: foundContent[i].fileInfo?.id || '' }, //在uploadFile之后Coze会通过该id获取文件信息
                             { type: 'text', text: foundContent[i].value },
                             
                         ],
@@ -101,7 +101,7 @@ class LLMInteraction implements LLM {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            this.fileInfoRef = response.data;
+            this.fileInfoRef = response.data.data;
         } catch (error) {
             console.error('Error uploading file:', error);
         } finally {

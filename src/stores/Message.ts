@@ -52,7 +52,7 @@ export const messageStore = defineStore("messageStore", () => {
     }])
     // 会话的 id
     const activeMessageId = ref<Message['id']>("1")
-
+    const Response = ref<string>("")
     // 切换对话 id
     const changeMessageId = (id: Message["id"]) => activeMessageId.value = id
 
@@ -63,18 +63,31 @@ export const messageStore = defineStore("messageStore", () => {
     const getContentLength = (id: Message["id"]) => findContent(id)?.length || 0
 
     // 更新对应会话的 Content
-    const updateContent = (id: Message["id"], ...args: Message["content"]) => {
+    const addContent = (id: Message["id"], ...args: Message["content"]) => {
         const currentMessageList = findContent(id)
         if (!currentMessageList) return
         currentMessageList.push(...args);
+    }
+    const updateContent = (response: string) => {
+        Response.value = response;
+        const currentContent = findContent(activeMessageId.value);
+        if (currentContent && currentContent.length > 0) {
+            const lastItem = currentContent[currentContent.length - 1];
+            if (lastItem && 'value' in lastItem) {
+                lastItem.value = Response.value;
+            }
+        }
     }
     return {
         data,
         activeMessageId,
         findContent,
         changeMessageId,
+        addContent,
+        getContentLength,
         updateContent,
-        getContentLength
+        Response,
+        
     }
 }, {
     persist: false,//持久化先关闭
