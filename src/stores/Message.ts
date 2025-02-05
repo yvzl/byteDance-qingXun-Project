@@ -1,7 +1,6 @@
 import {ref} from 'vue'
 import {defineStore} from "pinia";
-import  { type Message ,ContentType} from "@/types"
-import { FileObject } from '@coze/api';
+import {type Message, ContentType} from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
     const data = ref<Message[]>([{
@@ -16,38 +15,6 @@ export const messageStore = defineStore("messageStore", () => {
             id: "2",
             role: ContentType.assistant,
             value: "以下是使用 Python, 实现的解码函数：\n\n```python\ndef decode_sequence(a, d0):\n    data = [d0]\n    for item in a:\n        data.append(data[-1] ^ item)\n    return data"
-        }, {
-            id: "3",
-            role: ContentType.user,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "4",
-            role: ContentType.assistant,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "5",
-            role: ContentType.user,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "6",
-            role: ContentType.assistant,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "7",
-            role: ContentType.user,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "8",
-            role: ContentType.assistant,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "9",
-            role: ContentType.user,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        }, {
-            id: "10",
-            role: ContentType.assistant,
-            value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         }]
     }])
     // 会话的 id
@@ -87,7 +54,7 @@ export const messageStore = defineStore("messageStore", () => {
         getContentLength,
         updateContent,
         Response,
-        
+
     }
 }, {
     persist: false,//持久化先关闭

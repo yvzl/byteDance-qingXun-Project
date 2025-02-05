@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {messageStore} from "@/stores"
 import {storeToRefs} from "pinia"
 import MessageList from "@/components/MessageList.vue";
@@ -11,12 +11,18 @@ const {findContent} = store
 const {activeMessageId} = storeToRefs(store)
 
 const messageData = computed<Message["content"]>(() => findContent(activeMessageId.value) || []) // 通过 id 查找当前会话
+
+const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
+
+const list = ref<HTMLDivElement | null>(null)
+
+onMounted(() => messageListRef.value && (list.value = messageListRef.value.messageList))
 </script>
 
 <template>
   <div class="main">
-    <MessageList :data="messageData"/>
-    <InputBox style="margin-top: 20px"/>
+    <MessageList ref="messageListRef" :data="messageData"/>
+    <InputBox :list="list"/>
   </div>
 </template>
 

@@ -4,6 +4,31 @@
   border-radius: 14px;
   padding: 8px 20px;
   width: 100%;
+
+  > div {
+    > *:last-child {
+      margin-bottom: 0 !important;
+    }
+
+    > :deep(pre) {
+      position: relative;
+
+      > code {
+        > div {
+          position: absolute;
+          right: 7px;
+          top: 5px;
+          color: rgba(235, 235, 245, .38);
+          transition: color 0.3s linear;
+          cursor: pointer;
+
+          &:hover {
+            color: rgba(235, 235, 245);
+          }
+        }
+      }
+    }
+  }
 }
 
 .user {

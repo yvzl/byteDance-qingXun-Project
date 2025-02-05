@@ -2,13 +2,19 @@
 import {type Message, ContentType} from "@/types"
 import MessageChat from "@/components/MessageChat.vue";
 import MessageUser from "@/components/MessageUser.vue";
+import {useTemplateRef} from "vue";
 
 defineProps<{ data: Message["content"] }>()
 
+const messageList = useTemplateRef<HTMLDivElement>("messageList")
+
+defineExpose({
+  messageList
+})
 </script>
 
 <template>
-  <div class="message-list">
+  <div ref="messageList" class="message-list">
     <ul>
       <li v-for="{id, role, value} in data" :class="{[ContentType[role]]: true}" :key="id">
         <MessageUser :value="value" :type="role" v-if="role === ContentType['user']"/>
