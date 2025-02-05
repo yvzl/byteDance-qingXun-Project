@@ -1,4 +1,10 @@
 .upload {
   cursor: pointer;
   color: white;
+  padding: 5px;
+  border-radius: 10px;
+
+  &:hover {
+    background: #434654;
+  }
 }
