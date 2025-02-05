@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from "vue"
+import { ref, computed, onMounted } from "vue"
 import TextArea from "@/components/TextArea.vue";
 import Upload from "@/components/Upload.vue";
 import Send from "@/components/Send.vue";
 import LLMInteraction from "@/utils/impl/LLMInteraction";
-import {CreateChatData, FileObject} from "@coze/api";
-import {messageStore} from "@/stores";
-import {storeToRefs} from "pinia";
-import {ContentType} from "@/types";
+import { CreateChatData, FileObject } from "@coze/api";
+import { messageStore } from "@/stores";
+import { storeToRefs } from "pinia";
+import { ContentType, type Content } from "@/types";
 
-const {list} = defineProps<{ list: HTMLDivElement | null }>()
 const store = messageStore()
-const {addContent, getContentLength, updateContent} = store
-const {activeMessageId} = storeToRefs(store)
+const { addContent, getContentLength,updateContent } = store
+const { activeMessageId } = storeToRefs(store)
 
 const value = ref<string>("")
 const state = computed<boolean>(() => /^\s*$/g.test(value.value))
@@ -24,9 +23,10 @@ const send = async () => {
   sendMsg()
   await chatWithCoze()
 }
-
-const uploadFile = async (childFileInfo: FileObject | undefined) => fileInfo.value = childFileInfo;
-
+const uploadFile = async (childFileInfo: FileObject | undefined) => {
+  fileInfo.value = childFileInfo;
+  console.log(childFileInfo)
+}
 // 发送消息
 const sendMsg = () => {
   const id = getContentLength(activeMessageId.value) + 1 + ""
@@ -39,10 +39,7 @@ const sendMsg = () => {
   query.value = value.value;// value放在inputArea，为了发送消息时清空输入框，这里保存query
   value.value = ""
   fileInfo.value = undefined; // 清空文件信息
-  scrollToBottom()
 }
-
-const scrollToBottom = () => list && list.scrollTo(0, list.scrollHeight);
 
 // chat 答复
 const chatWithCoze = async () => {
@@ -52,19 +49,19 @@ const chatWithCoze = async () => {
       onUpdate: (delta: string) => {
         response.value = delta;
         updateContent(response.value);
-        scrollToBottom()
       },
       onSuccess: (delta: string) => {
         response.value = delta;
       },
       onCreated: (data: CreateChatData) => {
+        console.log(data)
+
         const id = `${getContentLength(activeMessageId.value) + 1}`
         addContent(activeMessageId.value, { //直接用创建会话表示
           id,
           role: ContentType.assistant,
           value: ""
         })
-        scrollToBottom()
       },
     });
 
@@ -84,7 +81,6 @@ const chatWithCoze = async () => {
 // enter键触发发送事件
 const isSending = ref(false)
 const debounceTimeout = ref<any | null>(null)
-
 // 防抖发送方法
 const debounceSend = () => {
   if (isSending.value) return
@@ -98,7 +94,6 @@ const debounceSend = () => {
     }, 500) // 500ms 间隔
   })
 }
-
 const handleKeydown = (e: KeyboardEvent) => {
   // 排除组合键和输入法状态
   if (e.isComposing || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return
@@ -119,9 +114,11 @@ onMounted(() => {
     <div class="file-name">fileInfo.file_name: {{ fileInfo.file_name }}</div>
   </div>
   <div class="input-box">
-    <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
-    <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px"/>
-    <Send @send="send" :state="state" :size="24" style="margin-left: 20px"/>
+
+    <TextArea v-model="value" placeholder="请输入内容..." width="100%" />
+    <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px" />
+    <Send @send="send" :state="state" :size="24" style="margin-left: 20px" />
+
   </div>
 </template>
 

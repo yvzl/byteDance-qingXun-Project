@@ -20,7 +20,9 @@ onMounted(() => messageListRef.value && (list.value = messageListRef.value.messa
 </script>
 
 <template>
+
   <div class="main">
+    
     <MessageList ref="messageListRef" :data="messageData"/>
     <InputBox :list="list"/>
   </div>
