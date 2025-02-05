@@ -3,6 +3,8 @@ import {Upload} from '@icon-park/vue-next'
 import LLMInteraction from '@/utils/impl/LLMInteraction';
 import {ref} from 'vue';
 import {FileObject} from '@coze/api';
+import Tooltip from '@/components/Tooltip.vue';
+
 
 const File = ref<File | undefined>(undefined);
 const {size = 24} = defineProps<{ size?: number }>()
@@ -30,9 +32,11 @@ const emitFileInfoFunc = (fileInfo?: FileObject) => { //将文件信息和Coze�
 </script>
 
 <template>
-  <div class="upload">
-    <Upload theme="outline" :size="size" @click="uploadFileByNative"/>
-  </div>
+  <Tooltip content="上传文件(接受图片、PDF 等文件)">
+    <div class="upload">
+      <Upload theme="outline" :size="size" @click="uploadFileByNative"/>
+    </div>
+  </Tooltip>  
 </template>
 
 <style scoped lang="scss">
