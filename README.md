@@ -120,7 +120,7 @@ npm run dev
 - 定义 `Message` 和 `Content` 接口。
 
 ## 要求
-
+参考 https://bytedance.larkoffice.com/docx/YP0Md2LwCoelRQxnwiZc5DWUndb?share_token=a0c7986e-45ce-42af-a8c6-431fcd10f3b1
 - **可选模块: 工具栏组件 (Toolbar)**: 可以包含一些操作按钮，例如清空对话记录、切换对话模式等。
 - 除 Web 端外，组件还需兼容 H5、小程序形态，并提交相关演示材料。
 - 需要支持 LLM 流式返回结果，实现逐行打印效果。
