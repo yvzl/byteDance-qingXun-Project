@@ -2,3 +2,4 @@
 export * from "@/utils/mdConfig"
 export * from "@/utils/copyCode"
 export * from "@/utils/copy"
+export * from "@/utils/debounce"

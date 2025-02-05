@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {md, copyCode, copy} from "@/utils";
+import {md, copyCode, copy, debounce} from "@/utils";
 import "github-markdown-css/github-markdown-dark.css";
 import {ContentType} from "@/types";
-import {onMounted, useTemplateRef} from "vue";
+import {onMounted, useTemplateRef, watch} from "vue";
 
-defineProps<{
+const {value} = defineProps<{
   value: string;
   type: ContentType;
 }>();
@@ -17,6 +17,7 @@ const addCopyEvent = () => {
 }
 
 onMounted(() => addCopyEvent())
+watch(() => value, debounce(addCopyEvent))
 </script>
 
 <template>

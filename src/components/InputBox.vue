@@ -25,10 +25,7 @@ const send = async () => {
   await chatWithCoze()
 }
 
-const uploadFile = async (childFileInfo: FileObject | undefined) => {
-  fileInfo.value = childFileInfo;
-  console.log(childFileInfo)
-}
+const uploadFile = async (childFileInfo: FileObject | undefined) => fileInfo.value = childFileInfo;
 
 // 发送消息
 const sendMsg = () => {
