@@ -10,7 +10,7 @@ import {
 } from '@coze/api';
 import { coze } from "@/configs"
 import LLM from '../LLM';
-import { messageStore } from '@/stores/Message';
+import { messageStore } from '@/stores/MessageStore';
 import { storeToRefs } from "pinia";
 
 class LLMInteraction implements LLM {
