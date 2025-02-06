@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { MenuFold } from "@icon-park/vue-next";
 import { MenuUnfold } from "@icon-park/vue-next";
-
+import { coze } from "@/configs/coze";
 interface Props {
   size?: number;
 }
@@ -27,9 +27,24 @@ const toggleSidebar = () => {
         <MenuUnfold v-else theme="outline" :size="props.size" />
       </div>
     </div>
+    <div v-if="!isCollapsed" class="config-inputs">
+      <input v-model="coze.url" placeholder="Base URL" />
+      <input v-model="coze.botId" placeholder="Bot ID" />
+      <input v-model="coze.pat" placeholder="PAT" />
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 @use "@/assets/styles/SideBar.module";
+.config-inputs {
+  margin-top: 20px;
+  input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 </style>

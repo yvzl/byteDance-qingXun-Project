@@ -174,9 +174,9 @@ class LLMInteraction implements LLM {
     }
 
     public printSetting = () => {
-        console.log('BaseUrl:', coze.getBaseUrl());
-        console.log('PAT:', coze.getPat());
-        console.log('BotId:', coze.getBotId());
+        console.log('BaseUrl:', coze.url);
+        console.log('PAT:', coze.pat);
+        console.log('BotId:', coze.botId);
     }
 }
 
