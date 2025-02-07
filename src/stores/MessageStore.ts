@@ -1,6 +1,6 @@
-import {ref} from 'vue'
-import {defineStore} from "pinia";
-import {type Message, ContentType} from "@/types"
+import { ref } from 'vue'
+import { defineStore } from "pinia";
+import { type Message, ContentType } from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
     const data = ref<Message[]>([{
@@ -29,7 +29,7 @@ export const messageStore = defineStore("messageStore", () => {
     // 查找对应会话 Content 的长度
     const getContentLength = (id: Message["id"]) => findContent(id)?.length || 0
 
-    // 更新对应会话的 Content
+    // 新增对应会话的 Content
     const addContent = (id: Message["id"], ...args: Message["content"]) => {
         const currentMessageList = findContent(id)
         if (!currentMessageList) return
@@ -45,10 +45,54 @@ export const messageStore = defineStore("messageStore", () => {
             }
         }
     }
+    const addMessage = () => {
+
+        const currentContent = findContent(activeMessageId.value);
+        if (currentContent?.length === 0) {
+            alert("Don't create more than one empty conversation");
+            return;
+        }
+        if (currentContent && currentContent.length > 0) {
+            const id = data.value.length + 1;
+            data.value.push({
+                id: id.toString(),
+                date: new Date(),
+                name: `新会话${id}`,
+                content: [],
+            });
+        }
+        changeMessageId(data.value[data.value.length - 1].id);
+        /*addContent(activeMessageId.value, {
+            id: "1",
+            role: ContentType.assistant,
+            value: `这里是会话 ${activeMessageId.value}`
+        });*/
+    }
+
+
+    /*/ 实现切换会话的功能
+    const onConversationClick: GetProp< //这是一个处理对话点击事件的函数。当用户点击某个对话时，这个函数会被调用。
+    typeof Conversations,
+    'onActiveChange'
+    > = key => {
+    if (activeKeyRef.current) {
+      messageMap.current.set(activeKeyRef.current, messages);
+    }
+    
+    activeKeyRef.current = key;
+    
+    if (messageMap.current.has(key)) {
+      setMessages(messageMap.current.get(key) || []);
+    } else {
+      setMessages([]);
+    }
+    };
+    */
     return {
         data,
         activeMessageId,
         findContent,
+        addMessage,
         changeMessageId,
         addContent,
         getContentLength,

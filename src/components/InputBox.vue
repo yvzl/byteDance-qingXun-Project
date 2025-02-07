@@ -57,7 +57,7 @@ const chatWithCoze = async () => {
         console.log(data)
 
         const id = `${getContentLength(activeMessageId.value) + 1}`
-        addContent(activeMessageId.value, { //直接用创建会话表示
+        addContent(activeMessageId.value, { //直接用创建对话表示
           id,
           role: ContentType.assistant,
           value: ""

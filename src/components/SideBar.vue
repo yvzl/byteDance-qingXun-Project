@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { MenuFold } from "@icon-park/vue-next";
 import { MenuUnfold } from "@icon-park/vue-next";
+import HistoryMessage from "./HistoryMessage.vue";
 import { coze } from "@/configs/coze";
 interface Props {
   size?: number;
@@ -32,6 +33,7 @@ const toggleSidebar = () => {
       <input v-model="coze.botId" placeholder="Bot ID" />
       <input v-model="coze.pat" placeholder="PAT" />
     </div>
+    <HistoryMessage />
   </div>
 </template>
 
