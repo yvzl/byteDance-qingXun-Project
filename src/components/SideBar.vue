@@ -3,7 +3,9 @@ import { ref } from "vue";
 import { MenuFold } from "@icon-park/vue-next";
 import { MenuUnfold } from "@icon-park/vue-next";
 import HistoryMessage from "./HistoryMessage.vue";
+import {  messageStore } from "@/stores";
 import { coze } from "@/configs/coze";
+import { storeToRefs } from "pinia";
 interface Props {
   size?: number;
 }
@@ -11,13 +13,20 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   size: 32,
 });
-
+const store = messageStore()
+const { mainState } = storeToRefs(store)
 const isCollapsed = ref(false);
 
 // 切换展开状态
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
 };
+const changeToInline = () => {
+  mainState.value = 'inline'
+}
+const changeToChat = () => {
+  mainState.value = 'chat'
+}
 </script>
 
 <template>
@@ -34,6 +43,11 @@ const toggleSidebar = () => {
       <input v-model="coze.pat" placeholder="PAT" />
     </div>
     <HistoryMessage />
+    <div class="footer">
+        <span>当前模式：{{ mainState }}</span>
+        <button @click="changeToInline">内联</button>
+        <button @click="changeToChat">独立</button>
+    </div>
   </div>
 </template>
 
@@ -48,5 +62,12 @@ const toggleSidebar = () => {
     width: 100%;
     box-sizing: border-box;
   }
+}
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
 }
 </style>

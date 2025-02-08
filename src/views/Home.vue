@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import DialogContainer from "@/components/DialogContainer.vue";
 import SideBar from '@/components/SideBar.vue'
 import Main from '@/components/Main.vue';
 
@@ -8,7 +7,6 @@ import Main from '@/components/Main.vue';
 <template>
   <div class="home">
     <SideBar/>
-    <DialogContainer />
 
     <Main/>
   </div>

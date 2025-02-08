@@ -19,6 +19,7 @@ export const messageStore = defineStore("messageStore", () => {
     }])
     // 会话的 id
     const activeMessageId = ref<Message['id']>("1")
+    const mainState = ref<'inline' | 'chat'>('chat')
     const Response = ref<string>("")
     // 切换对话 id
     const changeMessageId = (id: Message["id"]) => activeMessageId.value = id
@@ -46,7 +47,7 @@ export const messageStore = defineStore("messageStore", () => {
         }
     }
     const addMessage = () => {
-
+        // 如果当前会话为空，则不允许创建新会话
         const currentContent = findContent(activeMessageId.value);
         if (currentContent?.length === 0) {
             alert("Don't create more than one empty conversation");
@@ -69,6 +70,14 @@ export const messageStore = defineStore("messageStore", () => {
         });*/
     }
 
+    const deleteMessage = (id: Message["id"]) => {
+        const index = data.value.findIndex(item => item.id === id);
+        if (index !== -1) {
+            data.value.splice(index, 1);
+        }
+    }
+
+    
 
     /*/ 实现切换会话的功能
     const onConversationClick: GetProp< //这是一个处理对话点击事件的函数。当用户点击某个对话时，这个函数会被调用。
@@ -98,6 +107,7 @@ export const messageStore = defineStore("messageStore", () => {
         getContentLength,
         updateContent,
         Response,
+        mainState,
 
     }
 }, {
