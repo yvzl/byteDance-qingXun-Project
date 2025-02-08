@@ -1,4 +1,6 @@
 @mixin scrollBar($barColor, $thumbColor) {
+  overflow-y: auto;
+
   &::-webkit-scrollbar {
     border-radius: 10px;
     width: 10px;

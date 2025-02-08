@@ -1,11 +1,10 @@
 .side-bar {
-    width: 15%;
+    width: 250px;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding-left: 20px;
     background-color: #303137;
-    transition: all 0.2s ease-in-out;
     z-index: 2;
 
     &.collapsed {

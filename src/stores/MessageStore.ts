@@ -1,6 +1,6 @@
-import { ref } from 'vue'
-import { defineStore } from "pinia";
-import { type Message, ContentType } from "@/types"
+import {ref} from 'vue'
+import {defineStore} from "pinia";
+import {type Message, ContentType} from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
     const data = ref<Message[]>([{
@@ -77,7 +77,6 @@ export const messageStore = defineStore("messageStore", () => {
         }
     }
 
-    
 
     /*/ 实现切换会话的功能
     const onConversationClick: GetProp< //这是一个处理对话点击事件的函数。当用户点击某个对话时，这个函数会被调用。
@@ -97,6 +96,9 @@ export const messageStore = defineStore("messageStore", () => {
     }
     };
     */
+
+    const changeMainState = (value: 'inline' | 'chat') => mainState.value = value;
+
     return {
         data,
         activeMessageId,
@@ -108,7 +110,7 @@ export const messageStore = defineStore("messageStore", () => {
         updateContent,
         Response,
         mainState,
-
+        changeMainState
     }
 }, {
     persist: false,//持久化先关闭
