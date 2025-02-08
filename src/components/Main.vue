@@ -14,10 +14,6 @@ const isExpanded = ref(false);
 const messageData = computed<Message["content"]>(() => findContent(activeMessageId.value) || []) // 通过 id 查找当前会话
 
 const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
-
-const list = ref<HTMLDivElement | null>(null)
-
-onMounted(() => messageListRef.value && (list.value = messageListRef.value.messageList))
 const closeDialog = () => {
   isExpanded.value = false
 }
@@ -36,13 +32,13 @@ const closeDialog = () => {
         <Close @click="closeDialog" theme="outline" size=24 fill="white"/>
       </div>
       <MessageList v-if="messageData" ref="messageListRef" :data="messageData"/>
-      <InputBox :list="list"/>
+      <InputBox/>
     </div>
   </div>
   <div v-else class="main">
     <!-- 独立对话框模式 -->
     <MessageList ref="messageListRef" :data="messageData"/>
-    <InputBox :list="list"/>
+    <InputBox/>
   </div>
 </template>
 
