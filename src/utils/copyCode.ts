@@ -1,1 +1,0 @@
-export const copyCode = (str: string): string => str.replaceAll(/(<\/code>)/g, `<div>复制</div>$1`)

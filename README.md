@@ -1,6 +1,7 @@
 # LLM 对话框组件2.0 Coze API
 
 本项目是一个由 Vue3 + Vite3 + TypeScript、Axios4、pinia 和 Coze API 搭建的 LLM 对话框组件。
+从2025.1.16开始，到2025.2.9开发结束，历时24天。主要由两人完成
 项目启动命令：
 
 ```bash
@@ -19,18 +20,51 @@ npm run dev
 4. 通过 `action` 操作 `store` 中的数据。
 5. 所有模块都要写清楚运行过程原理，注释函数的作用，让其他人能理解整个项目的运行，做好答辩准备。
 
-## 模块拆分
+## 模块拆分 Main 与 SideBar
 
-### 1. 内联对话框容器 (DialogContainer)
+## Main部分
+### 6. 主体对话框组件 (Main)
+- 有两种形态：内联和独立对话框。
 - 包括 `InputBox` 和 `MessageList`。
+- 通过 messageStore 和 storeToRefs 来管理应用的状态。
+通过 `mainState` 来控制对话框的显示状态。
+当 mainState 为 'inline' 时，显示一个内联收缩形态，点击后为展开形态。
+展开后为对话形态，包含消息列表 (MessageList) 和输入框 (InputBox)。
+提供关闭按钮 (Close) 以收起对话框。
+
+当 mainState 不为 'inline' 时，直接显示为独立对话框，展示完整的消息列表和输入框。
+独立对话框：
+- 
+- 这里要求给出总体界面设计，其他组件的样式以 `Main` 为例进行设计。
+- 要求响应式设计，除 Web 端外，实现 H5 与小程序界面的屏幕适应。
+内联对话框：
 - 要求实现管理对话框的三种显示状态（收缩、展开、对话）。
   - **收缩形态**：表现为一个单一地输入框，点击后展开弹框进入第二形态。
   - **展开形态**：表现为支持对话的弹框模式，用户输入问题后，立即进入该形态。
   - **对话形态**：用户输入问题后，立即进入该形态，形态上既为 LLM 对话信息流。
 - 提供接口供其他组件调用，控制对话框的显示和隐藏。
-- 根据一个状态变量 `dialogState` 的值表示不同的显示状态，渲染不同的子组件。
-- 由于内联对话框与 `main` 组件的对话需要分离，这潜在的要求了需要做到历史对话分离。
-- 使用 Pinia 通过 `Store` 管理会话数据，并确保内联对话框与主对话框的消息分离。
+
+### 3. 对话内容组件 (MessageList)
+- Props：接收一个 data 属性，类型为 Message["content"]，用于传递消息列表数据。
+Expose：通过 defineExpose 暴露 messageList 引用，允许父组件访问该引用（如 Main.vue 中的 messageListRef），以便进行进一步的操作（如滚动、更新等）。
+
+### 9. AI 消息组件 (MessageChat)
+- 包含 `MessageItem` 和 `Avatar`，用于展示 AI 的单条对话消息。
+- 使用默认头像 `chatHead` 来标识 AI 发送的消息。
+- 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
+
+### 10. 用户消息组件 (MessageUser)
+- 包含 `MessageItem`，用于展示用户的单条对话消息。
+- 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
+
+### 4. 单条消息组件 (MessageItem)
+- 负责展示单条对话消息。要求解析 Markdown 内容，并支持图片和代码等格式。
+- 根据消息类型（用户输入或 LLM 返回）渲染不同的样式。
+- 支持展示 Markdown 内容、图片、代码等，这里使用 `markdown-it` 来解析 Markdown 内容。
+- 使用 `github-markdown-css` 样式库来美化 Markdown 渲染效果。
+- 代码消息提供“**复制**”按钮，方便用户复制。
+
+
 
 ### 2. 输入框组件 (InputBox)
 - 准备用在两个地方，内联对话框和独立对话框。
@@ -42,18 +76,35 @@ npm run dev
   - `Upload.vue`: 用于上传图片、PDF 等文件。
   - `Send.vue`: 用于发送消息，支持禁用状态。
 
-### 3. 对话内容组件 (MessageList)
-- 包括 `MessageUser` 和 `MessageChat` 组件。
-- 负责展示对话历史记录，包括用户输入和 LLM 返回的内容。
-- 支持多种内容格式，例如文本、Markdown、图片、代码等。
-- 实现流式加载 LLM 返回的结果，逐行显示。
+### 11. 输入功能组件 (TextArea + Upload + Send)
+- 接收用户输入的文本内容。
+- 支持自动调整高度，根据输入内容动态调整文本域的高度。
+- 调用双向绑定钩子 (`useModel.ts`) 使用 `ref` 和 `watch` 实现双向数据绑定。
+- 确保父组件和子组件之间的数据同步。
 
-### 4. 消息组件 (MessageItem)
-- 负责展示单条对话消息。要求解析 Markdown 内容，并支持图片和代码等格式。
-- 根据消息类型（用户输入或 LLM 返回）渲染不同的样式。
-- 支持展示 Markdown 内容、图片、代码等，这里使用 `markdown-it` 来解析 Markdown 内容。
-- 使用 `github-markdown-css` 样式库来美化 Markdown 渲染效果。
-- 代码消息提供“**复制**”按钮，方便用户复制。
+
+## SideBar部分
+### 1. 侧边栏 (SideBar)
+### 13. 历史会话 HistoryMessage.vue 
+存储历史会话，并为每一个历史会话赋值id进行管理，点击后调用store中的changeMessageId方法，将当前activeMessageId修改为该id
+
+
+### 6. 新建会话 CreateMessage.vue 
+调用store中的addMessage方法，创建新会话
+
+### 改变会话模式内联与独立 MessageMode 
+
+### 7. Pinia 数据存储类 (MessageStore)
+- 负责存储对话记录和持久化，包括用户输入和 LLM 返回的内容。
+- 通过控制全局 `ref`，即 `activeMessageId` 实现不同的会话切换。
+- 提供 `addContent`、`updateContent` 等方法来操作会话数据。
+
+### 8. 配置文件 (Config)
+- 负责三个配置信息的存储和修改，包括：
+  - `bot ID`
+  - `PAT`
+  - `baseUrl`
+- 以上三条信息需要通过 Coze 官网创建机器人并开放 API 调用权限获取，详细参考 Coze 文档准备工作。
 
 ### 5. LLM 交互工具类 (LLMInteraction)
 - 负责与 LLM API 进行交互，处理用户输入并获取 AI 回复。
@@ -81,50 +132,37 @@ npm run dev
     },
   });
   ```
-
-### 6. 独立对话框组件 (Main)
-- 包括 `InputBox` 和 `MessageList`。
-- 根据用户输入（含文件）使用 Axios 调用大模型 Coze API。
-- 这里要求给出总体界面设计，其他组件的样式以 `Main` 为例进行设计。
-- 要求响应式设计，除 Web 端外，实现 H5 与小程序界面的屏幕适应。
-
-### 7. Pinia 数据存储类 (MessageStore)
-- 负责存储对话记录和持久化，包括用户输入和 LLM 返回的内容。
-- 通过控制全局 `ref`，即 `activeMessageId` 实现不同的会话切换。
-- 提供 `addContent`、`updateContent` 等方法来操作会话数据。
-
-### 8. 配置文件 (Config)
-- 负责三个配置信息的存储和修改，包括：
-  - `bot ID`
-  - `PAT`
-  - `baseUrl`
-- 以上三条信息需要通过 Coze 官网创建机器人并开放 API 调用权限获取，详细参考 Coze 文档准备工作。
-
-### 9. AI 消息组件 (MessageChat)
-- 包含 `MessageItem` 和 `Avatar`，用于展示 AI 的单条对话消息。
-- 使用默认头像 `chatHead` 来标识 AI 发送的消息。
-- 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
-
-### 10. 用户消息组件 (MessageUser)
-- 包含 `MessageItem`，用于展示用户的单条对话消息。
-- 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
-
-### 11. 文本输入 (TextArea.vue)
-- 接收用户输入的文本内容。
-- 支持自动调整高度，根据输入内容动态调整文本域的高度。
-- 调用双向绑定钩子 (`useModel.ts`) 使用 `ref` 和 `watch` 实现双向数据绑定。
-- 确保父组件和子组件之间的数据同步。
-
 ### 12. 消息类型定义 (Message.ts)
 - 定义 `ContentType` 枚举。
 - 定义 `Message` 和 `Content` 接口。
 
-## 要求
+Tooltip.vue hover解释功能
+useModel.ts 父子双向绑定钩子
+MessageStore.ts Pinia会话仓库
+debounce.ts 防抖函数钩子
+LLMInteraction.ts API工具类
+copyCode.ts 复制会话中的代码块
+copyMarkdown.ts 复制整个回答
+Message.ts 消息类型定义
+coze.ts Coze的配置文件
+
+## 题目要求概述
 参考 https://bytedance.larkoffice.com/docx/YP0Md2LwCoelRQxnwiZc5DWUndb?share_token=a0c7986e-45ce-42af-a8c6-431fcd10f3b1
-- **可选模块: 工具栏组件 (Toolbar)**: 可以包含一些操作按钮，例如清空对话记录、切换对话模式等。
-- 除 Web 端外，组件还需兼容 H5、小程序形态，并提交相关演示材料。
+
+项目整体：
+- 除 Web 端外，组件还需兼容 H5、小程序形态
+- 提交相关功能演示材料。
+- 支持内联与独立对话两种功能模式吗，其中内联形态要求三种形态：收缩形态、展开形态、对话形态。
+用户输入：
+- 上传文件，用户端和AI结果都要支持文本、图片、PDF 等多种交流的文件格式。
+- 根据用户输入（含文件）调用 Coze API 或其他大模型。
+- 实现回车发送消息，用户输入对话并`回车`后，调用 LLM 接口，组件内流式展示大模型返回的结果；
+返回结果：
 - 需要支持 LLM 流式返回结果，实现逐行打印效果。
+- 正确展示 文本、Markdown、图片等 这些LLM 返回的格式内容；
 - 若返回结果包含代码，请提供“Copy” 按钮，方便用户复制代码。
+
+- **可选模块: 工具栏组件 (Toolbar)**: 可以包含一些操作按钮，例如清空对话记录、切换对话模式等。
 
 ## 加分项
 
@@ -132,7 +170,7 @@ npm run dev
 2. 有完善的 CI 流水线，并在 CI 中执行构建、自动测试、Lint 检查、ts 检查等检测动作。
 3. 有完善的 CD 流水线，实现发布动作自动化。
 
-## 组件之间的关系
+## 组件配合实现功能要求
 
 - `DialogContainer` 是内联对话框组件。
 - `InputBox` 和 `MessageList` 是 `Main` 的子组件，分别负责用户输入和对话内容的展示。
@@ -141,6 +179,9 @@ npm run dev
 - `LLMInteraction` 作为一个独立工具类被 InputBox 和 Upload 调用，
 - `Config` 供 LLMInteraction 初始化时调用
 - `MessageStore` 提供 addContent、updateContent 方法供 InputBox、LLMInteraction、DialogContainer、Main 操作数据。
+
+## 组件关系图
+![alt text](<LLM 对话框组件关系图.png>)
 
 
 # 开发日志

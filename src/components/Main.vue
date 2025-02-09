@@ -17,6 +17,7 @@ const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
 const closeDialog = () => {
   isExpanded.value = false
 }
+
 </script>
 
 <template>

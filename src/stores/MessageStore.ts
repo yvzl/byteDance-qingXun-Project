@@ -14,9 +14,21 @@ export const messageStore = defineStore("messageStore", () => {
         }, {
             id: "2",
             role: ContentType.assistant,
-            value: "以下是使用 Python, 实现的解码函数：\n\n```python\ndef decode_sequence(a, d0):\n    data = [d0]\n    for item in a:\n        data.append(data[-1] ^ item)\n    return data"
+            value: "以下是使用 Python, 实现的解码函数：\n\n```python\ndef decode_sequence(a, d0):\n    data = [d0]\n    for item in a:\n        data.append(data[-1] ^ item)\n    return data \n``` \n 在C语言中，`#include <stdio.h>`是引入标准输入输出头文件，`printf`函数用于输出内容到控制台，`main`函数是程序的入口点，`return 0`表示程序正常结束并返回值0。"
         }]
     }])
+    /*
+    ```c
+#include <stdio.h>
+
+int main() {
+    printf("hello world\n");
+    return 0;
+}
+```
+
+
+    */ 
     // 会话的 id
     const activeMessageId = ref<Message['id']>("1")
     const mainState = ref<'inline' | 'chat'>('chat')
