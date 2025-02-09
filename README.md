@@ -162,15 +162,19 @@
 - 定义 `ContentType` 枚举。
 - 定义 `Message` 和 `Content` 接口。
 
-Tooltip.vue hover解释功能
-useModel.ts 父子双向绑定钩子
-MessageStore.ts Pinia会话仓库
-debounce.ts 防抖函数钩子
-LLMInteraction.ts API工具类
-copyCode.ts 复制会话中的代码块
-copyMarkdown.ts 复制整个回答
-Message.ts 消息类型定义
-coze.ts Coze的配置文件
+### 9. hover 提示框 (`Tooltip`)
+
+### 10. 父子双向绑定钩子 (`useModel`)
+
+### 11. Pinia 会话仓库 (`MessageStore`)
+
+### 12. 防抖函数钩子 (`debounce`)
+
+### 14. 代码块复制 (`copyCode`)
+
+### 15. 对话复制 (`copyMarkdown`)
+
+### 16. API 配置文件 (`coze`)
 
 ## 题目要求概述
 
@@ -254,9 +258,9 @@ Authorization: Bearer $Access_Token
 
 当前扣子 API 免费供开发者使用，每个空间的 API 请求限额如下：
 
-- QPS (每秒发送的请求数): 2
-- QPM (每分钟发送的请求数): 60
-- QPD (每天发送的请求数): 3000
+- QPS (每秒发送的请求数): 2。
+- QPM (每分钟发送的请求数): 60。
+- QPD (每天发送的请求数): 3000。
 
 注意：2024 年 8 月 15 日之后，扣子 API 的免费额度为每个账号 100 次 API 调用。一旦累计调用次数超过免费额度，此账号将无法继续使用任何扣子
 API。
