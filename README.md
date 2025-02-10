@@ -201,16 +201,6 @@
 2. 有完善的 `CI` 流水线，并在 `CI` 中执行构建、自动测试、`Lint` 检查、`TypeScript` 检查等检测动作。
 3. 有完善的 `CD` 流水线，实现发布动作自动化。
 
-## 组件配合实现功能要求
-
-- `DialogContainer` 是内联对话框组件。
-- `InputBox` 和 `MessageList` 是 `Main` 的子组件，分别负责用户输入和对话内容的展示。
-- `MessageUser` 和 `MessageChat` 是 `MessageList` 的子组件，负责分别展示用户和 AI 的单条对话消息。
-- `MessageUser` 和 `MessageChat` 分别负责展示用户和 AI 的消息。包括 `MessageItem`。
-- `LLMInteraction` 作为一个独立工具类被 `InputBox` 和 `Upload` 调用，
-- `Config` 供 `LLMInteraction` 初始化时调用
-- `MessageStore` 提供 `addContent`、`updateContent` 方法供 `InputBox`、`LLMInteraction`、`DialogContainer`、`Main` 操作数据。
-
 ## 项目技术点
 
 1. 从扣子平台的智能体创建到本地代码调用功能。
@@ -221,9 +211,9 @@
     - 支持上传的文件格式：
         - 文档：DOC、DOCX、XLS、XLSX、PPT、PPTX、PDF...
         - 图片：JPG、JPG2、PNG、GIF...
-5. 上下文结合推理：项目将所有消息统一在 `LLMInteraction` 赋值给 `addtionContext`，使用 API 规定特性实现，如果
+5. 代码块添加复制功能： 本项目通过正则表达式匹配md.reander(value)返回的渲染结果，匹配出代码块，然后添加复制按钮。
+6. 上下文结合推理：项目将所有消息通过 `createMessage` 方法统一在 `LLMInteraction` 赋值给 `addtionContext`，使用 API 规定特性实现，如果
    `additional_messages` 中有多条消息，则最后一条会作为本次用户 Query，其他消息为上下文。
-6. 代码块添加复制功能。
 7. 流式打印 AI 返回结果：项目通过 `streamChat` 从 `this.Coze.chat.stream` 获取流式结果，遍历流式结果，在流式更新的过程中不断调用
    `InputBox` 中的 `updateContent` 方法，实现 `MessageStore` 中当前会话的最后一条消息更新，然后 `Main` 通过 `findContent`
    查找当前会话，传入 `MessageList`，`MessageList` 通过 `Content` 属性中的 `role` 分发消息给 `MessageUser` 或
@@ -233,6 +223,9 @@
 - 在 InputBox.vue 中，TextArea.vue 作为子组件被使用，通过 v-model 实现了与 InputBox.vue 内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
 - 在 TextArea.vue 中，useModel 实现了 modelValue 和 value 的双向绑定，使得用户输入的内容可以实时同步到父组件。
 - 数据流：用户输入 → TextArea.vue 更新 value → useModel 触发 emit → 父组件（如 InputBox.vue）接收更新 → 执行相关逻辑（如发送消息、调用 API 等）。
+9. 内联与独立对话框模式切换： 本项目通过 `SideBar` 中的 `MessageMode` 组件控制 `MessageStore` 中的 `mainState` 属性，控制 `Main` 组件的状态实现切换对话框模式。
+10. 回车发送消息： 在 `InputBox` 组件中，通过 `@keydown.enter` 事件监听用户输入回车事件，当用户按下回车键时，触发 `send` 方法，将用户输入的内容发送给仓库 `MessageStore` ，并清空输入框。
+
 ## 组件关系图
 
 ![LLM关系图](public/images/LLM%20对话框组件关系图.png)
@@ -265,6 +258,9 @@
 4. 你也可以直接访问个人访问令牌页面。
 5. 单击 **添加新令牌**。
 6. 在弹出的页面完成以下配置，然后单击**确定**。
+7. 这里的访问令牌就是PAT 
+8. 创建机器人获取机器人botId
+9. bseUrl是Coze官网网址 `https://www.coze.cn`
 
 ## API 鉴权
 
@@ -286,14 +282,18 @@ Authorization: Bearer $Access_Token
 注意：2024 年 8 月 15 日之后，扣子 API 的免费额度为每个账号 100 次 API 调用。一旦累计调用次数超过免费额度，此账号将无法继续使用任何扣子
 API。
 
-## 合并冲突解决
+## 过程中遇到的问题
 
+- 合并冲突解决：
 当两个分支对同一个文件进行了修改，但修改内容不同，则出现合并冲突。
-
 合并分支的时候，只要打开一次就已经向 `main` 分支发起请求了，这个时候仓库所有者会收到合并消息邮件，如果出现合并冲突，则需要审查者手动调整合并冲突。
-
 此时需要审查者根据项目需求审查原有代码和传入代码，选择性的合并，然后提交代码。
-
+- Coze官网写的调用方法是Shell脚本，根本看不懂，传参和返回都不知道是什么东西，可能要找一个开源项目来看看是怎么调用AI的
+- 根本不清楚三个配置信息是什么意思，去哪要这三个配置信息
 - 组件导入冲突大部分是因为 `tsconfig` 文件配置问题，`tsconfig` 创建时会全局扫描组件并固定组件路径，导入出错只需要删除其内容再重新写入即可。
+- 写文档时，Item的复制代码功能出现bug。明明昨天还工作正常，经检查是正则表达式匹配问题。渲染时会将单个符号 `` ` `` 的中间也渲染成 `<code>`，
+所以原有的正则表达式 `/<\/code>/g` 是用来匹配字符串中所有的 `</code>` 标签，这会将每一个解释用代码也渲染一个复制。更改正则表达式即可解决此问题。
+- 之前一直局限在要新建一个内联对话框组件，但是如果这样做就需要在该组件添加重复的功能，而且内联与独立对话的会话ID也难以区分，
+但是如果将整个app设定成两个表现形式，在Main中通过一个状态变量控制就能做到
 
 
