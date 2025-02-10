@@ -58,7 +58,7 @@
 - 提供接口供其他组件调用，控制对话框的显示和隐藏。
 
 ### 2. 对话内容组件 (`MessageList`)
-- Props：接收一个 data 属性，类型为 Message["content"]，用于传递消息列表数据。
+- Props 接收一个 `data` 属性，类型为 `Message["content"]`，用于传递消息列表数据。
 - 使用 `v-for` 循环渲染消息列表。
 - 根据传入data的 `type` 属性，分发给两个子组件 `MessageChat` 和 `MessageUser` 由子组件进一步渲染。
 
@@ -160,38 +160,38 @@
 - 定义 `Message` 和 `Content` 接口。
 
 ### 5. hover 提示框组件 (`Tooltip`)
-- 使用 @mouseover 和 @mouseleave 鼠标事件监听器来控制状态变量 `isVisible ` ，然后 `isVisible ` 控制提示信息的显示和隐藏。
+- 使用 `mouseover` 和 `mouseleave` 鼠标事件监听器来控制状态变量 `isVisible` ，然后通过 `isVisible ` 控制提示信息的显示和隐藏。
 - 使用slot插槽，`<Tooltip content="上传文件(接受图片、PDF 等文件)">其他组件</Tooltip>` 整个组件能够通过包裹其他组件，在不同的组件上显示提示信息。
-- 接收父组件的 `content` 属性，能够自定义提示内容
+- 接收父组件的 `content` 属性，能够自定义提示内容。
   
 ### 6. 父子双向绑定钩子 (`useModel`)
-- 通过 `props[propsName]` 获取到当前传入的旧变量 `value`
-- useModel 检测到 `value` 的变化后，通过 `emit("update:modelValue", newVal)` 触发父组件的更新事件，从而同步更新父组件中的 `value`
-- update:modelValue：这是一个约定俗成的事件名称，当子组件需要更新父组件中的 v-model 绑定的值时，通常会触发这个事件，并传递新的值。
+- 通过 `props[propsName]` 获取到当前传入的旧变量 `value`。
+- `useModel` 检测到 `value` 的变化后，通过 `emit("update:modelValue", newVal)` 触发父组件的更新事件，从而同步更新父组件中的 `value`。
+- `update: modelValue` 是一个约定俗成的事件名称，当子组件需要更新父组件中的 `v-model` 绑定的值时，通常会触发这个事件，并传递新的值。
 - 本项目用作 `TextArea` 子组件和 `InputBox` 父组件之间的数据同步。
 
 ### 7. 防抖函数钩子 (`debounce`)
-- 接收一系列操作函数 `args` 和 一个时间间隔 `delay` （默认1000），返回一个函数。
-- 本项目用作 `MessageItem` 中防抖复制代码，当AI返回结果变化时，每隔一个delay给代码块添加复制按钮，以避免频繁地重新添加复制按钮。
+- 接收一系列操作函数 `args` 和 一个时间间隔 `delay` （默认 1000），返回一个函数。
+- 本项目用作 `MessageItem` 中防抖复制代码，当AI返回结果变化时，每隔一个 `delay` 给代码块添加复制按钮，以避免频繁地重新添加复制按钮。
 
 ## 题目要求概述
 
-参考 [【前端项目一】LLM 对话框组件2.0](https://bytedance.larkoffice.com/docx/YP0Md2LwCoelRQxnwiZc5DWUndb?share_token=a0c7986e-45ce-42af-a8c6-431fcd10f3b1)
+参考 [【前端项目一】LLM 对话框组件2.0](https://bytedance.larkoffice.com/docx/YP0Md2LwCoelRQxnwiZc5DWUndb?share_token=a0c7986e-45ce-42af-a8c6-431fcd10f3b1) 。
 
 项目整体：
-- 除 Web 端外，组件还需兼容 H5、小程序形态
+- 除 Web 端外，组件还需兼容 H5、小程序形态。
 - 提交相关功能演示材料。
 - 支持内联与独立对话两种功能模式吗，其中内联形态要求三种形态：收缩形态、展开形态、对话形态。
 
 用户输入：
 - 上传文件，用户端和AI结果都要支持文本、图片、PDF 等多种交流的文件格式。
 - 根据用户输入（含文件）调用 Coze API 或其他大模型。
-- 实现回车发送消息，用户输入对话回车后，调用 LLM 接口，组件内流式展示大模型返回的结果；
+- 实现回车发送消息，用户输入对话回车后，调用 LLM 接口，组件内流式展示大模型返回的结果.
 
 返回结果：
 - 需要支持 LLM 流式返回结果，实现逐行打印效果。
-- 正确展示 文本、Markdown、图片等 这些LLM 返回的格式内容；
-- 若返回结果包含代码，请提供“Copy” 按钮，方便用户复制代码。
+- 正确展示 文本、Markdown、图片等 LLM 返回的格式内容。
+- 若返回结果包含代码，请提供 `Copy` 按钮，方便用户复制代码。
 
 - **可选模块: 工具栏组件 (`Toolbar`)** : 可以包含一些操作按钮，例如清空对话记录、切换对话模式等。
 
@@ -206,7 +206,7 @@
 1. 从扣子平台的智能体创建到本地代码调用功能。
 2. 智能体对话的实现：`streamingChat` 调用 API，本项目通过安装 SDK 调用方法实现。
 3. Markdown 解析：`markdown-it + shiki.js`。
-4. 文件上传 参考：[扣子平台文件上传文档](https://www.coze.cn/open/playground/upload_file)，本项目通过 `axios post`
+4. 文件上传 参考：[扣子平台文件上传文档](https://www.coze.cn/open/playground/upload_file) 。本项目通过 `axios post`
    到对应地址实现。
     - 支持上传的文件格式：
         - 文档：DOC、DOCX、XLS、XLSX、PPT、PPTX、PDF...
@@ -219,10 +219,10 @@
    查找当前会话，传入 `MessageList`，`MessageList` 通过 `Content` 属性中的 `role` 分发消息给 `MessageUser` 或
    `MessageChat`，这整个消息流实时更新从而实现流式打印效果。
 - 数据流：`LLMInteraction → InputBox → MessageStore → Main → MessageList → MessageChat`
-8. 双向绑定钩子化： 
-- 在 InputBox.vue 中，TextArea.vue 作为子组件被使用，通过 v-model 实现了与 InputBox.vue 内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
-- 在 TextArea.vue 中，useModel 实现了 modelValue 和 value 的双向绑定，使得用户输入的内容可以实时同步到父组件。
-- 数据流：用户输入 → TextArea.vue 更新 value → useModel 触发 emit → 父组件（如 InputBox.vue）接收更新 → 执行相关逻辑（如发送消息、调用 API 等）。
+8. 双向绑定钩子： 
+- 在 `InputBox.vue` 中，`TextArea.vue` 作为子组件被使用，通过 `v-model` 实现了与 `InputBox.vue` 内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
+- 在 `TextArea.vue` 中，`useModel` 实现了 `modelValue` 和 `value` 的双向绑定，使得用户输入的内容可以实时同步到父组件。
+- 数据流：用户输入 → `TextArea.vue` 更新 `value` → `useModel` 触发 `emit` → 父组件（如 `InputBox.vue`）接收更新 → 执行相关逻辑（如发送消息、调用 API 等）。
 9. 内联与独立对话框模式切换： 本项目通过 `SideBar` 中的 `MessageMode` 组件控制 `MessageStore` 中的 `mainState` 属性，控制 `Main` 组件的状态实现切换对话框模式。
 10. 回车发送消息： 在 `InputBox` 组件中，通过 `@keydown.enter` 事件监听用户输入回车事件，当用户按下回车键时，触发 `send` 方法，将用户输入的内容发送给仓库 `MessageStore` ，并清空输入框。
 
@@ -257,10 +257,10 @@
 3. 在扣子 API 页面，进入 **授权** > **个人访问令牌** 页签。
 4. 你也可以直接访问个人访问令牌页面。
 5. 单击 **添加新令牌**。
-6. 在弹出的页面完成以下配置，然后单击**确定**。
-7. 这里的访问令牌就是PAT 
-8. 创建机器人获取机器人botId
-9. bseUrl是Coze官网网址 `https://www.coze.cn`
+6. 在弹出的页面完成以下配置，然后单击 **确定**。
+7. 这里的访问令牌就是 `PAT`。
+8. 创建机器人获取机器人 `botId`。
+9. `baseUrl` 是 Coze API 地址 `https://www.coze.cn`。
 
 ## API 鉴权
 
@@ -288,13 +288,10 @@ API。
 当两个分支对同一个文件进行了修改，但修改内容不同，则出现合并冲突。
 合并分支的时候，只要打开一次就已经向 `main` 分支发起请求了，这个时候仓库所有者会收到合并消息邮件，如果出现合并冲突，则需要审查者手动调整合并冲突。
 此时需要审查者根据项目需求审查原有代码和传入代码，选择性的合并，然后提交代码。
-- Coze官网写的调用方法是Shell脚本，根本看不懂，传参和返回都不知道是什么东西，可能要找一个开源项目来看看是怎么调用AI的
-- 根本不清楚三个配置信息是什么意思，去哪要这三个配置信息
+- Coze 官网写的调用方法是 Shell 脚本，根本看不懂，传参和返回都不知道是什么东西，可能要找一个开源项目来看看是怎么调用 AI 的。
+- 不清楚三个配置信息是什么意思，去哪要这三个配置信息。
 - 组件导入冲突大部分是因为 `tsconfig` 文件配置问题，`tsconfig` 创建时会全局扫描组件并固定组件路径，导入出错只需要删除其内容再重新写入即可。
-- 写文档时，Item的复制代码功能出现bug。明明昨天还工作正常，经检查是正则表达式匹配问题。渲染时会将单个符号 `` ` `` 的中间也渲染成 `<code>`，
+- 写文档时，`Item` 的复制代码功能出现 bug 。明明昨天还工作正常，经检查是正则表达式匹配问题。渲染时会将单个符号 `` ` `` 的中间也渲染成 `<code>`，
 所以原有的正则表达式 `/<\/code>/g` 是用来匹配字符串中所有的 `</code>` 标签，这会将每一个解释用代码也渲染一个复制。更改正则表达式即可解决此问题。
-- 之前一直局限在要新建一个内联对话框组件，但是如果这样做就需要在该组件添加重复的功能，而且内联与独立对话的会话ID也难以区分，
-但是如果将整个app设定成两个表现形式，在Main中通过一个状态变量控制就能做到
-- pat是保密信息，如果直接放在组件中会导致组件不加载，所以需要将pat放在环境变量中，通过环境变量获取。
-
-
+- 之前一直局限在要新建一个内联对话框组件，但是如果这样做就需要在该组件添加重复的功能，而且内联与独立对话的会话 ID 也难以区分，但是如果将整个 `app` 设定成两个表现形式，在 `Main` 中通过一个状态变量控制就能做到。
+- `pat` 是保密信息，如果直接放在组件中会导致组件不加载，所以需要将 `pat` 放在环境变量中并获取。
