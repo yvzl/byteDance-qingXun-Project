@@ -46,28 +46,24 @@ npm run dev
 
 ### 3. 对话内容组件 (MessageList)
 - Props：接收一个 data 属性，类型为 Message["content"]，用于传递消息列表数据。
-Expose：通过 defineExpose 暴露 messageList 引用，允许父组件访问该引用（如 Main.vue 中的 messageListRef），以便进行进一步的操作（如滚动、更新等）。
+- 使用 `v-for` 循环渲染消息列表。
+- 根据传入data的 `type` 属性，分发给两个子组件 `MessageChat` 和 `MessageUser` 由子组件进一步渲染。
 
-### 9. AI 消息组件 (MessageChat)
-- 包含 `MessageItem` 和 `Avatar`，用于展示 AI 的单条对话消息。
-- 使用默认头像 `chatHead` 来标识 AI 发送的消息。
-- 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
-
-### 10. 用户消息组件 (MessageUser)
-- 包含 `MessageItem`，用于展示用户的单条对话消息。
+### 9. AI 与用户 消息组件 (MessageChat)
+- 包含 `MessageItem` ，用于展示 AI与用户 的单条对话消息。
+- 使用头像组件 `Avatar` 来标识 AI 发送的消息。
 - 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
 
 ### 4. 单条消息组件 (MessageItem)
-- 负责展示单条对话消息。要求解析 Markdown 内容，并支持图片和代码等格式。
+- 负责展示单条对话消息。
 - 根据消息类型（用户输入或 LLM 返回）渲染不同的样式。
 - 支持展示 Markdown 内容、图片、代码等，这里使用 `markdown-it` 来解析 Markdown 内容。
 - 使用 `github-markdown-css` 样式库来美化 Markdown 渲染效果。
-- 代码消息提供“**复制**”按钮，方便用户复制。
+- 代码消息提供“**复制**”按钮，整体提供**复制Markdown**方便用户复制。
 
 
 
 ### 2. 输入框组件 (InputBox)
-- 准备用在两个地方，内联对话框和独立对话框。
 - `InputBox` 是组件调用 AI 的地方，实现用户与 AI 对话。
 - 将用户输入的内容通过 `chatWithCoze` 实时传递给消息仓库 `MessageStore` 并进行处理。
 - 支持通过 `Enter` 键触发发送事件，实现了防抖发送功能，防止频繁触发发送事件。
