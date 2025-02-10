@@ -9,7 +9,7 @@ export const useModel = <T>(value: T, props: DefineProps<{
     watch(() => props[propsName], newVal => {
         state && (data.value = newVal)
     }, {deep: true})
-    watch(data, newVal => {
+    watch(data, newVal => {// 双向绑定，每当 data 改变时，调用 emit
         state = false
         emit(emitName, newVal)
         state = true

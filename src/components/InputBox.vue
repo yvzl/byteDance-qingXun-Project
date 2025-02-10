@@ -115,7 +115,7 @@ onMounted(() => {
   </div>
   <div class="input-box">
 
-    <TextArea v-model="value" placeholder="请输入内容..." width="100%" />
+    <TextArea v-model="value" placeholder="请输入内容..." width="100%" /> <!--v-model：将 value 绑定到 TextArea.vue 的 modelValue-->
     <Upload @uploadFile="uploadFile" :size="28" style="margin-left: 20px" />
     <Send @send="send" :state="state" :size="24" style="margin-left: 20px" />
 

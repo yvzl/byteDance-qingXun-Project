@@ -20,7 +20,6 @@ const toggleSidebar = () => {
 <template>
   <div class="side-bar" :class="{ collapsed: isCollapsed }">
 
-    <div> </div>
     <div class="tools">
       <Title v-if="!isCollapsed" name="MyChat" />
       <Tooltip content="更改内联或独立对话状态">

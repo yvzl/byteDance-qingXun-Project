@@ -13,6 +13,7 @@ import LLM from '../LLM';
 import { messageStore } from '@/stores/MessageStore';
 import { storeToRefs } from "pinia";
 
+/*LLM是调用API的工具类*/
 class LLMInteraction implements LLM {
     private Coze: CozeAPI | null = null;
     private botInfo: BotInfo | undefined;
@@ -43,6 +44,7 @@ class LLMInteraction implements LLM {
         this.botInfo = await this.Coze.bots.retrieve({ bot_id: botId });
     }
 
+    /*createMessage是streamingChat的辅助函数统一打包当前会话的上下文*/ 
     public createMessage = (): EnterMessage[] => {
         const store = messageStore();
         const { getContentLength, findContent } = store;
@@ -80,7 +82,7 @@ class LLMInteraction implements LLM {
         return res;
     }
     
-
+/*这里将file打包成formData，其实可以添加多个文件，但这里只打包一个文件，然后通过axios将文件集合post到Coze */
     public uploadFile = async (file?: File): Promise<FileObject | undefined> => { //参考这里 https://www.coze.cn/open/playground/upload_file
         if (!this.Coze) {
             throw new Error('Client not initialized');
@@ -112,8 +114,9 @@ class LLMInteraction implements LLM {
     }
 
 
+    /*streamingChat是调用API的核心函数，调用Coze的chat.stream方法，并返回一个异步迭代器。*/ 
     public streamingChat = async ({
-        query,
+        query,//query原本是本次对话的输入，但是项目通过仓库来获取上下文，因此这里没有调用
         conversationId,
         onUpdate,
         onSuccess,
