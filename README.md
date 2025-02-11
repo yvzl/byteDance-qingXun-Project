@@ -2,7 +2,13 @@
 
 本项目是一个由 `Vue3` + `Vite3` + `TypeScript` + `pinia` + `Coze.js` + `Axios4` 搭建的 LLM 对话框组件。
 从 2025.1.16 开始，到 2025.2.9 开发结束，历时 24 天。主要由两人完成。
-项目结题文档 [青训营大项目提交文档 ——Coze对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
+- 项目结题文档 [青训营大项目提交文档 ——Coze对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
+建议改进：
+- UI：CSS升级到tailwind、UI组件也要用，vuetify，antd，elplus。这几个都常用
+- 后面可以做成一个native应用的解决方案，套一个tauri或者electron，推荐tauri比较新
+- 看看能不能和操作系统衔接做一些新的东西，用户在native设备上的需求很多的
+- 然后可以考虑兼容多种ai，应该都是兼容OpenAI api，所以报文格式差不多
+- 然后可以尝试做prompt配置的界面允许高阶用户自己去配prompt
 
 ## 项目启动命令：
 
