@@ -32,7 +32,7 @@ const copy = (str: string) => {
   });
 }
 const copyCode = (str: string): string =>
-  str.replaceAll(/<code class="(language-([a-z]+))">/g, `<div><button 
+  str.replaceAll(/<code class="(language-([a-z]+))">/g, `<div style="position: relative;"><button 
   class="copy-btn" 
   style="  margin-left: 50px;
   position: absolute;
@@ -60,6 +60,6 @@ watch(() => value, debounce(addCopyEvent));
   margin-left: 50px;
   background: none;
   cursor: pointer;
-
+  
 }
 </style>
