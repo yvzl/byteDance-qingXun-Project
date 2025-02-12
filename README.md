@@ -2,13 +2,15 @@
 
 本项目是一个由 `Vue3` + `Vite3` + `TypeScript` + `pinia` + `Coze.js` + `Axios4` 搭建的 LLM 对话框组件。
 从 2025.1.16 开始，到 2025.2.9 开发结束，历时 24 天。主要由两人完成。
-- 项目结题文档 [青训营大项目提交文档 ——Coze对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
+
+项目结题文档： [青训营大项目提交文档 —— Coze 对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
+
 建议改进：
-- UI：CSS升级到tailwind、UI组件也要用，vuetify，antd，elplus。这几个都常用
-- 后面可以做成一个native应用的解决方案，套一个tauri或者electron，推荐tauri比较新
-- 看看能不能和操作系统衔接做一些新的东西，用户在native设备上的需求很多的
-- 然后可以考虑兼容多种ai，应该都是兼容OpenAI api，所以报文格式差不多
-- 然后可以尝试做prompt配置的界面允许高阶用户自己去配prompt
+- UI：CSS 可以升级到 TailwindCSS 、为了开发效率可以尝试使用一些 UI 组件库，例如：Vuetify 、AntDesignVue 、ElementPlus 等。
+- 后面可以尝试适配多端，通过 Tauri 、Uni-App 等框架移植到手机端，通过 Electron 等框架移植到桌面端。
+- 看看能不能和操作系统衔接做一些新的东西，用户在不同环境上的需求很多。
+- 然后可以考虑兼容多种 AI ，应该都是兼容 OpenAI Api，所以报文格式差不多。
+- 然后可以尝试做 Prompt 配置的界面允许高阶用户自己去配 Prompt。
 
 ## 项目启动命令：
 
@@ -16,7 +18,7 @@
 
   ```bash
   git pull
-  npm install
+  npm i
   npm run dev
   ```
 
@@ -32,10 +34,10 @@
 
 在开发过程中我们约定如下内容：
 
-1. vue 文件的顺序为 `script -> template -> style`。
+1. Vue 文件的结构为 `script → template → style`。
 2. `script` 使用 `setup` 语法糖和 TypeScript。
 3. 文件夹名采用小写，文件名首字母大写。
-4. 建立 `styles` 文件夹，每个组件的样式进行统一管理
+4. 建立 `styles` 文件夹，每个组件的样式进行统一管理。
 5. 所有模块都要写清楚运行过程原理，注释函数的作用，让其他人能理解整个项目的运行，做好答辩准备。
 
 ## 模块拆分 Main 与 SideBar
@@ -193,13 +195,12 @@
 用户输入：
 - 上传文件，用户端和AI结果都要支持文本、图片、PDF 等多种交流的文件格式。
 - 根据用户输入（含文件）调用 Coze API 或其他大模型。
-- 实现回车发送消息，用户输入对话回车后，调用 LLM 接口，组件内流式展示大模型返回的结果.
+- 实现回车发送消息，用户输入对话回车后，调用 LLM 接口，组件内流式展示大模型返回的结果。
 
 返回结果：
 - 需要支持 LLM 流式返回结果，实现逐行打印效果。
 - 正确展示 文本、Markdown、图片等 LLM 返回的格式内容。
 - 若返回结果包含代码，请提供 `Copy` 按钮，方便用户复制代码。
-
 - **可选模块: 工具栏组件 (`Toolbar`)** : 可以包含一些操作按钮，例如清空对话记录、切换对话模式等。
 
 ## 加分项
@@ -218,15 +219,15 @@
     - 支持上传的文件格式：
         - 文档：DOC、DOCX、XLS、XLSX、PPT、PPTX、PDF...
         - 图片：JPG、JPG2、PNG、GIF...
-5. 代码块添加复制功能： 本项目通过正则表达式匹配md.reander(value)返回的渲染结果，匹配出代码块，然后添加复制按钮。
+5. 代码块添加复制功能： 本项目通过正则表达式匹配 `md.render(value)` 返回的渲染结果，匹配出代码块，然后添加复制按钮。
 6. 上下文结合推理：项目将所有消息通过 `createMessage` 方法统一在 `LLMInteraction` 赋值给 `addtionContext`，使用 API 规定特性实现，如果
-   `additional_messages` 中有多条消息，则最后一条会作为本次用户 Query，其他消息为上下文。
+   `additional_messages` 中有多条消息，则最后一条会作为本次用户 Query ，其他消息为上下文。
 7. 流式打印 AI 返回结果：项目通过 `streamChat` 从 `this.Coze.chat.stream` 获取流式结果，遍历流式结果，在流式更新的过程中不断调用
    `InputBox` 中的 `updateContent` 方法，实现 `MessageStore` 中当前会话的最后一条消息更新，然后 `Main` 通过 `findContent`
    查找当前会话，传入 `MessageList`，`MessageList` 通过 `Content` 属性中的 `role` 分发消息给 `MessageUser` 或
    `MessageChat`，这整个消息流实时更新从而实现流式打印效果。
 - 数据流：`LLMInteraction → InputBox → MessageStore → Main → MessageList → MessageChat`
-8. 双向绑定钩子： 
+8. 双向绑定钩子：
 - 在 `InputBox.vue` 中，`TextArea.vue` 作为子组件被使用，通过 `v-model` 实现了与 `InputBox.vue` 内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
 - 在 `TextArea.vue` 中，`useModel` 实现了 `modelValue` 和 `value` 的双向绑定，使得用户输入的内容可以实时同步到父组件。
 - 数据流：用户输入 → `TextArea.vue` 更新 `value` → `useModel` 触发 `emit` → 父组件（如 `InputBox.vue`）接收更新 → 执行相关逻辑（如发送消息、调用 API 等）。
