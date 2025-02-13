@@ -9,7 +9,7 @@ import {
     RoleType,
 } from '@coze/api';
 import { coze } from "@/configs"
-import LLM from '../LLM';
+import LLM from './LLM.TS';
 import { messageStore } from '@/stores/MessageStore';
 import { storeToRefs } from "pinia";
 

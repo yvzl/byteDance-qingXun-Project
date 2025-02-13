@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { md, debounce } from "@/utils";
+import {md, debounce} from "@/utils";
 import "github-markdown-css/github-markdown-dark.css";
-import { ContentType } from "@/types";
-import { onMounted, useTemplateRef, watch } from "vue";
+import {ContentType} from "@/types";
+import {onMounted, useTemplateRef, watch} from "vue";
+import {Copy} from '@icon-park/vue-next'
 
-const { value } = defineProps<{
+const {value} = defineProps<{
   value: string;
   type: ContentType;
 }>();
@@ -32,15 +33,7 @@ const copy = (str: string) => {
   });
 }
 const copyCode = (str: string): string =>
-  str.replaceAll(/<code class="(language-([a-z]+))">/g, `<div style="position: relative;"><button 
-  class="copy-btn" 
-  style="  margin-left: 50px;
-  position: absolute;
-  right: 10px;
-  color: grey;
-  background: none;
-  border: none;
-  cursor: pointer;" >复制</button></div><code class="$1">`);
+    str.replaceAll(/<code class="(language-([a-z]+))">/g, `<button>复制</button><code class="$1">`);
 
 onMounted(() => addCopyEvent());
 watch(() => value, debounce(addCopyEvent));
@@ -48,18 +41,13 @@ watch(() => value, debounce(addCopyEvent));
 
 <template>
   <div :class="['message-item', 'markdown-body', ContentType[type]]">
-    <div ref="content" v-html="copyCode(md.render(value))"></div>
-    <button v-if="type === ContentType.assistant" @click="copy(value)">复制Markdown</button>
+    <div class="md" ref="content" v-html="copyCode(md.render(value))"></div>
+    <div class="tools" v-if="type === ContentType.assistant">
+      <Copy @click="copy(value)" theme="outline" size="20" fill="#ccd3deff"/>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 @use "@/assets/styles/MessageItem.module";
-
-.copy-btn {
-  margin-left: 50px;
-  background: none;
-  cursor: pointer;
-  
-}
 </style>

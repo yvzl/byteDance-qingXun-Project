@@ -8,7 +8,7 @@ export const messageStore = defineStore("messageStore", () => {
         date: new Date("2023-01-02"),
         name: "新会话1",
         content: []
-    },{
+    }, {
         id: "2",
         date: new Date("2024-01-10"),
         name: "新会话2",
@@ -93,12 +93,10 @@ export const messageStore = defineStore("messageStore", () => {
         });*/
     }
 
-    // const deleteMessage = (id: Message["id"]) => {
-    //     const index = data.value.findIndex(item => item.id === id);
-    //     if (index !== -1) {
-    //         data.value.splice(index, 1);
-    //     }
-    // }
+    const deleteMessage = (id: Message["id"]) => {
+        const index = data.value.findIndex(item => item.id === id);
+        if (index !== -1) data.value.splice(data.value.findIndex(item => item.id === id), 1);
+    }
 
     const changeMainState = (value: 'inline' | 'chat') => mainState.value = value;
 
@@ -113,8 +111,9 @@ export const messageStore = defineStore("messageStore", () => {
         updateContent,
         Response,
         mainState,
-        changeMainState
+        changeMainState,
+        deleteMessage
     }
 }, {
-    persist: false,//持久化先关闭
+    persist: true,
 })

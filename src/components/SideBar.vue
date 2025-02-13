@@ -10,17 +10,13 @@ import Tooltip from "@/components/Tooltip.vue";
 import MessageMode from "@/components/MessageMode.vue";
 
 const isCollapsed = ref<boolean>(false);
-
 const state = ref<boolean>(true)
 
-const toggleSidebar = () => {
-  isCollapsed.value = !isCollapsed.value;
-};
+const toggleSidebar = () => isCollapsed.value = !isCollapsed.value;
 </script>
 
 <template>
   <div class="side-bar" :class="{ collapsed: isCollapsed }">
-
     <div class="tools">
       <Title v-if="!isCollapsed" name="MyChat"/>
       <Tooltip content="更改内联或独立对话状态">

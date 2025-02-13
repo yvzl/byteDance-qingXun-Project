@@ -7,7 +7,7 @@ enum ContentType {
 
 interface Message {
     id: string
-    date: Date
+    date: string | Date
     name: string
     content: Content[]
 }

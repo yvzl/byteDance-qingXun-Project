@@ -1,12 +1,12 @@
 .side-bar {
-    width: 250px;
+    width: 260px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     padding-left: 20px;
     background-color: #303137;
     z-index: 2;
-    transition: all 0.2s ease-in-out;
+    transition: width 0.2s ease-in-out;
 
     &.collapsed {
         width: 64px;

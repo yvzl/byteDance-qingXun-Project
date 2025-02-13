@@ -2,6 +2,7 @@
 import {computed} from "vue";
 import {storeToRefs} from "pinia";
 import {messageStore} from "@/stores";
+import More from "@/components/More.vue";
 
 const store = messageStore();
 const {changeMessageId} = messageStore();
@@ -22,14 +23,15 @@ const groupMap = new Map([
 ])
 
 const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({date}) => {
+  const toDate = new Date(date);
   for (const [key, value] of groupMap) {
-    if (key(resetDate(new Date()).getTime() - resetDate(date).getTime())) return value
+    if (key(resetDate(new Date()).getTime() - resetDate(toDate).getTime())) return value
   }
   return new Intl.DateTimeFormat('zh-CN', {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
-  }).format(date)
+  }).format(toDate)
 })).reverse())
 </script>
 
@@ -40,6 +42,7 @@ const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({da
       <li :class="{active: id === activeMessageId}" v-for="{id, name} in value" :key="id"
           @click="changeMessageId(id)">
         <p>{{ name }}</p>
+        <More :id="id"/>
       </li>
     </ul>
   </div>

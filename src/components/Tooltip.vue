@@ -1,24 +1,18 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
-interface Props {
-  content: string;
-}
+import {ref} from "vue";
 
 // 内容
-const props = defineProps<Props>();
+const props = defineProps<{
+  content: string;
+}>();
 
 const isVisible = ref(false);
 
 // 显示 tooltip
-const showTooltip = () => {
-  isVisible.value = true;
-};
+const showTooltip = () => isVisible.value = true;
 
 // 隐藏 tooltip
-const hideTooltip = () => {
-  isVisible.value = false;
-};
+const hideTooltip = () => isVisible.value = false;
 </script>
 
 <template>
@@ -29,7 +23,7 @@ const hideTooltip = () => {
     </div>
   </div>
 </template>
-  
+
 <style scoped lang="scss">
 @use "@/assets/styles/Tooltip.module";
 </style>

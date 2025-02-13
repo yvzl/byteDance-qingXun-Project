@@ -3,9 +3,8 @@
   color: #f8faff;
   border-radius: 14px;
   padding: 8px 20px;
-  width: 100%;
 
-  > div {
+  > .md {
     > *:last-child {
       margin-bottom: 0 !important;
     }
@@ -13,7 +12,18 @@
     > :deep(pre) {
       position: relative;
 
+      > button {
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        border: none;
+        background: transparent;
+        color: #9e9e9e;
+        cursor: pointer;
+      }
+
       > code {
+
         > div {
           position: absolute;
           right: 7px;
@@ -29,6 +39,14 @@
       }
     }
   }
+
+  > .tools {
+    margin-top: 12px;
+
+    > :deep(.i-icon) {
+      cursor: pointer;
+    }
+  }
 }
 
 .user {
@@ -37,4 +55,5 @@
 
 .assistant {
   background: transparent;
+  width: 90%;
 }

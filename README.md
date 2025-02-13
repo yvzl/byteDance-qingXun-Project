@@ -1,7 +1,6 @@
-# LLM 对话框组件2.0 Coze API
+# LLM 对话框组件 2.0 Coze API
 
 本项目是一个由 `Vue3` + `Vite3` + `TypeScript` + `pinia` + `Coze.js` + `Axios4` 搭建的 LLM 对话框组件。
-从 2025.1.16 开始，到 2025.2.9 开发结束，历时 24 天。主要由两人完成。
 
 项目结题文档： [青训营大项目提交文档 —— Coze 对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
 
