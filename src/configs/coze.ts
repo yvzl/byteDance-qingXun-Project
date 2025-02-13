@@ -8,9 +8,15 @@ const coze = {
     /*getBaseUrl: () => localStorage.getItem('baseUrl') || '',
     getPat: () => localStorage.getItem('PAT') || '',
     getBotId: () => localStorage.getItem('BotId') || '',*/
-    setBaseUrl: (url: string) => url = url,
-    setPat: (pat: string) => pat = pat,
-    setBotId: (botId: string) => botId = botId,
+    setBaseUrl(url: string){
+        this.url = url
+    },
+    setPat(pat: string){
+        this.pat = pat
+    },
+    setBotId(botId: string){
+        this.botId = botId
+    },
 }
 
 export {

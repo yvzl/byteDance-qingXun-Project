@@ -7,7 +7,6 @@ import Main from '@/components/Main.vue';
 <template>
   <div class="home">
     <SideBar/>
-
     <Main/>
   </div>
 </template>

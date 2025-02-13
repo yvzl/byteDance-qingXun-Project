@@ -6,6 +6,7 @@
 项目结题文档： [青训营大项目提交文档 —— Coze 对话项目结题报告](https://wqh9xucdd05.feishu.cn/docx/YP8pdLG92oZElYxTalccgWUwnMe) 。
 
 建议改进：
+
 - UI：CSS 可以升级到 TailwindCSS 、为了开发效率可以尝试使用一些 UI 组件库，例如：Vuetify 、AntDesignVue 、ElementPlus 等。
 - 后面可以尝试适配多端，通过 Tauri 、Uni-App 等框架移植到手机端，通过 Electron 等框架移植到桌面端。
 - 看看能不能和操作系统衔接做一些新的东西，用户在不同环境上的需求很多。
@@ -67,16 +68,19 @@
 - 提供接口供其他组件调用，控制对话框的显示和隐藏。
 
 ### 2. 对话内容组件 (`MessageList`)
+
 - Props 接收一个 `data` 属性，类型为 `Message["content"]`，用于传递消息列表数据。
 - 使用 `v-for` 循环渲染消息列表。
 - 根据传入data的 `type` 属性，分发给两个子组件 `MessageChat` 和 `MessageUser` 由子组件进一步渲染。
 
 ### 3. AI 与用户 消息组件 (`MessageChat` `MessageUser`)
+
 - 包含 `MessageItem` ，用于展示 AI与用户 的单条对话消息。
 - 使用头像组件 `Avatar` 来标识 AI 发送的消息。
 - 根据传入的 `value` 和 `type` 属性，渲染对应的消息内容。
 
 ### 4. 单条消息组件 (`MessageItem`)
+
 - 负责展示单条对话消息。
 - 根据消息类型（用户输入或 LLM 返回）渲染不同的样式。
 - 支持展示 Markdown 内容、图片、代码等，这里使用 `markdown-it` 来解析 Markdown 内容。
@@ -84,6 +88,7 @@
 - 代码消息提供“**复制**”按钮，整体提供“**复制Markdown**”方便用户复制。
 
 ### 5. 输入框组件 (`InputBox`)
+
 - `InputBox` 是组件调用 AI 的地方，实现用户与 AI 对话。
 - 将用户输入的内容通过 `chatWithCoze` 实时传递给消息仓库 `MessageStore` 并进行处理。
 - 支持通过 `Enter` 键触发发送事件，实现了防抖发送功能，防止频繁触发发送事件。
@@ -102,15 +107,18 @@
 ## 二、SideBar部分
 
 ### 1. 侧边栏 (`SideBar`)
+
 - 支持通过流式布局配合状态变量 `isCollapsed` 进行折叠与展开，符合响应式设计
 - 提供历史会话、新建会话、配置Coze参数、改变会话模式内联与独立等功能。
 - **子组件**：
     - `HistoryMessage`：存储历史会话，并为每一个历史会话赋值 `id` 进行管理，
-    每一个 `li` 点击后调用 `store` 中的 `changeMessageId` 方法，将当前`activeMessageId` 修改为该 `id`。
+      每一个 `li` 点击后调用 `store` 中的 `changeMessageId` 方法，将当前`activeMessageId` 修改为该 `id`。
     - `CreateMessage`：创建新会话，调用 `store` 中的 `addMessage` 方法，创建新会话。
-    - `MessageMode`：通过 `store` 中的 `changeMainState` 方法，将 `mainState` 值切换为 `inline` 或 `chat`，实现内联与独立切换，同时改变组件icon表现两种对话框。
+    - `MessageMode`：通过 `store` 中的 `changeMainState` 方法，将 `mainState` 值切换为 `inline` 或 `chat`
+      ，实现内联与独立切换，同时改变组件icon表现两种对话框。
 
 ## 三、重要工具类
+
 ### 1. Pinia 数据存储类 (`MessageStore`)
 
 - 负责存储对话记录和持久化，包括用户输入和 LLM 返回的内容。
@@ -169,17 +177,21 @@
 - 定义 `Message` 和 `Content` 接口。
 
 ### 5. hover 提示框组件 (`Tooltip`)
+
 - 使用 `mouseover` 和 `mouseleave` 鼠标事件监听器来控制状态变量 `isVisible` ，然后通过 `isVisible ` 控制提示信息的显示和隐藏。
 - 使用slot插槽，`<Tooltip content="上传文件(接受图片、PDF 等文件)">其他组件</Tooltip>` 整个组件能够通过包裹其他组件，在不同的组件上显示提示信息。
 - 接收父组件的 `content` 属性，能够自定义提示内容。
-  
+
 ### 6. 父子双向绑定钩子 (`useModel`)
+
 - 通过 `props[propsName]` 获取到当前传入的旧变量 `value`。
-- `useModel` 检测到 `value` 的变化后，通过 `emit("update:modelValue", newVal)` 触发父组件的更新事件，从而同步更新父组件中的 `value`。
+- `useModel` 检测到 `value` 的变化后，通过 `emit("update:modelValue", newVal)` 触发父组件的更新事件，从而同步更新父组件中的
+  `value`。
 - `update: modelValue` 是一个约定俗成的事件名称，当子组件需要更新父组件中的 `v-model` 绑定的值时，通常会触发这个事件，并传递新的值。
 - 本项目用作 `TextArea` 子组件和 `InputBox` 父组件之间的数据同步。
 
 ### 7. 防抖函数钩子 (`debounce`)
+
 - 接收一系列操作函数 `args` 和 一个时间间隔 `delay` （默认 1000），返回一个函数。
 - 本项目用作 `MessageItem` 中防抖复制代码，当AI返回结果变化时，每隔一个 `delay` 给代码块添加复制按钮，以避免频繁地重新添加复制按钮。
 
@@ -188,16 +200,19 @@
 参考 [【前端项目一】LLM 对话框组件2.0](https://bytedance.larkoffice.com/docx/YP0Md2LwCoelRQxnwiZc5DWUndb?share_token=a0c7986e-45ce-42af-a8c6-431fcd10f3b1) 。
 
 项目整体：
+
 - 除 Web 端外，组件还需兼容 H5、小程序形态。
 - 提交相关功能演示材料。
 - 支持内联与独立对话两种功能模式吗，其中内联形态要求三种形态：收缩形态、展开形态、对话形态。
 
 用户输入：
+
 - 上传文件，用户端和AI结果都要支持文本、图片、PDF 等多种交流的文件格式。
 - 根据用户输入（含文件）调用 Coze API 或其他大模型。
 - 实现回车发送消息，用户输入对话回车后，调用 LLM 接口，组件内流式展示大模型返回的结果。
 
 返回结果：
+
 - 需要支持 LLM 流式返回结果，实现逐行打印效果。
 - 正确展示 文本、Markdown、图片等 LLM 返回的格式内容。
 - 若返回结果包含代码，请提供 `Copy` 按钮，方便用户复制代码。
@@ -220,19 +235,28 @@
         - 文档：DOC、DOCX、XLS、XLSX、PPT、PPTX、PDF...
         - 图片：JPG、JPG2、PNG、GIF...
 5. 代码块添加复制功能： 本项目通过正则表达式匹配 `md.render(value)` 返回的渲染结果，匹配出代码块，然后添加复制按钮。
-6. 上下文结合推理：项目将所有消息通过 `createMessage` 方法统一在 `LLMInteraction` 赋值给 `addtionContext`，使用 API 规定特性实现，如果
+6. 上下文结合推理：项目将所有消息通过 `createMessage` 方法统一在 `LLMInteraction` 赋值给 `addtionContext`，使用 API
+   规定特性实现，如果
    `additional_messages` 中有多条消息，则最后一条会作为本次用户 Query ，其他消息为上下文。
 7. 流式打印 AI 返回结果：项目通过 `streamChat` 从 `this.Coze.chat.stream` 获取流式结果，遍历流式结果，在流式更新的过程中不断调用
    `InputBox` 中的 `updateContent` 方法，实现 `MessageStore` 中当前会话的最后一条消息更新，然后 `Main` 通过 `findContent`
    查找当前会话，传入 `MessageList`，`MessageList` 通过 `Content` 属性中的 `role` 分发消息给 `MessageUser` 或
    `MessageChat`，这整个消息流实时更新从而实现流式打印效果。
+
 - 数据流：`LLMInteraction → InputBox → MessageStore → Main → MessageList → MessageChat`
+
 8. 双向绑定钩子：
-- 在 `InputBox.vue` 中，`TextArea.vue` 作为子组件被使用，通过 `v-model` 实现了与 `InputBox.vue` 内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
+
+- 在 `InputBox.vue` 中，`TextArea.vue` 作为子组件被使用，通过 `v-model` 实现了与 `InputBox.vue`
+  内部状态的双向绑定，确保用户输入的内容可以在整个组件链中保持一致。
 - 在 `TextArea.vue` 中，`useModel` 实现了 `modelValue` 和 `value` 的双向绑定，使得用户输入的内容可以实时同步到父组件。
-- 数据流：用户输入 → `TextArea.vue` 更新 `value` → `useModel` 触发 `emit` → 父组件（如 `InputBox.vue`）接收更新 → 执行相关逻辑（如发送消息、调用 API 等）。
-9. 内联与独立对话框模式切换： 本项目通过 `SideBar` 中的 `MessageMode` 组件控制 `MessageStore` 中的 `mainState` 属性，控制 `Main` 组件的状态实现切换对话框模式。
-10. 回车发送消息： 在 `InputBox` 组件中，通过 `@keydown.enter` 事件监听用户输入回车事件，当用户按下回车键时，触发 `send` 方法，将用户输入的内容发送给仓库 `MessageStore` ，并清空输入框。
+- 数据流：用户输入 → `TextArea.vue` 更新 `value` → `useModel` 触发 `emit` → 父组件（如 `InputBox.vue`）接收更新 →
+  执行相关逻辑（如发送消息、调用 API 等）。
+
+9. 内联与独立对话框模式切换： 本项目通过 `SideBar` 中的 `MessageMode` 组件控制 `MessageStore` 中的 `mainState` 属性，控制
+   `Main` 组件的状态实现切换对话框模式。
+10. 回车发送消息： 在 `InputBox` 组件中，通过 `@keydown.enter` 事件监听用户输入回车事件，当用户按下回车键时，触发 `send`
+    方法，将用户输入的内容发送给仓库 `MessageStore` ，并清空输入框。
 
 ## 组件关系图
 
@@ -293,13 +317,15 @@ API。
 ## 过程中遇到的问题
 
 - 合并冲突解决：
-当两个分支对同一个文件进行了修改，但修改内容不同，则出现合并冲突。
-合并分支的时候，只要打开一次就已经向 `main` 分支发起请求了，这个时候仓库所有者会收到合并消息邮件，如果出现合并冲突，则需要审查者手动调整合并冲突。
-此时需要审查者根据项目需求审查原有代码和传入代码，选择性的合并，然后提交代码。
+  当两个分支对同一个文件进行了修改，但修改内容不同，则出现合并冲突。
+  合并分支的时候，只要打开一次就已经向 `main` 分支发起请求了，这个时候仓库所有者会收到合并消息邮件，如果出现合并冲突，则需要审查者手动调整合并冲突。
+  此时需要审查者根据项目需求审查原有代码和传入代码，选择性的合并，然后提交代码。
 - Coze 官网写的调用方法是 Shell 脚本，根本看不懂，传参和返回都不知道是什么东西，可能要找一个开源项目来看看是怎么调用 AI 的。
 - 不清楚三个配置信息是什么意思，去哪要这三个配置信息。
 - 组件导入冲突大部分是因为 `tsconfig` 文件配置问题，`tsconfig` 创建时会全局扫描组件并固定组件路径，导入出错只需要删除其内容再重新写入即可。
-- 写文档时，`Item` 的复制代码功能出现 bug 。明明昨天还工作正常，经检查是正则表达式匹配问题。渲染时会将单个符号 `` ` `` 的中间也渲染成 `<code>`，
-所以原有的正则表达式 `/<\/code>/g` 是用来匹配字符串中所有的 `</code>` 标签，这会将每一个解释用代码也渲染一个复制。更改正则表达式即可解决此问题。
-- 之前一直局限在要新建一个内联对话框组件，但是如果这样做就需要在该组件添加重复的功能，而且内联与独立对话的会话 ID 也难以区分，但是如果将整个 `app` 设定成两个表现形式，在 `Main` 中通过一个状态变量控制就能做到。
+- 写文档时，`Item` 的复制代码功能出现 bug 。明明昨天还工作正常，经检查是正则表达式匹配问题。渲染时会将单个符号 `` ` ``
+  的中间也渲染成 `<code>`，
+  所以原有的正则表达式 `/<\/code>/g` 是用来匹配字符串中所有的 `</code>` 标签，这会将每一个解释用代码也渲染一个复制。更改正则表达式即可解决此问题。
+- 之前一直局限在要新建一个内联对话框组件，但是如果这样做就需要在该组件添加重复的功能，而且内联与独立对话的会话 ID
+  也难以区分，但是如果将整个 `app` 设定成两个表现形式，在 `Main` 中通过一个状态变量控制就能做到。
 - `pat` 是保密信息，如果直接放在组件中会导致组件不加载，所以需要将 `pat` 放在环境变量中并获取。

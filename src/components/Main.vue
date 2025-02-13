@@ -14,19 +14,15 @@ const isExpanded = ref(false);
 const messageData = computed<Message["content"]>(() => findContent(activeMessageId.value) || []) // 通过 id 查找当前会话
 
 const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
-const closeDialog = () => {
-  isExpanded.value = false
-}
-
+const closeDialog = () => isExpanded.value = false
 </script>
 
 <template>
-
   <!-- 内联对话框模式 -->
-  <div class="main" v-if="mainState == 'inline'">
+  <div class="main" v-if="mainState === 'inline'">
     <div v-if="!isExpanded" class="inline-input-box" @click="isExpanded = true">
       <span>Search from this. . .</span>
-      <Search :size="28" :fill="'#000'"/>
+      <Search :size="28" fill="white"/>
     </div>
     <div v-else class="inline-dialog">
       <div class="head">
@@ -45,29 +41,4 @@ const closeDialog = () => {
 
 <style scoped lang="scss">
 @use "@/assets/styles/Main.module";
-
-.inline-input-box {
-  display: flex;
-  justify-content: space-between;
-  background-color: white;
-  padding: 20px;
-  width: 60%;
-  border-radius: 10px;
-  color: black;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.head {
-  display: flex;
-  justify-content: flex-end;
-  width: 90%;
-
-}
-
-.inline-dialog {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-}
 </style>

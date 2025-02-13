@@ -1,22 +1,45 @@
-import { ref } from 'vue'
-import { defineStore } from "pinia";
-import { type Message, ContentType } from "@/types"
+import {ref} from 'vue'
+import {defineStore} from "pinia";
+import {type Message} from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
     const data = ref<Message[]>([{
         id: "1",
-        date: new Date("2025-1-25"),
-        name: "新会话",
-        content: [{
-            id: "1",
-            role: ContentType.user,
-            value: "这里的 0 表示用户"
-        }, {
-            id: "2",
-            role: ContentType.assistant,
-            value: "以下是使用 Python, 实现的解码函数：\n\n```python\ndef decode_sequence(a, d0):\n    data = [d0]\n    for item in a:\n        data.append(data[-1] ^ item)\n    return data \n``` \n 在C语言中，`#include <stdio.h>`是引入标准输入输出头文件，`printf`函数用于输出内容到控制台，`main`函数是程序的入口点，`return 0`表示程序正常结束并返回值0。"
-        }]
+        date: new Date("2023-01-02"),
+        name: "新会话1",
+        content: []
+    },{
+        id: "2",
+        date: new Date("2024-01-10"),
+        name: "新会话2",
+        content: []
+    }, {
+        id: "3",
+        date: new Date("2024-01-10"),
+        name: "新会话3",
+        content: []
+    }, {
+        id: "4",
+        date: new Date("2025-01-25"),
+        name: "新会话4",
+        content: []
+    }, {
+        id: "5",
+        date: new Date("2025-01-20"),
+        name: "新会话5",
+        content: []
+    }, {
+        id: "6",
+        date: new Date("2025-02-11"),
+        name: "新会话6",
+        content: []
+    }, {
+        id: "7",
+        date: new Date("2025-02-12"),
+        name: "新会话7",
+        content: []
     }])
+
     // 会话的 id
     const activeMessageId = ref<Message['id']>("1")
     const mainState = ref<'inline' | 'chat'>('chat')
@@ -70,12 +93,12 @@ export const messageStore = defineStore("messageStore", () => {
         });*/
     }
 
-    const deleteMessage = (id: Message["id"]) => {
-        const index = data.value.findIndex(item => item.id === id);
-        if (index !== -1) {
-            data.value.splice(index, 1);
-        }
-    }
+    // const deleteMessage = (id: Message["id"]) => {
+    //     const index = data.value.findIndex(item => item.id === id);
+    //     if (index !== -1) {
+    //         data.value.splice(index, 1);
+    //     }
+    // }
 
     const changeMainState = (value: 'inline' | 'chat') => mainState.value = value;
 
