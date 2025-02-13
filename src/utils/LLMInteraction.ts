@@ -8,10 +8,10 @@ import {
     type FileObject,
     RoleType,
 } from '@coze/api';
-import { coze } from "@/configs"
-import LLM from './LLM.TS';
-import { messageStore } from '@/stores/MessageStore';
-import { storeToRefs } from "pinia";
+import {coze} from "@/configs"
+import LLM from './LLM';
+import {messageStore} from '@/stores/MessageStore';
+import {storeToRefs} from "pinia";
 
 /*LLM是调用API的工具类*/
 class LLMInteraction implements LLM {
@@ -30,7 +30,7 @@ class LLMInteraction implements LLM {
     }
 
     private initClient = () => {
-        const { url, pat } = coze
+        const {url, pat} = coze
         this.Coze = new CozeAPI({
             token: pat,
             baseURL: url,
@@ -40,15 +40,15 @@ class LLMInteraction implements LLM {
 
     private getBotInfo = async () => {
         if (!this.Coze) return;
-        const { botId } = coze
-        this.botInfo = await this.Coze.bots.retrieve({ bot_id: botId });
+        const {botId} = coze
+        this.botInfo = await this.Coze.bots.retrieve({bot_id: botId});
     }
 
-    /*createMessage是streamingChat的辅助函数统一打包当前会话的上下文*/ 
+    /*createMessage是streamingChat的辅助函数统一打包当前会话的上下文*/
     public createMessage = (): EnterMessage[] => {
         const store = messageStore();
-        const { getContentLength, findContent } = store;
-        const { activeMessageId } = storeToRefs(store);
+        const {getContentLength, findContent} = store;
+        const {activeMessageId} = storeToRefs(store);
 
         const res: EnterMessage[] = [];
 
@@ -56,14 +56,14 @@ class LLMInteraction implements LLM {
         if (Array.isArray(foundContent)) {
             for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
                 if (foundContent[i].fileInfo) {
-                     console.log('emitFileInfoFunc', foundContent[i].fileInfo);
+                    console.log('emitFileInfoFunc', foundContent[i].fileInfo);
 
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
-                            { type: 'file', file_id: foundContent[i].fileInfo?.id || '' }, //在uploadFile之后Coze会通过该id获取文件信息
-                            { type: 'text', text: foundContent[i].value },
-                            
+                            {type: 'file', file_id: foundContent[i].fileInfo?.id || ''}, //在uploadFile之后Coze会通过该id获取文件信息
+                            {type: 'text', text: foundContent[i].value},
+
                         ],
                         content_type: 'object_string',
                     });
@@ -71,7 +71,7 @@ class LLMInteraction implements LLM {
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
-                            { type: 'text', text: foundContent[i].value },
+                            {type: 'text', text: foundContent[i].value},
                         ],
                         content_type: 'text',
                     });
@@ -81,8 +81,8 @@ class LLMInteraction implements LLM {
         console.log('本次对话上下文:', res);
         return res;
     }
-    
-/*这里将file打包成formData，其实可以添加多个文件，但这里只打包一个文件，然后通过axios将文件集合post到Coze */
+
+    /*这里将file打包成formData，其实可以添加多个文件，但这里只打包一个文件，然后通过axios将文件集合post到Coze */
     public uploadFile = async (file?: File): Promise<FileObject | undefined> => { //参考这里 https://www.coze.cn/open/playground/upload_file
         if (!this.Coze) {
             throw new Error('Client not initialized');
@@ -114,14 +114,14 @@ class LLMInteraction implements LLM {
     }
 
 
-    /*streamingChat是调用API的核心函数，调用Coze的chat.stream方法，并返回一个异步迭代器。*/ 
+    // streamingChat是调用API的核心函数，调用Coze的chat.stream方法，并返回一个异步迭代器。
     public streamingChat = async ({
-        query,//query原本是本次对话的输入，但是项目通过仓库来获取上下文，因此这里没有调用
-        conversationId,
-        onUpdate,
-        onSuccess,
-        onCreated,
-    }: {
+                                      //query, query原本是本次对话的输入，但是项目通过仓库来获取上下文，因此这里没有调用
+                                      conversationId,
+                                      onUpdate,
+                                      onSuccess,
+                                      onCreated,
+                                  }: {
         query: string;
         conversationId?: string;
         onUpdate: (delta: string) => void;
@@ -131,7 +131,7 @@ class LLMInteraction implements LLM {
         if (!this.Coze) {
             return;
         }
-        const { botId } = coze
+        const {botId} = coze
         let messages = this.createMessage();
 
         const v = await this.Coze.chat.stream({
@@ -152,7 +152,7 @@ class LLMInteraction implements LLM {
                 msg += part.data.content;
                 onUpdate(msg);
             } else if (part.event === ChatEventType.CONVERSATION_MESSAGE_COMPLETED) {
-                const { role, type, content: msgContent } = part.data;
+                const {role, type, content: msgContent} = part.data;
                 if (role === 'assistant' && type === 'answer') {
                     msg += '\n';
                     onSuccess(msg);
@@ -167,7 +167,6 @@ class LLMInteraction implements LLM {
         }
         console.log('=== End of Streaming Chat ===');
     }
-
 
 
     public setConfig = (baseUrl: string, pat: string, botId: string) => {

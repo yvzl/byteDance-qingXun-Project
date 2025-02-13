@@ -9,7 +9,7 @@ import Tooltip from '@/components/Tooltip.vue';
 const File = ref<File | undefined>(undefined);
 const {size = 24} = defineProps<{ size?: number }>();
 
-//我确信这里的上传文件无误，包括React开源项目获取的Flie、fileinfo对象是一样的，并且官方的React项目的Coze也无法读取文件信息
+// 我确信这里的上传文件无误，包括React开源项目获取的 File、fileInfo 对象是一样的，并且官方的 React 项目的 Coze 也无法读取文件信息
 const uploadFileByNative = async () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';

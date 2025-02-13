@@ -4,7 +4,7 @@ import TextArea from "@/components/TextArea.vue";
 import Upload from "@/components/Upload.vue";
 import Send from "@/components/Send.vue";
 import LLMInteraction from "@/utils/LLMInteraction";
-import {CreateChatData, FileObject} from "@coze/api";
+import {FileObject} from "@coze/api";
 import {messageStore} from "@/stores";
 import {storeToRefs} from "pinia";
 import {ContentType} from "@/types";
@@ -53,7 +53,7 @@ const chatWithCoze = async () => {
       onSuccess: (delta: string) => {
         response.value = delta;
       },
-      onCreated: (data: CreateChatData) => {
+      onCreated: () => {
         const id = `${getContentLength(activeMessageId.value) + 1}`
         addContent(activeMessageId.value, { //直接用创建对话表示
           id,
