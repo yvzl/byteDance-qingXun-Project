@@ -7,7 +7,7 @@
   > ul {
     color: #8e8d8d;
     font-size: 14px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 
     > li {
       color: white;
@@ -16,17 +16,24 @@
       display: flex;
       align-items: center;
       padding: 0 10px;
-      font-size: 14px;
       border-radius: 12px;
       cursor: pointer;
       margin-bottom: 3px;
+
+      > p {
+        width: 80%;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-wrap: nowrap;
+      }
 
       &:not(.active):hover {
         background-color: rgba(255, 255, 255, 0.1);
       }
 
       &:nth-of-type(1) {
-        margin-top: 7px;
+        margin-top: 8px;
       }
     }
 

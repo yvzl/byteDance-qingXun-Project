@@ -12,12 +12,6 @@ const resetDate = (date: Date): Date => {
   return date
 }
 
-const dateDiff = (date: Date, fn: (num: number) => boolean): boolean => {
-  const before = resetDate(date)
-  const now = resetDate(new Date());
-  return fn(now.getTime() - before.getTime());
-}
-
 const getDayTime = (day: number): number => day * 86400000
 
 const groupMap = new Map([
@@ -27,7 +21,7 @@ const groupMap = new Map([
   [(num: number) => num <= getDayTime(30), "30日内"],
 ])
 
-const dataGroups = computed(() => Object.groupBy(data.value, ({date}) => {
+const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({date}) => {
   for (const [key, value] of groupMap) {
     if (key(resetDate(new Date()).getTime() - resetDate(date).getTime())) return value
   }
@@ -36,16 +30,16 @@ const dataGroups = computed(() => Object.groupBy(data.value, ({date}) => {
     month: "2-digit",
     day: "2-digit",
   }).format(date)
-}))
+})).reverse())
 </script>
 
 <template>
   <div class="history-message">
-    <ul v-for="[key, value] of Object.entries(dataGroups).reverse()">
+    <ul v-for="[key, value] of dataGroups" :key="key">
       {{ key }}
       <li :class="{active: id === activeMessageId}" v-for="{id, name} in value" :key="id"
           @click="changeMessageId(id)">
-        {{ name }}
+        <p>{{ name }}</p>
       </li>
     </ul>
   </div>
