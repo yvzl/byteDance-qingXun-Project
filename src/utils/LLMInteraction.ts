@@ -13,7 +13,7 @@ import LLM from './LLM';
 import {messageStore} from '@/stores/MessageStore';
 import {storeToRefs} from "pinia";
 
-/*LLM是调用API的工具类*/
+// LLM 是调用 API 的工具类
 class LLMInteraction implements LLM {
     private Coze: CozeAPI | null = null;
     private botInfo: BotInfo | undefined;
@@ -44,15 +44,17 @@ class LLMInteraction implements LLM {
         this.botInfo = await this.Coze.bots.retrieve({bot_id: botId});
     }
 
-    /*createMessage是streamingChat的辅助函数统一打包当前会话的上下文*/
+    // createMessage 是 streamingChat 的辅助函数统一打包当前会话的上下文
     public createMessage = (): EnterMessage[] => {
         const store = messageStore();
-        const {getContentLength, findContent} = store;
+        const {getContentLength, findMessage} = store;
         const {activeMessageId} = storeToRefs(store);
 
         const res: EnterMessage[] = [];
 
-        const foundContent = findContent(activeMessageId.value);
+        const message = findMessage(activeMessageId.value)
+        if (!message) return [];
+        const foundContent = message.content;
         if (Array.isArray(foundContent)) {
             for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
                 if (foundContent[i].fileInfo) {
@@ -61,7 +63,7 @@ class LLMInteraction implements LLM {
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
-                            {type: 'file', file_id: foundContent[i].fileInfo?.id || ''}, //在uploadFile之后Coze会通过该id获取文件信息
+                            {type: 'file', file_id: foundContent[i].fileInfo?.id || ''}, //在 uploadFile 之后 Coze 会通过该 id 获取文件信息
                             {type: 'text', text: foundContent[i].value},
 
                         ],
@@ -82,8 +84,8 @@ class LLMInteraction implements LLM {
         return res;
     }
 
-    /*这里将file打包成formData，其实可以添加多个文件，但这里只打包一个文件，然后通过axios将文件集合post到Coze */
-    public uploadFile = async (file?: File): Promise<FileObject | undefined> => { //参考这里 https://www.coze.cn/open/playground/upload_file
+    // 这里将 file 打包成 formData，其实可以添加多个文件，但这里只打包一个文件，然后通过 axios 将文件集合 post 到 Coze
+    public uploadFile = async (file?: File): Promise<FileObject | undefined> => { // 参考这里 https://www.coze.cn/open/playground/upload_file
         if (!this.Coze) {
             throw new Error('Client not initialized');
         }
@@ -114,9 +116,9 @@ class LLMInteraction implements LLM {
     }
 
 
-    // streamingChat是调用API的核心函数，调用Coze的chat.stream方法，并返回一个异步迭代器。
+    // streamingChat 是调用 API 的核心函数，调用 Coze 的 chat.stream 方法，并返回一个异步迭代器
     public streamingChat = async ({
-                                      //query, query原本是本次对话的输入，但是项目通过仓库来获取上下文，因此这里没有调用
+                                      // query 原本是本次对话的输入，但是项目通过仓库来获取上下文，因此这里没有调用
                                       conversationId,
                                       onUpdate,
                                       onSuccess,

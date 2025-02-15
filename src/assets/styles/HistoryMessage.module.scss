@@ -4,41 +4,45 @@
   height: 70%;
   @include scrollBar(rgba(255, 255, 255, .1), #555);
 
-  > ul {
-    color: #8e8d8d;
-    font-size: 14px;
-    margin-bottom: 8px;
-
-    > li {
-      color: white;
-      width: 204px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-bottom: 3px;
-
-      > p {
-        width: 80%;
-        font-size: 14px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-wrap: nowrap;
-      }
-
-      &:not(.active):hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      &:nth-of-type(1) {
-        margin-top: 8px;
-      }
+  > .history-message-item {
+    > span {
+      color: #8e8d8d;
+      font-size: 14px;
+      margin-bottom: 8px;
     }
 
-    > .active {
-      background-color: rgba(255, 255, 255, 0.3);
+    > ul {
+      > li {
+        color: white;
+        width: 204px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-bottom: 8px;
+
+        > p {
+          width: 80%;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-wrap: nowrap;
+        }
+
+        &:not(.active):hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &:nth-of-type(1) {
+          margin-top: 8px;
+        }
+      }
+
+      > .active {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
     }
   }
 }

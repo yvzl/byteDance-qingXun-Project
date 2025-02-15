@@ -1,0 +1,21 @@
+.chat-config {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #AAB1BD;
+  align-items: center;
+
+  input {
+    display: block;
+    color: #AAB1BD;
+    margin-bottom: 10px;
+    padding: 8px;
+    box-sizing: border-box;
+    background-color: #303137;
+  }
+}

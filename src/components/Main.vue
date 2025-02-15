@@ -8,10 +8,10 @@ import InputBox from "@/components/InputBox.vue";
 import type {Message} from "@/types";
 
 const store = messageStore()
-const {findContent} = store
+const {findMessage} = store
 const {activeMessageId, mainState} = storeToRefs(store)
 const isExpanded = ref(false);
-const messageData = computed<Message["content"]>(() => findContent(activeMessageId.value) || []) // 通过 id 查找当前会话
+const messageData = computed<Message["content"]>(() => findMessage(activeMessageId.value)?.content || []) // 通过 id 查找当前会话
 
 const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
 const closeDialog = () => isExpanded.value = false

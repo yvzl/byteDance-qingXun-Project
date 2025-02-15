@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {useModel} from "@/hooks";
-import {Message, MessageOne} from '@icon-park/vue-next'
 import {messageStore} from "@/stores"
+import {Message, MessageOne} from '@icon-park/vue-next'
+import Tooltip from "@/components/Tooltip.vue";
 
 const {changeMainState} = messageStore()
 
@@ -25,12 +26,14 @@ const changeToChat = () => {
 
 <template>
   <div class="message-mode">
-    <div @click="changeToInline" v-if="modeState" class="btn message-mode-1">
-      <Message theme="outline" size="24" fill="#aab1bdff"/>
-    </div>
-    <div @click="changeToChat" v-else class="btn message-mode-2">
-      <MessageOne theme="outline" size="24" fill="#aab1bdff"/>
-    </div>
+    <Tooltip content="更改内联或独立对话状态">
+      <div @click="changeToInline" v-if="modeState" class="btn message-mode-1">
+        <Message theme="outline" size="24"/>
+      </div>
+      <div @click="changeToChat" v-else class="btn message-mode-2">
+        <MessageOne theme="outline" size="24"/>
+      </div>
+    </Tooltip>
   </div>
 </template>
 

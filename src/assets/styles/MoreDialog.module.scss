@@ -1,0 +1,37 @@
+.more-dialog {
+  position: absolute;
+  background-color: #434343;
+  z-index: 999;
+  top: 0;
+  border-radius: 12px;
+  padding: 7px 7px;
+  transition: opacity 2s linear;
+
+  > ul {
+    > li {
+      cursor: pointer;
+      width: 120px;
+      height: 33px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      border-radius: 8px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      > span {
+        margin-left: 10px;
+      }
+    }
+
+    > .error {
+      color: #ff2b2b;
+
+      &:hover {
+        background-color: rgba(255, 113, 113, 0.3);
+      }
+    }
+  }
+}

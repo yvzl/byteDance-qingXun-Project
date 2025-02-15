@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-// 内容
 const props = defineProps<{
   content: string;
 }>();
