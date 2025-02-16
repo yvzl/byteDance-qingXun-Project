@@ -1,0 +1,35 @@
+.m-button {
+  > button {
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 6px 15px;
+    color: white;
+    transition: background-color 0.2s linear, border 0.2s linear, color 0.2s linear;
+
+    &:disabled {
+      filter: grayscale(40%);
+      cursor: no-drop;
+    }
+  }
+
+  > .default {
+    border: 1px solid #4C4D4F;
+    background-color: transparent;
+
+    &:not(:disabled):hover {
+      background-color: rgba(77, 106, 255, 0.1);
+      border: 1px solid #4D6AFFFF;
+      color: #4D6AFFFF;
+    }
+  }
+
+  > .primary {
+    border: none;
+    background-color: #4D6AFFFF;
+
+    &:not(:disabled):hover {
+      background-color: rgba(73, 103, 255, 0.7);
+    }
+  }
+}

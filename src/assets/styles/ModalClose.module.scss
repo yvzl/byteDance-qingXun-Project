@@ -1,0 +1,10 @@
+.modal-close {
+  cursor: pointer;
+  display: flex;
+  color: #d1d1d1;
+  transition: color 0.1s linear;
+
+  &:hover {
+    color: #4D6AFFFF;
+  }
+}

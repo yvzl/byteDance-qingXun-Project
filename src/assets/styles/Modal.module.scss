@@ -26,17 +26,6 @@
       > p {
         font-size: 16px;
       }
-
-      > .close {
-        cursor: pointer;
-        display: flex;
-        color: #d1d1d1;
-        transition: color 0.1s linear;
-
-        &:hover {
-          color: #4D6AFFFF;
-        }
-      }
     }
 
     > .body {
@@ -45,36 +34,8 @@
     }
 
     > .footer {
-      text-align: right;
-
-      > button {
-        border-radius: 4px;
-        cursor: pointer;
-        margin-left: 10px;
-        padding: 6px 15px;
-        color: white;
-        transition: background-color 0.2s linear, border 0.2s linear, color 0.2s linear;
-      }
-
-      > .default {
-        border: 1px solid #4C4D4F;
-        background-color: transparent;
-
-        &:hover {
-          background-color: rgba(77, 106, 255, 0.1);
-          border: 1px solid #4D6AFFFF;
-          color: #4D6AFFFF;
-        }
-      }
-
-      > .primary {
-        border: none;
-        background-color: #4D6AFFFF;
-
-        &:hover {
-          background-color: rgba(73, 103, 255, 0.7);
-        }
-      }
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }

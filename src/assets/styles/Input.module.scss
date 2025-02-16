@@ -1,0 +1,26 @@
+.m-input {
+  width: 100%;
+
+  > input {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 4px;
+    padding: 5px 10px;
+    border: 1px solid #4C4D4F;
+    outline: none;
+    transition: border 0.2s linear;
+    margin-left: 10px;
+
+    &:not(:disabled):hover {
+      border: 1px solid #6a6b6e;
+    }
+
+    &:focus {
+      border: 1px solid #4D6AFFFF;
+    }
+
+    &:disabled {
+      cursor: no-drop;
+    }
+  }
+}

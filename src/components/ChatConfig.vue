@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {LLM} from "@/utils";
+import {Request} from "@/types";
+import {useModel} from "@/hooks";
 import {configStore} from "@/stores";
 import {storeToRefs} from "pinia";
 import {reactive, toRefs} from "vue";
-import {useModel} from "@/hooks";
-import {Request} from "@/types";
 import Modal from "@/components/Modal.vue";
+import MInput from "@/components/MInput.vue";
 
 const props = defineProps<{
   modelValue: boolean
@@ -44,9 +45,18 @@ const modalConfirm = () => {
   <div class="chat-config">
     <Modal @confirm="modalConfirm" v-model="state" title="自定义配置项" :closeOnClickModal="false">
       <ul>
-        <li>baseUrl: <input v-model="url"/></li>
-        <li>botId: <input v-model="pat"/></li>
-        <li>pat: <input v-model="botId"/></li>
+        <li>
+          baseUrl:
+          <MInput v-model="url"/>
+        </li>
+        <li>
+          botId:
+          <MInput v-model="pat"/>
+        </li>
+        <li>
+          pat:
+          <MInput v-model="botId"/>
+        </li>
       </ul>
     </Modal>
   </div>
