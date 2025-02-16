@@ -17,7 +17,7 @@ const value = useModel(modelValue, props, "modelValue", emits, "update:modelValu
 
 <template>
   <div class="m-input">
-    <input disabled v-model="value"/>
+    <input :disabled="disabled" v-model="value"/>
   </div>
 </template>
 
