@@ -13,7 +13,9 @@ const hideTooltip = () => isVisible.value = false;
 
 <template>
   <div class="tooltip" @mouseover="showTooltip" @mouseleave="hideTooltip">
-    <div v-show="isVisible" class="tooltip-content">{{ content }}</div>
+    <Transition name="tooltip">
+      <div v-if="isVisible" class="tooltip-content" role="tooltip">{{ content }}</div>
+    </Transition>
     <slot></slot>
   </div>
 </template>

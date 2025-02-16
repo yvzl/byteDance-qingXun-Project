@@ -10,8 +10,8 @@ import {
     type FileObject,
     RoleType,
 } from '@coze/api';
+import type {LLM} from '@/types';
 import axios from 'axios';
-import LLM from '@/types/LLM';
 
 const message = messageStore();
 const config = configStore();
@@ -36,7 +36,7 @@ class LLMInteraction implements LLM {
         this.getBotInfo().then();
     }
 
-    private initClient = () => {
+    public initClient = () => {
         this.Coze = new CozeAPI({
             token: pat.value,
             baseURL: url.value,
@@ -59,13 +59,11 @@ class LLMInteraction implements LLM {
             for (let i = 0; i < getContentLength(activeMessageId.value); i++) {
                 if (foundContent[i].fileInfo) {
                     console.log('emitFileInfoFunc', foundContent[i].fileInfo);
-
                     res.push({
                         role: foundContent[i].role as unknown as RoleType,
                         content: [
                             {type: 'file', file_id: foundContent[i].fileInfo?.id || ''}, //在 uploadFile 之后 Coze 会通过该 id 获取文件信息
                             {type: 'text', text: foundContent[i].value},
-
                         ],
                         content_type: 'object_string',
                     });
@@ -130,9 +128,7 @@ class LLMInteraction implements LLM {
         onSuccess: (delta: string) => void;
         onCreated: (data: CreateChatData) => void;
     }) => {
-        if (!this.Coze) {
-            return;
-        }
+        if (!this.Coze) return;
         let messages = this.createMessage();
         const v = this.Coze.chat.stream({
             bot_id: botId.value,
@@ -141,9 +137,7 @@ class LLMInteraction implements LLM {
             conversation_id: conversationId,
         });
         console.log('API Response:', v);
-
         let msg = '';
-
         for await (const part of v) {
             if (part.event === ChatEventType.CONVERSATION_CHAT_CREATED) {
                 console.log('[START]');
@@ -175,6 +169,10 @@ class LLMInteraction implements LLM {
     }
 }
 
-export default new LLMInteraction();
+const LLM = new LLMInteraction();
+
+export {
+    LLM
+}
 
 

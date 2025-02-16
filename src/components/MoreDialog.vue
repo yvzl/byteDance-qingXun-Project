@@ -28,18 +28,20 @@ const rename = () => {
 
 <template>
   <Teleport to="body">
-    <div v-if="state" class="more-dialog" :style="{left: `${posX}px`, top: `${posY}px`}">
-      <ul>
-        <li @click="rename">
-          <Edit theme="outline" size="18"/>
-          <span>重命名</span>
-        </li>
-        <li @click="remove" class="error">
-          <Delete theme="outline" size="18"/>
-          <span>删除</span>
-        </li>
-      </ul>
-    </div>
+    <Transition name="fade">
+      <div v-if="state" class="more-dialog" :style="{left: `${posX}px`, top: `${posY}px`}">
+        <ul>
+          <li @click="rename">
+            <Edit theme="outline" size="18"/>
+            <span>重命名</span>
+          </li>
+          <li @click="remove" class="error">
+            <Delete theme="outline" size="18"/>
+            <span>删除</span>
+          </li>
+        </ul>
+      </div>
+    </Transition>
   </Teleport>
 </template>
 

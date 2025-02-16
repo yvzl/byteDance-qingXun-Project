@@ -35,3 +35,21 @@
     }
   }
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+  transform-origin: top left;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95) translateY(-5px);
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}

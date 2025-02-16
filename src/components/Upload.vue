@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import {LLM} from '@/utils';
 import {FileObject} from '@coze/api';
 import {Upload} from '@icon-park/vue-next';
 import Tooltip from '@/components/Tooltip.vue';
-import LLMInteraction from '@/utils/LLMInteraction';
 
 const File = ref<File | undefined>(undefined);
 const {size = 24} = defineProps<{ size?: number }>();
@@ -12,15 +12,12 @@ const {size = 24} = defineProps<{ size?: number }>();
 const uploadFileByNative = async () => {
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
-  fileInput.onchange = async (event) => {
+  fileInput.onchange = async event => {
     const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      File.value = target.files[0];
-      if (File.value) {
-        const fileInfo = await LLMInteraction.uploadFile(File.value); //从 Coze 获取关于文件的对话
-        emitFileInfoFunc(fileInfo);
-      }
-    }
+    if (!target.files || !target.files.length || !target.files[0]) return
+    File.value = target.files[0];
+    const fileInfo = await LLM.uploadFile(File.value); // 从 Coze 获取关于文件的对话
+    emitFileInfoFunc(fileInfo);
   };
   fileInput.click();
 }

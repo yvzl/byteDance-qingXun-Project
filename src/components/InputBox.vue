@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {LLM} from "@/utils";
 import {useModel} from "@/hooks";
 import {storeToRefs} from "pinia";
 import {ContentType} from "@/types";
@@ -8,7 +9,6 @@ import {ref, computed, onMounted} from "vue";
 import Send from "@/components/Send.vue";
 import Upload from "@/components/Upload.vue";
 import TextArea from "@/components/TextArea.vue";
-import LLMInteraction from "@/utils/LLMInteraction";
 
 const props = defineProps<{
   value: string
@@ -57,7 +57,7 @@ const sendMsg = () => {
 // chat 答复
 const chatWithCoze = async () => {
   try {
-    await LLMInteraction.streamingChat({
+    await LLM.streamingChat({
       query: query.value,
       onUpdate: (delta: string) => {
         response.value = delta;

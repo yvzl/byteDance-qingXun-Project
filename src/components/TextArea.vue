@@ -13,11 +13,11 @@ const props = defineProps<{
 }>();
 
 // update:modelValue：这是一个约定俗成的事件名称，当子组件需要更新父组件中的 v-model 绑定的值时，通常会触发这个事件，并传递新的值
-const emit = defineEmits(["update:modelValue"]);
+const emits = defineEmits(["update:modelValue"]);
 
 const {modelValue, placeholder = "", autoSize = {minRows: 2, maxRows: 5}} = props
 
-const value = useModel(modelValue, props, "modelValue", emit, "update:modelValue") // 这里传入的 emit 是调用父组件的 update:modelValue，实现更新父组件的 v-model 绑定的值
+const value = useModel(modelValue, props, "modelValue", emits, "update:modelValue") // 这里传入的 emit 是调用父组件的 update:modelValue，实现更新父组件的 v-model 绑定的值
 const textAreaRef = useTemplateRef<HTMLTextAreaElement>("textAreaRef");
 const textAreaStyle = ref<Partial<CSSProperties>>({});
 

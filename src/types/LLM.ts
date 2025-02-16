@@ -52,4 +52,6 @@ interface LLM {
     uploadFile: (file?: File) => Promise<FileObject | undefined>;
 }
 
-export default LLM;
+export {
+    LLM
+};
