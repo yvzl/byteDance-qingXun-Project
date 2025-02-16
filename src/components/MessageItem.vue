@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {md, debounce} from "@/utils";
-import "github-markdown-css/github-markdown-dark.css";
 import {ContentType} from "@/types";
+import {md, debounce, copy} from "@/utils";
 import {onMounted, useTemplateRef, watch} from "vue";
-import {Copy} from '@icon-park/vue-next'
+import MessageTools from "@/components/MessageTools.vue";
+import "github-markdown-css/github-markdown-dark.css";
 
 const {value} = defineProps<{
   value: string;
@@ -14,26 +14,14 @@ const content = useTemplateRef<HTMLDivElement>("content");
 
 const addCopyEvent = () => {
   if (!content.value) return;
-  content.value.querySelectorAll("code").forEach((item: HTMLElement) => {
-    const button = item.previousElementSibling?.querySelector("button.copy-btn");
-    if (button) {
-      button.addEventListener("click", () => {
-        const codeContent = item.textContent?.slice(0, -2) || "";
-        copy(codeContent);
-      });
-    }
+  content.value.querySelectorAll("pre").forEach((item: HTMLElement) => {
+    const button = item.querySelector("button");
+    if (!button) return
+    button.addEventListener("click", () => copy(item.textContent?.slice(0, -2) || ""));
   });
 };
 
-const copy = (str: string) => {
-  navigator.clipboard.writeText(str).then(() => {
-    console.log("已复制到剪贴板");
-  }).catch(err => {
-    console.error("复制失败", err);
-  });
-}
-const copyCode = (str: string): string =>
-    str.replaceAll(/<code class="(language-([a-z]+))">/g, `<button>复制</button><code class="$1">`);
+const copyCode = (str: string): string => str.replaceAll(/<code class="(language-([a-z]+))">/g, `<button>复制</button><code class="$1">`);
 
 onMounted(() => addCopyEvent());
 watch(() => value, debounce(addCopyEvent));
@@ -42,9 +30,7 @@ watch(() => value, debounce(addCopyEvent));
 <template>
   <div :class="['message-item', 'markdown-body', ContentType[type]]">
     <div class="md" ref="content" v-html="copyCode(md.render(value))"></div>
-    <div class="tools" v-if="type === ContentType.assistant">
-      <Copy @click="copy(value)" theme="outline" size="20" fill="#ccd3deff"/>
-    </div>
+    <MessageTools :value="value" v-if="type === ContentType.assistant"/>
   </div>
 </template>
 

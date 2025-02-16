@@ -17,7 +17,6 @@ const uploadFileByNative = async () => {
     if (target.files && target.files.length > 0) {
       File.value = target.files[0];
       if (File.value) {
-        console.log(File.value);
         const fileInfo = await LLMInteraction.uploadFile(File.value); //从Coze获取关于文件的对话
         emitFileInfoFunc(fileInfo);
       }

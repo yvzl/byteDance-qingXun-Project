@@ -1,0 +1,17 @@
+.inline-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  height: 70%;
+
+  > .head {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+
+    > :deep(.i-icon) {
+      cursor: pointer;
+    }
+  }
+}

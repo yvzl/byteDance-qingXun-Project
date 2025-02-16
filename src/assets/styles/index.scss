@@ -20,8 +20,13 @@
 }
 
 body {
+  height: 100vh;
   position: relative;
   background-color: #202020;
+}
+
+#app {
+  height: 100%;
 }
 
 img {

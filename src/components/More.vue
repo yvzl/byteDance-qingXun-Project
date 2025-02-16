@@ -17,7 +17,7 @@ const click = () => {
 </script>
 
 <template>
-  <div @click.stop="click" ref="more" class="more">
+  <div class="more" @click.stop="click" ref="more">
     <More theme="outline" size="24"/>
   </div>
 </template>

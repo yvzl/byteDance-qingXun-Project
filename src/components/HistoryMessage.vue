@@ -51,7 +51,6 @@ const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({da
 })).reverse())
 
 const moreClick = (_id: Message["id"], x: number, y: number) => {
-  console.log(_id)
   dialogId.value = _id
   posX.value = x
   posY.value = y

@@ -6,18 +6,3 @@
   display: flex;
   align-items: center;
 }
-
-.file-display {
-  width: 79%;
-  margin-left: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  .file-name {
-    font-size: 14px;
-    color: white;
-  }
-}

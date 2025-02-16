@@ -42,8 +42,8 @@ export const messageStore = defineStore("messageStore", () => {
 
     // 会话的 id
     const activeMessageId = ref<Message['id']>("1")
-    const mainState = ref<'inline' | 'chat'>('chat')
     const Response = ref<string>("")
+    const mainState = ref<boolean>(false)
 
     // 切换对话 id
     const changeMessageId = (id: Message["id"]) => activeMessageId.value = id
@@ -101,7 +101,7 @@ export const messageStore = defineStore("messageStore", () => {
         currentMessage.name = name;
     }
 
-    const changeMainState = (value: 'inline' | 'chat') => mainState.value = value;
+    const changeMainState = (state: boolean) => mainState.value = state
 
     return {
         data,
@@ -115,8 +115,8 @@ export const messageStore = defineStore("messageStore", () => {
         getContentLength,
         updateContent,
         renameMessage,
-        changeMainState,
-        deleteMessage
+        deleteMessage,
+        changeMainState
     }
 }, {
     persist: true,

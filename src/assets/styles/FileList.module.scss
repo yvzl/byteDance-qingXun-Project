@@ -1,0 +1,23 @@
+.file-list {
+  width: 80%;
+  margin-left: 12px;
+  padding: 0 8px 8px 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .file {
+    display: inline-block;
+    align-items: center;
+    padding: 10px 15px;
+    width: 150px;
+    border-radius: 16px;
+    background-color: #404045ff;
+    font-size: 14px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: white;
+  }
+}

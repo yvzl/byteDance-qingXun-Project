@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-const props = defineProps<{
+defineProps<{
   content: string;
 }>();
 
 const isVisible = ref(false);
 
-// 显示 tooltip
 const showTooltip = () => isVisible.value = true;
-
-// 隐藏 tooltip
 const hideTooltip = () => isVisible.value = false;
 </script>
 
 <template>
   <div class="tooltip" @mouseover="showTooltip" @mouseleave="hideTooltip">
+    <div v-show="isVisible" class="tooltip-content">{{ content }}</div>
     <slot></slot>
-    <div v-show="isVisible" class="tooltip-content">
-      {{ props.content }}
-    </div>
   </div>
 </template>
 
