@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import InlineClose from "@/components/InlineClose.vue";
 import {useModel} from "@/hooks";
-import Main from "@/components/Main.vue";
-import InlineHead from "@/components/InlineHead.vue";
 
 const props = defineProps<{
   modelValue: boolean
@@ -15,12 +14,11 @@ const isExpanded = useModel(modelValue, props, "modelValue", emits, "update:mode
 </script>
 
 <template>
-  <div class="inline-dialog">
-    <InlineHead v-model="isExpanded"/>
-    <Main/>
+  <div class="inline-head">
+    <InlineClose @click="isExpanded = false"/>
   </div>
 </template>
 
 <style scoped lang="scss">
-@use "@/assets/styles/InlineDialog.module";
+@use "@/assets/styles/InlineHead.module";
 </style>

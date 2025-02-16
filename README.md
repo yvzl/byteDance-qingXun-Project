@@ -257,9 +257,9 @@
 10. 回车发送消息： 在 `InputBox` 组件中，通过 `@keydown.enter` 事件监听用户输入回车事件，当用户按下回车键时，触发 `send`
     方法，将用户输入的内容发送给仓库 `MessageStore` ，并清空输入框。
 
-## 组件关系图
+## 项目关系图
 
-![LLM关系图](public/images/LLM%20对话框组件关系图.png)
+![LLM关系图](public/images/LLM%20项目结构关系图.png)
 
 # 开发日志
 
