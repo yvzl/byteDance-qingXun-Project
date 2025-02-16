@@ -14,5 +14,5 @@ const isExpanded = ref<boolean>(false);
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/styles/Main.module";
+@use "@/assets/styles/Main.module";
 </style>

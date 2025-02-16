@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {Copy} from "@icon-park/vue-next";
 import {copy} from "@/utils"
+import {Copy} from "@icon-park/vue-next";
 import Tooltip from "@/components/Tooltip.vue";
 
 defineProps<{

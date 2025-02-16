@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from "vue"
-import TextArea from "@/components/TextArea.vue";
-import Upload from "@/components/Upload.vue";
-import Send from "@/components/Send.vue";
-import LLMInteraction from "@/utils/LLMInteraction";
-import {FileObject} from "@coze/api";
-import {messageStore} from "@/stores";
+import {useModel} from "@/hooks";
 import {storeToRefs} from "pinia";
 import {ContentType} from "@/types";
-import {useModel} from "@/hooks";
+import {FileObject} from "@coze/api";
+import {messageStore} from "@/stores";
+import {ref, computed, onMounted} from "vue";
+import Send from "@/components/Send.vue";
+import Upload from "@/components/Upload.vue";
+import TextArea from "@/components/TextArea.vue";
+import LLMInteraction from "@/utils/LLMInteraction";
 
 const props = defineProps<{
   value: string

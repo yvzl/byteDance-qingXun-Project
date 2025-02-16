@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {type Message, ContentType} from "@/types"
+import {useTemplateRef} from "vue";
+import {type Message, ContentType} from "@/types";
 import MessageChat from "@/components/MessageChat.vue";
 import MessageUser from "@/components/MessageUser.vue";
-import {useTemplateRef} from "vue";
 
 defineProps<{ data: Message["content"] }>()
 

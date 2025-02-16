@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Send} from '@icon-park/vue-next'
+import {Send} from '@icon-park/vue-next';
 
 const {size = 24} = defineProps<{ state: boolean, size?: number }>()
 const emit = defineEmits(["send"])

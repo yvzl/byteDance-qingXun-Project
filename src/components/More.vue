@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
-import {More} from '@icon-park/vue-next'
-import type {Message} from "@/types"
+import {More} from '@icon-park/vue-next';
+import type {Message} from "@/types";
 
 const more = useTemplateRef<HTMLDivElement>("more")
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed, reactive, toRefs} from "vue";
 import {storeToRefs} from "pinia";
 import {messageStore} from "@/stores";
+import {computed, reactive, toRefs} from "vue";
+import type {Message} from "@/types";
 import More from "@/components/More.vue";
 import MoreDialog from "@/components/MoreDialog.vue";
-import {Message} from "@/types";
 
 const store = messageStore();
 const {changeMessageId} = store;

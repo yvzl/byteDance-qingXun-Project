@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import MessageMode from "@/components/MessageMode.vue";
 import Title from "@/components/Title.vue";
 import Config from "@/components/Config.vue";
+import MessageMode from "@/components/MessageMode.vue";
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MessageItem from '@/components/MessageItem.vue'
-import chatHead from "@/assets/images/head.png"
-import Avatar from "@/components/Avatar.vue"
 import {ContentType} from "@/types";
+import Avatar from "@/components/Avatar.vue";
+import chatHead from "@/assets/images/head.png";
+import MessageItem from '@/components/MessageItem.vue';
 
 defineProps<{ value: string, type: ContentType }>()
 </script>

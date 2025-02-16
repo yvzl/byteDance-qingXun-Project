@@ -1,7 +1,9 @@
 .tooltip {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
     cursor: pointer;
+    justify-content: center;
+    align-items: center;
 
     .tooltip-content {
         white-space: normal;

@@ -1,5 +1,5 @@
-import Shiki from '@shikijs/markdown-it'
 import MarkdownIt from 'markdown-it'
+import Shiki from '@shikijs/markdown-it'
 
 const md: MarkdownIt = MarkdownIt()
 

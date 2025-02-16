@@ -1,1 +1,1 @@
-export * from "@/hooks/useModel"
+export * from "@/hooks/UseModel"

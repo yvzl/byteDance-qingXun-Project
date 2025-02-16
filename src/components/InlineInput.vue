@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {Search} from "@icon-park/vue-next";
 import {useModel} from "@/hooks";
+import {Search} from "@icon-park/vue-next";
 
 const props = defineProps<{
   modelValue: boolean

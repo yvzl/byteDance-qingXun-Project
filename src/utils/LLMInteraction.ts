@@ -1,4 +1,6 @@
-import axios from 'axios';
+import {toRefs} from "vue";
+import {storeToRefs} from "pinia";
+import {messageStore, configStore} from '@/stores';
 import {
     type BotInfo,
     ChatEventType,
@@ -8,10 +10,15 @@ import {
     type FileObject,
     RoleType,
 } from '@coze/api';
-import {coze} from "@/configs"
-import LLM from './LLM';
-import {messageStore} from '@/stores/MessageStore';
-import {storeToRefs} from "pinia";
+import axios from 'axios';
+import LLM from '@/types/LLM';
+
+const message = messageStore();
+const config = configStore();
+const {getContentLength, findMessage} = message;
+const {activeMessageId} = storeToRefs(message);
+const {coze} = storeToRefs(config)
+const {url, pat, botId} = toRefs(coze.value)
 
 // LLM 是调用 API 的工具类
 class LLMInteraction implements LLM {
@@ -21,37 +28,30 @@ class LLMInteraction implements LLM {
 
     constructor() {
         this.initClient();
-        this.getBotInfo();
+        this.getBotInfo().then();
     }
 
     public onSettingsChange(): void {
         this.initClient();
-        this.getBotInfo();
+        this.getBotInfo().then();
     }
 
     private initClient = () => {
-        const {url, pat} = coze
         this.Coze = new CozeAPI({
-            token: pat,
-            baseURL: url,
+            token: pat.value,
+            baseURL: url.value,
             allowPersonalAccessTokenInBrowser: true,
         });
     }
 
     private getBotInfo = async () => {
         if (!this.Coze) return;
-        const {botId} = coze
-        this.botInfo = await this.Coze.bots.retrieve({bot_id: botId});
+        this.botInfo = await this.Coze.bots.retrieve({bot_id: botId.value});
     }
 
     // createMessage 是 streamingChat 的辅助函数统一打包当前会话的上下文
     public createMessage = (): EnterMessage[] => {
-        const store = messageStore();
-        const {getContentLength, findMessage} = store;
-        const {activeMessageId} = storeToRefs(store);
-
         const res: EnterMessage[] = [];
-
         const message = findMessage(activeMessageId.value)
         if (!message) return [];
         const foundContent = message.content;
@@ -133,11 +133,9 @@ class LLMInteraction implements LLM {
         if (!this.Coze) {
             return;
         }
-        const {botId} = coze
         let messages = this.createMessage();
-
-        const v = await this.Coze.chat.stream({
-            bot_id: botId,
+        const v = this.Coze.chat.stream({
+            bot_id: botId.value,
             auto_save_history: true,
             additional_messages: messages,// 如果 additional_messages 中有多条消息，则最后一条会作为本次用户 Query，其他消息为上下文。
             conversation_id: conversationId,
@@ -170,17 +168,10 @@ class LLMInteraction implements LLM {
         console.log('=== End of Streaming Chat ===');
     }
 
-
-    public setConfig = (baseUrl: string, pat: string, botId: string) => {
-        coze.setBaseUrl(baseUrl);
-        coze.setPat(pat);
-        coze.setBotId(botId);
-    }
-
     public printSetting = () => {
-        console.log('BaseUrl:', coze.url);
-        console.log('PAT:', coze.pat);
-        console.log('BotId:', coze.botId);
+        console.log('BaseUrl:', url);
+        console.log('PAT:', pat);
+        console.log('BotId:', botId);
     }
 }
 

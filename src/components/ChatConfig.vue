@@ -1,16 +1,25 @@
 <script setup lang="ts">
-import {coze} from "@/configs";
+import {configStore} from "@/stores";
+import {storeToRefs} from "pinia";
+import {toRefs} from "vue";
+
+
+const config = configStore();
+
+const {changeUrl, changePat, changeBotId} = config
+const {coze} = storeToRefs(config)
+const {url, pat, botId} = toRefs(coze.value)
+
+
 </script>
 
 <template>
-  <Teleport to="body">
-    <div class="chat-config">
-      <span>配置文件</span>
-      <input :value="coze.url" placeholder="Base URL"/>
-      <input :value="coze.botId" placeholder="Bot ID"/>
-      <input :value="coze.pat" placeholder="PAT"/>
-    </div>
-  </Teleport>
+  <div class="chat-config">
+    <span>自定义配置</span>
+    <!--    <input :value="url" placeholder="Base URL"/>-->
+    <!--    <input :value="botId" placeholder="Bot ID"/>-->
+    <!--    <input :value="pat" placeholder="PAT"/>-->
+  </div>
 </template>
 
 <style scoped lang="scss">

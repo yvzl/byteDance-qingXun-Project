@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import {storeToRefs} from "pinia"
 import {computed, ref} from "vue";
 import {messageStore} from "@/stores"
-import {storeToRefs} from "pinia"
-import MessageList from "@/components/MessageList.vue";
 import type {Message} from "@/types";
 import MainBottom from "@/components/MainBottom.vue";
+import MessageList from "@/components/MessageList.vue";
 
 const store = messageStore()
 const {findMessage} = store

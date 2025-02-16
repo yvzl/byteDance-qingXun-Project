@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {messageStore} from "@/stores"
-import {Message, MessageOne} from '@icon-park/vue-next'
-import Tooltip from "@/components/Tooltip.vue";
 import {storeToRefs} from "pinia";
+import {messageStore} from "@/stores";
+import {Message, MessageOne} from '@icon-park/vue-next';
+import Tooltip from "@/components/Tooltip.vue";
 
 const store = messageStore()
 const {changeMainState} = store

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {Delete, Edit} from '@icon-park/vue-next'
-import {Message} from "@/types";
 import {messageStore} from "@/stores";
+import {Delete, Edit} from '@icon-park/vue-next';
+import type {Message} from "@/types";
 
 const {deleteMessage, renameMessage} = messageStore();
 

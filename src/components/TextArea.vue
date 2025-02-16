@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {ref, watch, onMounted, useTemplateRef, type CSSProperties} from 'vue';
 import {useModel} from "@/hooks";
+import {ref, watch, onMounted, useTemplateRef, type CSSProperties} from 'vue';
 
 const props = defineProps<{
   modelValue: string,

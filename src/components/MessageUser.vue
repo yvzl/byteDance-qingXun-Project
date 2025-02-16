@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MessageItem from '@/components/MessageItem.vue'
 import {ContentType} from "@/types";
+import MessageItem from '@/components/MessageItem.vue';
 
 defineProps<{ value: string, type: ContentType }>()
 </script>

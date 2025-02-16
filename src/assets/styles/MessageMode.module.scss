@@ -1,9 +1,9 @@
 .message-mode {
   display: flex;
-  align-items: center;
   color: #aab1bdff;
 
-  > .btn {
+  .btn {
+    display: flex;
     cursor: pointer;
   }
 }
