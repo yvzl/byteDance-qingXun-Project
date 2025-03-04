@@ -17,7 +17,7 @@ const addCopyEvent = () => {
   content.value.querySelectorAll("pre").forEach((item: HTMLElement) => {
     const button = item.querySelector("button");
     if (!button) return
-    button.addEventListener("click", () => copy(item.textContent?.slice(0, -2) || ""));
+    button.addEventListener("click", () => item && copy(item.querySelector("code")?.innerText || ""));
   });
 };
 

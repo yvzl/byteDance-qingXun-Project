@@ -75,7 +75,7 @@ const chatWithCoze = async () => {
         })
       },
     });
-
+    console.log(response.value)
     if (response.value.trim() === "") return;
     /*
         const id = `${getContentLength(activeMessageId.value) + 1}`
