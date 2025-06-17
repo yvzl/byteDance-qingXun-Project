@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Copy from "@/components/Copy.vue";
+import {copy} from "@/utils"
+import {Copy} from "@icon-park/vue-next";
 
 defineProps<{
   value: string;
@@ -8,7 +9,9 @@ defineProps<{
 
 <template>
   <div class="message-tools">
-    <Copy :value="value"/>
+    <div class="copy">
+      <Copy @click="copy(value)" theme="outline" size="20"/>
+    </div>
   </div>
 </template>
 

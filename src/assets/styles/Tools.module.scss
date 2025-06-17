@@ -2,5 +2,12 @@
   display: flex;
   justify-content: space-between;
   padding: 25px 10px 34px 3px;
+
+  > .title {
+    > h1 {
+      font-size: 22px;
+      color: #aab1bdff;
+    }
+  }
 }
 

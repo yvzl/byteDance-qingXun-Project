@@ -1,27 +1,16 @@
-import {reactive, toRefs} from 'vue'
+import {reactive} from 'vue'
 import {defineStore} from "pinia";
 import type {Request} from "@/types";
 
 export const configStore = defineStore("", () => {
     const coze = reactive<Request>({
-        url: import.meta.env.VITE_COZE_API,
-        pat: import.meta.env.VITE_COZE_PAT,
-        botId: import.meta.env.VITE_COZE_BOTID,
+        url: "https://api.coze.cn",
+        pat: "pat_8WQx7tAzEVlE812ldrdQJpkguRzUyhlNS49OPmzBNN8u1bgVH10CO6dfg59pnEYn",
+        botId: "7444887625741434921",
     })
-
-    const {url, pat, botId} = toRefs(coze)
-
-    const changeUrl = (_url: string) => url.value = _url
-
-    const changePat = (_pat: string) => pat.value = _pat
-
-    const changeBotId = (_botId: string) => botId.value = _botId
 
     return {
         coze,
-        changeUrl,
-        changePat,
-        changeBotId
     }
 }, {
     persist: true,

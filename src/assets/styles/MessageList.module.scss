@@ -7,7 +7,6 @@
   @include scrollBar(rgba(255, 255, 255, .1), #555);
 
   > ul {
-
     > li {
       margin-bottom: 30px;
       display: flex;
@@ -16,9 +15,5 @@
     > .user {
       justify-content: flex-end;
     }
-  }
-
-  @media (max-width: 850px) {
-    width: auto; // 在小屏幕上宽度变为 auto
   }
 }

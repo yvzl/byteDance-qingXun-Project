@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import {useModel} from "@/hooks";
 import MButton from "@/components/MButton.vue";
-import ModalClose from "@/components/ModalClose.vue";
+import {Close} from "@icon-park/vue-next";
 
 const props = withDefaults(defineProps<{
-  modelValue: boolean
   title?: string
   content?: string
   width?: string
@@ -40,11 +38,11 @@ const props = withDefaults(defineProps<{
   confirmClose: false,
 })
 
-const {modelValue, closeOnClickModal, confirmClose} = props
+const {closeOnClickModal, confirmClose} = props
 
-const emits = defineEmits(['update:modelValue', 'confirm', 'cancel', 'close'])
+const emits = defineEmits(['confirm', 'cancel', 'close'])
 
-const state = useModel(modelValue, props, "modelValue", emits, "update:modelValue")
+const state = defineModel<boolean>()
 
 const close = () => {
   emits('close')
@@ -78,15 +76,21 @@ const cancel = () => {
             <slot name="header">
               <p>{{ title }}</p>
             </slot>
-            <ModalClose v-if="showClose" @click="close"/>
+            <div class="modal-close" v-if="showClose" @click="close">
+              <Close theme="outline" size="16"/>
+            </div>
           </div>
           <div :class="['body', bodyClass]">
             <slot>{{ content }}</slot>
           </div>
           <div v-if="showFooter" :class="['footer', footerClass]">
             <slot name="footer">
-              <MButton v-if="showCancelButton" @click="cancel" :value="cancelButtonText"/>
-              <MButton v-if="showConfirmButton" @click="confirm" :value="confirmButtonText" type="primary"/>
+              <div v-if="showCancelButton" class="btn">
+                <MButton @click="cancel" :value="cancelButtonText"/>
+              </div>
+              <div v-if="showConfirmButton" class="btn">
+                <MButton @click="confirm" :value="confirmButtonText" type="primary"/>
+              </div>
             </slot>
           </div>
         </div>

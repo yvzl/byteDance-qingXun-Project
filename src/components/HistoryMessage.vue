@@ -77,6 +77,5 @@ document.body.addEventListener("click", () => state.value = false)
 </template>
 
 <style scoped lang="scss">
-/* 添加一些样式以美化列表和按钮 */
 @use "@/assets/styles/HistoryMessage.module";
 </style>

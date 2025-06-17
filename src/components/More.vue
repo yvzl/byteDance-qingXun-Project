@@ -21,7 +21,3 @@ const click = () => {
     <More theme="outline" size="24"/>
   </div>
 </template>
-
-<style scoped lang="scss">
-@use "@/assets/styles/More.module";
-</style>
