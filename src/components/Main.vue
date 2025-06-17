@@ -2,9 +2,9 @@
 import {storeToRefs} from "pinia"
 import {computed, ref} from "vue";
 import {messageStore} from "@/stores"
-import type {Message} from "@/types";
 import MessageList from "@/components/MessageList.vue";
 import InputBox from "@/components/InputBox.vue";
+import type {IMessage} from "@/types";
 
 const store = messageStore()
 const {findMessage} = store
@@ -12,7 +12,7 @@ const {activeMessageId} = storeToRefs(store)
 
 const value = ref<string>("")
 const messageListRef = ref<InstanceType<typeof MessageList> | null>(null)
-const messageData = computed<Message["content"]>(() => findMessage(activeMessageId.value)?.content || []) // 通过 id 查找当前会话
+const messageData = computed<IMessage["content"]>(() => findMessage(activeMessageId.value)?.content || [])
 </script>
 
 <template>

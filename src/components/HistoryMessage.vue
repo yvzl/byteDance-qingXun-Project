@@ -2,7 +2,7 @@
 import {storeToRefs} from "pinia";
 import {messageStore} from "@/stores";
 import {computed, reactive, toRefs} from "vue";
-import type {Message} from "@/types";
+import type {IMessage} from "@/types";
 import More from "@/components/More.vue";
 import MoreDialog from "@/components/MoreDialog.vue";
 
@@ -11,7 +11,7 @@ const {changeMessageId} = store;
 const {data, activeMessageId} = storeToRefs(store);
 
 const dialog = reactive<{
-  dialogId: Message["id"]
+  dialogId: IMessage["id"]
   posX: number
   posY: number
   state: boolean
@@ -38,7 +38,7 @@ const groupMap = new Map([
   [(num: number) => num <= getDayTime(30), "30日内"],
 ])
 
-const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({date}) => {
+const dataGroups = computed(() => Object.entries(Object.groupBy(Object.values(data.value), ({date}) => {
   const toDate = new Date(date);
   for (const [key, value] of groupMap) {
     if (key(resetDate(new Date()).getTime() - resetDate(toDate).getTime())) return value
@@ -50,7 +50,7 @@ const dataGroups = computed(() => Object.entries(Object.groupBy(data.value, ({da
   }).format(toDate)
 })).reverse())
 
-const moreClick = (_id: Message["id"], x: number, y: number) => {
+const moreClick = (_id: IMessage["id"], x: number, y: number) => {
   dialogId.value = _id
   posX.value = x
   posY.value = y

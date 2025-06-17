@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {messageStore} from "@/stores";
 import {Delete, Edit} from '@icon-park/vue-next';
-import type {Message} from "@/types";
+import type {IMessage} from "@/types";
 
 const {deleteMessage, renameMessage} = messageStore();
 
 const {id} = defineProps<{
-  id: Message["id"]
+  id: IMessage["id"]
   posX: number
   posY: number
   state: boolean

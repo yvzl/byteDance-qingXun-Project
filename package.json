@@ -15,7 +15,6 @@
     "@shikijs/markdown-it": "^2.1.0",
     "@types/markdown-it": "^14.1.2",
     "@types/node": "^22.10.9",
-    "axios": "^1.7.9",
     "github-markdown-css": "^5.8.1",
     "markdown-it": "^14.1.0",
     "pinia": "^2.3.1",

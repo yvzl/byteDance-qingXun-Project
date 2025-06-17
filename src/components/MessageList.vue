@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
-import {type Message, ContentType} from "@/types";
+import {type IMessage, ContentType} from "@/types";
 import MessageItem from "@/components/MessageItem.vue";
 
-defineProps<{ data: Message["content"] }>()
+defineProps<{ data: IMessage["content"] }>()
 
 const messageList = useTemplateRef<HTMLDivElement>("messageList")
 

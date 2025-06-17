@@ -5,22 +5,25 @@ enum ContentType {
     assistant = "assistant",
 }
 
-interface Message {
+interface IMessage {
     id: string
     date: string | Date
     name: string
-    content: Content[]
+    content: IContent[]
 }
 
-interface Content {
+interface IContent {
     id: string
     role: ContentType
     value: string
     fileInfo?: FileObject
 }
 
+type MessageMap = Record<IMessage["id"], IMessage>
+
 export {
-    Message,
+    IMessage,
     ContentType,
-    Content,
+    IContent,
+    MessageMap
 }

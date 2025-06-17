@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {useTemplateRef} from "vue";
 import {More} from '@icon-park/vue-next';
-import type {Message} from "@/types";
+import type {IMessage} from "@/types";
 
 const more = useTemplateRef<HTMLDivElement>("more")
 
-const {id} = defineProps<{ id: Message["id"] }>()
+const {id} = defineProps<{ id: IMessage["id"] }>()
 
 const emits = defineEmits(["moreClick"])
 
