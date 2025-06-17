@@ -119,5 +119,5 @@ export const messageStore = defineStore("messageStore", () => {
         changeMainState
     }
 }, {
-    persist: false,
+    persist: true,
 })

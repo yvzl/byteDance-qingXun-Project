@@ -24,5 +24,5 @@ export const configStore = defineStore("", () => {
         changeBotId
     }
 }, {
-    persist: false,
+    persist: true,
 })
