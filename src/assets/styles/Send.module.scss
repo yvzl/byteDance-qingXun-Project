@@ -1,16 +1,18 @@
+@use "Variables" as *;
+
 .send {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 8px;
   border-radius: 100%;
-  color: white;
-  background-color: #4d6bfe;
-  cursor: pointer;
-}
-
-.disable {
   cursor: no-drop;
   color: #4b4b5cff;
   background-color: #72727aff;
+}
+
+.active {
+  color: $color2;
+  background-color: $color1;
+  cursor: pointer;
 }

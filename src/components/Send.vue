@@ -2,11 +2,10 @@
 import {Send} from '@icon-park/vue-next';
 
 const {size = 24} = defineProps<{ state: boolean, size?: number }>()
-const emits = defineEmits(["send"])
 </script>
 
 <template>
-  <div @click="!state && emits('send')" :class="{send: true, disable: state}">
+  <div :class="{send: true, active: state}">
     <Send theme="outline" :state=state :size="size"/>
   </div>
 </template>

@@ -1,3 +1,5 @@
+@use "Variables" as *;
+
 .m-input {
   width: 100%;
 
@@ -16,7 +18,7 @@
     }
 
     &:focus {
-      border: 1px solid #4D6AFFFF;
+      border: 1px solid $color1;
     }
 
     &:disabled {

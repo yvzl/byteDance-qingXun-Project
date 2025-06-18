@@ -1,8 +1,17 @@
+@use "Variables" as *;
+
 .message-tools {
   padding-top: 12px;
+  display: flex;
+  gap: 15px;
 
-  > .copy {
+  > div {
     cursor: pointer;
     color: #ccd3deff;
+    font-size: 20px;
+
+    &:hover {
+      color: $color1;
+    }
   }
 }

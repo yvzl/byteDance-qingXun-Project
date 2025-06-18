@@ -16,5 +16,5 @@ withDefaults(defineProps<{
 </template>
 
 <style scoped lang="scss">
-@use "@/assets/styles/Button.module";
+@use "@/assets/styles/MButton.module";
 </style>

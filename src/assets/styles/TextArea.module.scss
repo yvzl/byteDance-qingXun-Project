@@ -1,4 +1,5 @@
 @use "Mixins" as *;
+@use "Variables" as *;
 
 .text-area {
   > textarea {
@@ -8,6 +9,7 @@
     border: none;
     background-color: transparent;
     resize: none;
-    @include scrollBar(#555, rgba(255, 255, 255, .2));
+    color: $color2;
+    @include scrollBar(#555, rgba(255, 255, 255, .2), 6px);
   }
 }

@@ -1,77 +1,118 @@
 import {ref} from 'vue'
 import {defineStore} from "pinia";
-import {type IMessage, MessageMap} from "@/types"
+import type {IContent, IMessage, ToMap} from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
-    const data = ref<MessageMap>({
-        "1": {
-            id: "1",
-            date: new Date("2023-01-02"),
-            name: "新会话1",
-            content: []
-        }
-    })
-    const max_id = ref<number>(2)
-    const activeMessageId = ref<IMessage['id']>("1")
+    type MessageMap = ToMap<IMessage>
+    type messageId = IMessage['id'] | null
+    type contentId = IContent['id'] | null
+
+    const data = ref<MessageMap>({})
+
+    const runningState = ref<boolean>(false)
+    const maxId = ref<number>(1)
+    const activeMessageId = ref<messageId>(null)
     const Response = ref<string>("")
 
-    const changeMessageId = (id: IMessage["id"]) => activeMessageId.value = id
+    const addMaxId = () => ++maxId.value
 
-    const findMessage = (id: IMessage["id"]): IMessage | undefined => data.value[id]
+    const changeMessageId = (id: messageId) => activeMessageId.value = id
 
-    const getContentLength = (id: IMessage["id"]): number => findMessage(id)?.content?.length || 0
 
-    const addContent = (id: IMessage["id"], ...args: IMessage["content"]) => {
+    const findMessage = (id: messageId): IMessage | undefined => {
+        if (!id) return
+        return data.value[id]
+    }
+
+    const findContent = (data: IMessage["content"], id: contentId) => {
+        if (!id) return
+        return data[id]
+    }
+
+    const changeRunning = () => runningState.value = !runningState.value
+
+    const addContent = (id: messageId, data: IContent) => {
         const currentMessageList = findMessage(id)
         if (!currentMessageList) return
-        currentMessageList.content.push(...args);
+        currentMessageList.content[data.id] = data
     }
 
-    const updateContent = (response: string) => {
+    const updateContent = (id: messageId, contentId: IContent["id"], response: string) => {
         Response.value = response;
-        const currentMessage = findMessage(activeMessageId.value);
+        if (!id) return;
+        const currentMessage = findMessage(id);
         if (!currentMessage) return
-        const currentContent = currentMessage.content
-        const lastItem = currentContent[currentContent.length - 1];
-        if (lastItem && 'value' in lastItem) lastItem.value = Response.value;
+        const lastItem = findContent(currentMessage.content, contentId)
+        if(!lastItem) return;
+        lastItem.data.chat = Response.value
     }
 
-    const addMessage = () => {
-        const id = `${max_id.value}`
+    // const spliceContent = (id: string, contentId: string) => {
+    //     const v = data.value
+    //     if(!(id in v)) return
+    //     let state = false
+    //     for(const key in v[id as keyof typeof v]) {
+    //         if(state) delete v[key]
+    //         if(key === contentId) {
+    //             delete v[key]
+    //             state = true
+    //         }
+    //     }
+    // }
+
+    const addMessage = () => fetch("https://api.coze.cn/v1/conversation/create", {
+        method: "POST",
+        headers: {
+            Authorization: "Bearer pat_8WQx7tAzEVlE812ldrdQJpkguRzUyhlNS49OPmzBNN8u1bgVH10CO6dfg59pnEYn",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            bot_id: "7444887625741434921",
+        })
+    }).then(res => res.json()).then(res => {
+        const id = res.data.id
         data.value[id] = {
             id,
             date: new Date(),
-            name: `新会话${id}`,
-            content: [],
+            name: `新会话${maxId.value}`,
+            content: {}
         }
-        changeMessageId(id);
-        ++max_id.value
-    }
+        changeMessageId(id)
+    })
 
-    const deleteMessage = (id: IMessage["id"]) => {
+    const deleteMessage = (id: messageId) => {
         const currentMessage = findMessage(id);
         if (!currentMessage) return
-        delete data.value[id];
+        if (id === activeMessageId.value) changeMessageId(null)
+        delete data.value[id as string];
     }
 
-    const renameMessage = (id: IMessage["id"], name: string) => {
+    const renameMessage = (id: messageId, name: string) => {
         const currentMessage = findMessage(id);
         if (!currentMessage) return
         currentMessage.name = name;
+    }
+
+    const toggleMessage = (id: string) => {
+        changeMessageId(id)
     }
 
     return {
         data,
         Response,
         activeMessageId,
+        maxId,
+        runningState,
         findMessage,
         addMessage,
         changeMessageId,
         addContent,
-        getContentLength,
         updateContent,
         renameMessage,
         deleteMessage,
+        addMaxId,
+        changeRunning,
+        toggleMessage
     }
 }, {
     persist: true,

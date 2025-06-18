@@ -7,7 +7,7 @@ import More from "@/components/More.vue";
 import MoreDialog from "@/components/MoreDialog.vue";
 
 const store = messageStore();
-const {changeMessageId} = store;
+const {toggleMessage} = store;
 const {data, activeMessageId} = storeToRefs(store);
 
 const dialog = reactive<{
@@ -65,8 +65,7 @@ document.body.addEventListener("click", () => state.value = false)
     <div class="history-message-item" v-for="[key, value] of dataGroups" :key="key">
       <span>{{ key }}</span>
       <ul>
-        <li :class="{active: id === activeMessageId}" v-for="{id, name} in value" :key="id"
-            @click="changeMessageId(id)">
+        <li :class="{active: id === activeMessageId}" v-for="{id, name} in value" :key="id" @click="toggleMessage(id)">
           <p>{{ name }}</p>
           <More @more-click="moreClick" :id="id"/>
         </li>

@@ -1,3 +1,5 @@
+@use "Variables" as *;
+
 .more-dialog {
   position: absolute;
   background-color: #434343;
@@ -16,6 +18,7 @@
       align-items: center;
       font-size: 14px;
       border-radius: 8px;
+      color: $color2;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.3);

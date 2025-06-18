@@ -1,29 +1,26 @@
-import { FileObject } from "@coze/api"
+import type {ToMap} from "@/types";
 
-enum ContentType {
-    user = "user", 
-    assistant = "assistant",
+enum RoleType {
+    user = "user",
+    chat = "chat",
 }
 
 interface IMessage {
     id: string
     date: string | Date
     name: string
-    content: IContent[]
+    content: ToMap<IContent>
 }
 
 interface IContent {
     id: string
-    role: ContentType
-    value: string
-    fileInfo?: FileObject
+    data: {
+        [key in RoleType]: string;
+    }
 }
 
-type MessageMap = Record<IMessage["id"], IMessage>
-
 export {
+    RoleType,
     IMessage,
-    ContentType,
     IContent,
-    MessageMap
 }

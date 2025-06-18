@@ -1,10 +1,12 @@
+@use "Variables" as *;
+
 .m-button {
   > button {
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
     padding: 6px 15px;
-    color: white;
+    color: $color2;
     transition: background-color 0.2s linear, border 0.2s linear, color 0.2s linear;
 
     &:disabled {
@@ -19,17 +21,18 @@
 
     &:not(:disabled):hover {
       background-color: rgba(77, 106, 255, 0.1);
-      border: 1px solid #4D6AFFFF;
-      color: #4D6AFFFF;
+      border: 1px solid $color1;
+      color: $color1;
     }
   }
 
   > .primary {
     border: none;
-    background-color: #4D6AFFFF;
+    background-color: $color1;
 
     &:not(:disabled):hover {
-      background-color: rgba(73, 103, 255, 0.7);
+      background-color: $color1;
+      opacity: 0.7;
     }
   }
 }

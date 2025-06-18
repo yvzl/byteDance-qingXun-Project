@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {messageStore} from "@/stores";
 
-const {addMessage} = messageStore();
+const {changeMessageId} = messageStore();
 </script>
 
 <template>
   <div class="create-message">
-    <div @click="addMessage">开启新对话</div>
+    <div @click="changeMessageId(null)">开启新对话</div>
   </div>
 </template>
 

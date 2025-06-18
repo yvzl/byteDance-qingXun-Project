@@ -10,7 +10,7 @@ defineProps<{
 <template>
   <div class="message-tools">
     <div class="copy">
-      <Copy @click="copy(value)" theme="outline" size="20"/>
+      <Copy @click="copy(value)"/>
     </div>
   </div>
 </template>

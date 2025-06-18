@@ -1,3 +1,5 @@
+@use "Variables" as *;
+
 .modal {
   position: absolute;
   z-index: 99999;
@@ -34,7 +36,7 @@
         transition: color 0.1s linear;
 
         &:hover {
-          color: #4D6AFFFF;
+          color: $color1;
         }
       }
     }

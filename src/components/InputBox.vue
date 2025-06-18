@@ -1,33 +1,34 @@
 <script setup lang="ts">
 import {debounce, LLM} from "@/utils";
 import {storeToRefs} from "pinia";
-import {ContentType} from "@/types";
 import {messageStore} from "@/stores";
-import {ref, computed, onMounted} from "vue";
+import {ref, computed, onMounted, onUnmounted, unref} from "vue";
 import Send from "@/components/Send.vue";
 import TextArea from "@/components/TextArea.vue";
 
+const emits = defineEmits(["beforeSend", "afterSend"])
+
 const store = messageStore()
-const {addContent, getContentLength, updateContent} = store
-const {activeMessageId} = storeToRefs(store)
+const {addContent, updateContent, changeRunning} = store
+const {activeMessageId, runningState} = storeToRefs(store)
 
 const value = defineModel<string>()
 const response = ref<string>("")
-const state = computed<boolean>(() => /^\s*$/g.test(value?.value ?? ""))
+const state = computed<boolean>(() => !(value?.value?.trim() === ""))
+const contentId = ref<string>("")
 
 const sendMsg = async () => {
-  if(!value.value) return
-  const id = getContentLength(activeMessageId.value) + 1 + ""
-  addContent(activeMessageId.value, {
-    id,
-    role: ContentType.user,
-    value: value.value,
+  if(!state.value || runningState.value) return
+  changeRunning()
+  emits("beforeSend", async () => {
+    const messageId = unref(activeMessageId.value)
+    if(messageId === null) return
+    await chatWithCoze(messageId)
   })
-  await chatWithCoze()
 }
 
-const chatWithCoze = async () => LLM({
-    url: "https://api.coze.cn/v3/chat",
+const chatWithCoze = async (messageId: string) => LLM({
+    url: `https://api.coze.cn/v3/chat?conversation_id=${messageId}`,
     query: {
       method: "POST",
       headers: {
@@ -46,30 +47,38 @@ const chatWithCoze = async () => LLM({
         }]
       })
     },
-    onCreated() {
-      value.value = ""
-      addContent(activeMessageId.value, {
-        id: `${getContentLength(activeMessageId.value) + 1}`,
-        role: ContentType.assistant,
-        value: ""
+    onCreated(id: string) {
+      contentId.value = id
+      addContent(messageId, {
+        id,
+        data: {
+          user: value.value as string,
+          chat: ""
+        }
       })
+      value.value = ""
     },
     onDelta(delta: string) {
       response.value += delta;
-      updateContent(response.value);
+      updateContent(messageId, contentId.value, response.value);
     },
     onChatComplete() {
+      emits("afterSend")
       response.value = "";
+      changeRunning()
     }
 });
 
-onMounted(() => window.addEventListener('keydown', debounce(e => e.key === 'Enter' && !e.shiftKey && sendMsg(), 500)))
+const keydownHandler = debounce(e => e.key === 'Enter' && !e.shiftKey && sendMsg(), 300)
+
+onUnmounted(() => window.removeEventListener('keydown', keydownHandler))
+onMounted(() => window.addEventListener('keydown', keydownHandler))
 </script>
 
 <template>
   <div class="input-box">
     <TextArea v-model="value" placeholder="请输入内容..." width="100%"/>
-    <Send @send="sendMsg" :state="state" :size="24" style="margin-left: 20px"/>
+    <Send @click="sendMsg" :state="(state && !runningState)" :size="24" style="margin-left: 20px"/>
   </div>
 </template>
 

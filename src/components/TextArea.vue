@@ -10,7 +10,7 @@ const props = defineProps<{
   }
 }>();
 
-const {placeholder = "", autoSize = {minRows: 2, maxRows: 5}} = props
+const {placeholder = "", autoSize = {minRows: 2, maxRows: 10}} = props
 
 const value = defineModel<string>()
 const textAreaRef = useTemplateRef<HTMLTextAreaElement>("textAreaRef");
@@ -37,7 +37,6 @@ const calcHeight = () => {
   textAreaStyle.value = {
     height: `${height}px`,
     overflow: scrollHeight > maxHeight ? 'auto' : 'hidden',
-    color: 'white',
   };
 };
 

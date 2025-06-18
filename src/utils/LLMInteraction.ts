@@ -1,7 +1,7 @@
 interface ILLM {
     url: string
     query: RequestInit
-    onCreated?: () => void
+    onCreated?: (id: string) => void
     onInProgress?: () => void
     onDelta?: (data: string) => void
     onMessageComplete?: (data: string) => void
@@ -10,13 +10,15 @@ interface ILLM {
     onError?: (err: Error) => void
 }
 
+const dataParse = (data: string) => JSON.parse(data.replace("data:", ""))
+
 export const LLM = (data: ILLM) => {
     const {url, query, onCreated, onInProgress, onDelta, onMessageComplete, onChatComplete, onDone, onError} = data
     const map = {
-        "event:conversation.chat.created": () => onCreated && onCreated(),
+        "event:conversation.chat.created": (data: string) => onCreated && onCreated(dataParse(data).id),
         "event:conversation.chat.in_progress":() => onInProgress && onInProgress(),
-        "event:conversation.message.delta": (data: string) => onDelta && onDelta(JSON.parse(data.replace("data:", "")).content),
-        "event:conversation.message.completed": (data: string) => onMessageComplete && onMessageComplete(JSON.parse(data.replace("data:", "")).content),
+        "event:conversation.message.delta": (data: string) => onDelta && onDelta(dataParse(data).content),
+        "event:conversation.message.completed": (data: string) => onMessageComplete && onMessageComplete(dataParse(data).content),
         "event:conversation.chat.completed": () => onChatComplete && onChatComplete(),
         "event:done": () => onDone && onDone(),
     }

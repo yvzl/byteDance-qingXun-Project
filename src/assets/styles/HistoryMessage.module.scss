@@ -1,4 +1,5 @@
 @use "Mixins" as *;
+@use "@/assets/styles/Variables" as *;
 
 .history-message {
   height: 70%;
@@ -12,8 +13,10 @@
     }
 
     > ul {
+      padding-right: 10px;
+
       > li {
-        color: white;
+        color: $color2;
         width: 204px;
         height: 38px;
         display: flex;

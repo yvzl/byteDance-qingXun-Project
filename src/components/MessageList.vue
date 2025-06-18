@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import {useTemplateRef} from "vue";
-import {type IMessage, ContentType} from "@/types";
+import {type IMessage, RoleType} from "@/types";
 import MessageItem from "@/components/MessageItem.vue";
 
-defineProps<{ data: IMessage["content"] }>()
-
-const messageList = useTemplateRef<HTMLDivElement>("messageList")
-
-defineExpose({
-  messageList
-})
+defineProps<{ list: IMessage["content"] }>()
 </script>
 
 <template>
-  <div ref="messageList" class="message-list">
+  <div class="message-list">
     <ul>
-      <li v-for="{id, role, value} in data" :class="{[ContentType[role]]: true}" :key="id">
-        <MessageItem :value="value" :type="role"/>
-      </li>
+      <template v-for="{id, data} in list" :key="id">
+        <li v-for="(value, type) of data" :class="{[RoleType[type]]: true}" :key="type">
+          <MessageItem :value="value" :type="type"/>
+        </li>
+      </template>
     </ul>
   </div>
 </template>
