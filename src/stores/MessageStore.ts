@@ -47,19 +47,6 @@ export const messageStore = defineStore("messageStore", () => {
         lastItem.data.chat = Response.value
     }
 
-    // const spliceContent = (id: string, contentId: string) => {
-    //     const v = data.value
-    //     if(!(id in v)) return
-    //     let state = false
-    //     for(const key in v[id as keyof typeof v]) {
-    //         if(state) delete v[key]
-    //         if(key === contentId) {
-    //             delete v[key]
-    //             state = true
-    //         }
-    //     }
-    // }
-
     const addMessage = () => fetch("https://api.coze.cn/v1/conversation/create", {
         method: "POST",
         headers: {

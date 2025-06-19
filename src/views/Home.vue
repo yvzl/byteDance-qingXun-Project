@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import {storeToRefs} from "pinia";
+import {messageStore} from "@/stores"
 import Main from '@/components/Main.vue';
 import SideBar from '@/components/SideBar.vue'
 import DefaultMain from "@/components/DefaultMain.vue";
-import {messageStore} from "@/stores"
-import {storeToRefs} from "pinia";
 
 const {activeMessageId} = storeToRefs(messageStore())
 </script>

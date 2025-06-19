@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
-import InputBox from "@/components/InputBox.vue";
 import {messageStore} from "@/stores";
+import InputBox from "@/components/InputBox.vue";
 
 const {addMessage, addMaxId} = messageStore()
 

@@ -2,9 +2,9 @@
 import {storeToRefs} from "pinia";
 import {messageStore} from "@/stores";
 import {computed, reactive, toRefs} from "vue";
-import type {IMessage} from "@/types";
 import More from "@/components/More.vue";
 import MoreDialog from "@/components/MoreDialog.vue";
+import type {IMessage} from "@/types";
 
 const store = messageStore();
 const {toggleMessage} = store;

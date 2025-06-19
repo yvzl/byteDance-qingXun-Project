@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MButton from "@/components/MButton.vue";
 import {Close} from "@icon-park/vue-next";
+import MButton from "@/components/MButton.vue";
 
 const props = withDefaults(defineProps<{
   title?: string

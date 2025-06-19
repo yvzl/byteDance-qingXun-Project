@@ -1,7 +1,9 @@
 import MarkdownIt from 'markdown-it'
 import Shiki from '@shikijs/markdown-it'
 
-const md: MarkdownIt = MarkdownIt()
+const md: MarkdownIt = MarkdownIt({
+    breaks: true
+})
 
 md.use(await Shiki({
     themes: {
