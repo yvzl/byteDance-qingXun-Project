@@ -4,7 +4,7 @@
 <template>
   <div class="tools">
     <div class="title">
-      <h1>码智引擎</h1>
+      <h1>MyChat</h1>
     </div>
   </div>
 </template>

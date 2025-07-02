@@ -3,6 +3,7 @@ import {debounce, LLM} from "@/utils";
 import {storeToRefs} from "pinia";
 import {messageStore} from "@/stores";
 import {ref, computed, onMounted, onUnmounted, unref} from "vue";
+import {botId, userId, baseUrl, pat} from "@/configs"
 import Send from "@/components/Send.vue";
 import TextArea from "@/components/TextArea.vue";
 
@@ -28,17 +29,17 @@ const sendMsg = async () => {
 }
 
 const chatWithCoze = async (messageId: string) => LLM({
-    url: `https://api.coze.cn/v3/chat?conversation_id=${messageId}`,
+    url: `${baseUrl}/v3/chat?conversation_id=${messageId}`,
     query: {
       method: "POST",
       headers: {
-        Authorization: "Bearer pat_8WQx7tAzEVlE812ldrdQJpkguRzUyhlNS49OPmzBNN8u1bgVH10CO6dfg59pnEYn",
+        Authorization: pat,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        bot_id: "7444887625741434921",
+        bot_id: botId,
         stream: true,
-        user_id: "7444880589150634021",
+        user_id: userId,
         auto_save_history: true,
         additional_messages: [{
           role: "user",
@@ -66,6 +67,9 @@ const chatWithCoze = async (messageId: string) => LLM({
       emits("afterSend")
       response.value = "";
       changeRunning()
+    },
+    onError() {
+      console.log(1)
     }
 });
 

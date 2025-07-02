@@ -1,5 +1,6 @@
 import {ref} from 'vue'
 import {defineStore} from "pinia";
+import {botId, baseUrl, pat} from "@/configs"
 import type {IContent, IMessage, ToMap} from "@/types"
 
 export const messageStore = defineStore("messageStore", () => {
@@ -17,7 +18,6 @@ export const messageStore = defineStore("messageStore", () => {
     const addMaxId = () => ++maxId.value
 
     const changeMessageId = (id: messageId) => activeMessageId.value = id
-
 
     const findMessage = (id: messageId): IMessage | undefined => {
         if (!id) return
@@ -47,14 +47,14 @@ export const messageStore = defineStore("messageStore", () => {
         lastItem.data.chat = Response.value
     }
 
-    const addMessage = () => fetch("https://api.coze.cn/v1/conversation/create", {
+    const addMessage = () => fetch(`${baseUrl}/v1/conversation/create`, {
         method: "POST",
         headers: {
-            Authorization: "Bearer pat_8WQx7tAzEVlE812ldrdQJpkguRzUyhlNS49OPmzBNN8u1bgVH10CO6dfg59pnEYn",
+            Authorization: pat,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            bot_id: "7444887625741434921",
+            bot_id: botId,
         })
     }).then(res => res.json()).then(res => {
         const id = res.data.id
@@ -65,6 +65,8 @@ export const messageStore = defineStore("messageStore", () => {
             content: {}
         }
         changeMessageId(id)
+    }).catch(() => {
+        runningState.value = false
     })
 
     const deleteMessage = (id: messageId) => {
@@ -78,10 +80,6 @@ export const messageStore = defineStore("messageStore", () => {
         const currentMessage = findMessage(id);
         if (!currentMessage) return
         currentMessage.name = name;
-    }
-
-    const toggleMessage = (id: string) => {
-        changeMessageId(id)
     }
 
     return {
@@ -99,7 +97,6 @@ export const messageStore = defineStore("messageStore", () => {
         deleteMessage,
         addMaxId,
         changeRunning,
-        toggleMessage
     }
 }, {
     persist: true,
