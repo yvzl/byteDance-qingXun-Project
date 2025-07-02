@@ -14,6 +14,7 @@ export const messageStore = defineStore("messageStore", () => {
     const maxId = ref<number>(1)
     const activeMessageId = ref<messageId>(null)
     const Response = ref<string>("")
+    const stopRequest = ref<() => void>(() => {})
 
     const addMaxId = () => ++maxId.value
 
@@ -29,7 +30,9 @@ export const messageStore = defineStore("messageStore", () => {
         return data[id]
     }
 
-    const changeRunning = () => runningState.value = !runningState.value
+    const changeStopRequest = (Fn: () => void) => stopRequest.value = Fn
+
+    const changeRunning = (state: boolean) => runningState.value = state
 
     const addContent = (id: messageId, data: IContent) => {
         const currentMessageList = findMessage(id)
@@ -88,6 +91,7 @@ export const messageStore = defineStore("messageStore", () => {
         activeMessageId,
         maxId,
         runningState,
+        stopRequest,
         findMessage,
         addMessage,
         changeMessageId,
@@ -97,6 +101,7 @@ export const messageStore = defineStore("messageStore", () => {
         deleteMessage,
         addMaxId,
         changeRunning,
+        changeStopRequest,
     }
 }, {
     persist: true,

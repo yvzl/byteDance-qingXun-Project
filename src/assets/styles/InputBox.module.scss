@@ -1,8 +1,10 @@
+@use "Variables" as *;
+
 .input-box {
   width: 80%;
   padding: 15px;
   border-radius: 24px;
-  background-color: #404045ff;
+  background-color: $color3;
   display: flex;
   align-items: flex-end;
 }

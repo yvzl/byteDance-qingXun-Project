@@ -1,18 +1,19 @@
 @use "Variables" as *;
 
-.send {
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 8px;
   border-radius: 100%;
   cursor: no-drop;
-  color: #4b4b5cff;
-  background-color: #72727aff;
+  color: $color7;
+  background-color: $color8;
+  font-size: 24px;
 }
 
 .active {
-  color: $color2;
+  color: $white1;
   background-color: $color1;
   cursor: pointer;
 }

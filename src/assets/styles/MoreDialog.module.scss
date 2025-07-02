@@ -2,7 +2,7 @@
 
 .more-dialog {
   position: absolute;
-  background-color: #434343;
+  background-color: $color3;
   z-index: 999;
   top: 0;
   border-radius: 12px;
@@ -18,7 +18,7 @@
       align-items: center;
       font-size: 14px;
       border-radius: 8px;
-      color: $color2;
+      color: $white1;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.3);
@@ -30,10 +30,10 @@
     }
 
     > .error {
-      color: #ff2b2b;
+      color: $danger1;
 
       &:hover {
-        background-color: rgba(255, 113, 113, 0.3);
+        background-color: $danger2;
       }
     }
   }

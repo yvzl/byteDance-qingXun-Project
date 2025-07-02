@@ -3,11 +3,11 @@
 
 .history-message {
   height: 70%;
-  @include scrollBar(rgba(255, 255, 255, .1), #555);
+  @include scrollBar($side_bar3, $side_bar1);
 
   > .history-message-item {
     > span {
-      color: #8e8d8d;
+      color: $color5;
       font-size: 14px;
       margin-bottom: 8px;
     }
@@ -16,7 +16,7 @@
       padding-right: 10px;
 
       > li {
-        color: $color2;
+        color: $white1;
         width: 204px;
         height: 38px;
         display: flex;
@@ -35,7 +35,7 @@
         }
 
         &:not(.active):hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: $side_bar3;
         }
 
         &:nth-of-type(1) {
@@ -44,7 +44,7 @@
       }
 
       > .active {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: $white2;
       }
     }
   }

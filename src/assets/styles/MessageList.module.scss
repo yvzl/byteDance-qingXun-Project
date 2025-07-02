@@ -1,10 +1,11 @@
 @use "Mixins" as *;
+@use "Variables" as *;
 
 .message-list {
   width: 80%;
   height: 100%;
   padding: 10px 15px;
-  @include scrollBar(rgba(255, 255, 255, .1), #555);
+  @include scrollBar($side_bar3, $side_bar1);
 
   > ul {
     > li {

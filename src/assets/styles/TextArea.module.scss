@@ -2,6 +2,8 @@
 @use "Variables" as *;
 
 .text-area {
+  margin-right: 20px;
+
   > textarea {
     width: 100%;
     font-size: 16px;
@@ -9,7 +11,7 @@
     border: none;
     background-color: transparent;
     resize: none;
-    color: $color2;
-    @include scrollBar(#555, rgba(255, 255, 255, .2), 6px);
+    color: $white1;
+    @include scrollBar($side_bar1, $side_bar2, 6px);
   }
 }
