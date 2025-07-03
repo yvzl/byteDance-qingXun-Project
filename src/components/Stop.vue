@@ -4,10 +4,11 @@ import {Square} from '@icon-park/vue-next';
 
 <template>
   <div class="stop btn active">
-    <Square theme="outline"/>
+    <Square theme="filled"/>
   </div>
 </template>
 
 <style scoped lang="scss">
+@use "@/assets/styles/Stop.module";
 @use "@/assets/styles/InputBoxBtn.module";
 </style>

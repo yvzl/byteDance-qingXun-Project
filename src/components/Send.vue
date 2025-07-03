@@ -11,5 +11,6 @@ defineProps<{ state: boolean}>()
 </template>
 
 <style scoped lang="scss">
+@use "@/assets/styles/Send.module";
 @use "@/assets/styles/InputBoxBtn.module";
 </style>

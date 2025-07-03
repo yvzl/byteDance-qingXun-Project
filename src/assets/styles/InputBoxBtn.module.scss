@@ -1,6 +1,8 @@
 @use "Variables" as *;
 
 .btn {
+  width: 40px;
+  aspect-ratio: 1 / 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,7 +11,6 @@
   cursor: no-drop;
   color: $color7;
   background-color: $color8;
-  font-size: 24px;
 }
 
 .active {

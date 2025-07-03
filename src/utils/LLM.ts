@@ -75,7 +75,7 @@ export class LLM {
         },
     }
 
-     constructor(configs: ILLMConfigs) {
+    constructor(configs: ILLMConfigs) {
         Object.assign(this, configs)
         this.send()
     }

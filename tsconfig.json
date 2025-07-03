@@ -6,14 +6,17 @@
         "src/*"
       ]
     },
+    "types": ["vue"],
+    "outDir": "./dist",
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "jsxImportSource": "vue",
     "lib": [
       "ESNext",
       "DOM"

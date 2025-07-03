@@ -3,14 +3,16 @@ import Shiki from '@shikijs/markdown-it'
 
 const md: MarkdownIt = MarkdownIt({
     breaks: true
-})
+});
 
-md.use(await Shiki({
-    themes: {
-        light: 'dracula',
-        dark: 'dracula',
-    }
-}))
+(async () => {
+    md.use(await Shiki({
+        themes: {
+            light: 'dracula',
+            dark: 'dracula',
+        }
+    }))
+})()
 
 export {
     md
