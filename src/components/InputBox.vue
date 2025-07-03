@@ -29,7 +29,7 @@ const sendMsg = async () => {
 }
 
 const chatWithCoze = async (messageId: string) => {
-  changeStopRequest(LLM({
+  changeStopRequest(new LLM({
     pat,
     botId,
     userId,
@@ -58,7 +58,7 @@ const chatWithCoze = async (messageId: string) => {
       response.value = ""
       changeRunning(false)
     }
-  }))
+  }).stopRequest)
 }
 
 const keydownHandler = debounce(e => e.key === 'Enter' && !e.shiftKey && sendMsg(), 300)

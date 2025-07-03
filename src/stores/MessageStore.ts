@@ -1,5 +1,6 @@
 import {ref} from 'vue'
 import {defineStore} from "pinia";
+import {storeChange} from "@/utils"
 import {botId, baseUrl, pat} from "@/configs"
 import type {IContent, IMessage, ToMap} from "@/types"
 
@@ -9,16 +10,12 @@ export const messageStore = defineStore("messageStore", () => {
     type contentId = IContent['id'] | null
 
     const data = ref<MessageMap>({})
-
     const runningState = ref<boolean>(false)
     const maxId = ref<number>(1)
     const activeMessageId = ref<messageId>(null)
-    const Response = ref<string>("")
     const stopRequest = ref<() => void>(() => {})
 
     const addMaxId = () => ++maxId.value
-
-    const changeMessageId = (id: messageId) => activeMessageId.value = id
 
     const findMessage = (id: messageId): IMessage | undefined => {
         if (!id) return
@@ -30,9 +27,11 @@ export const messageStore = defineStore("messageStore", () => {
         return data[id]
     }
 
-    const changeStopRequest = (Fn: () => void) => stopRequest.value = Fn
+    const changeMessageId = storeChange(activeMessageId)
 
-    const changeRunning = (state: boolean) => runningState.value = state
+    const changeStopRequest = storeChange(stopRequest)
+
+    const changeRunning = storeChange(runningState)
 
     const addContent = (id: messageId, data: IContent) => {
         const currentMessageList = findMessage(id)
@@ -41,13 +40,12 @@ export const messageStore = defineStore("messageStore", () => {
     }
 
     const updateContent = (id: messageId, contentId: IContent["id"], response: string) => {
-        Response.value = response;
         if (!id) return;
         const currentMessage = findMessage(id);
         if (!currentMessage) return
         const lastItem = findContent(currentMessage.content, contentId)
         if(!lastItem) return;
-        lastItem.data.chat = Response.value
+        lastItem.data.chat = response
     }
 
     const addMessage = () => fetch(`${baseUrl}/v1/conversation/create`, {
@@ -79,7 +77,7 @@ export const messageStore = defineStore("messageStore", () => {
         delete data.value[id as string];
     }
 
-    const renameMessage = (id: messageId, name: string) => {
+    const renameMessage = (id: messageId, name: IMessage["name"]) => {
         const currentMessage = findMessage(id);
         if (!currentMessage) return
         currentMessage.name = name;
