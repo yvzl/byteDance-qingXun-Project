@@ -26,6 +26,9 @@ importers:
       '@vue/babel-plugin-jsx':
         specifier: ^1.4.0
         version: 1.4.0(@babel/core@7.28.0)
+      bowser:
+        specifier: ^2.11.0
+        version: 2.11.0
       github-markdown-css:
         specifier: ^5.8.1
         version: 5.8.1
@@ -703,6 +706,9 @@ packages:
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
+
+  bowser@2.11.0:
+    resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
 
   brace-expansion@2.0.2:
     resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
@@ -2142,6 +2148,8 @@ snapshots:
       - debug
 
   balanced-match@1.0.2: {}
+
+  bowser@2.11.0: {}
 
   brace-expansion@2.0.2:
     dependencies:
