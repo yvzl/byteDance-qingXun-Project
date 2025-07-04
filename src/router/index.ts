@@ -4,23 +4,19 @@ import Home from '@/views/Home.vue'
 import Phone from '@/views/Phone.vue'
 import NotFound from '@/views/NotFound.vue'
 
-const routes = [
-    {
-        path: '/',
-        name: 'Home',
-        component: Home,
-    },
-    {
-        path: '/phone',
-        name: 'Phone',
-        component: Phone,
-    },
-    {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: NotFound,
-    },
-]
+const routes = [{
+    path: '/',
+    name: 'Home',
+    component: Home,
+}, {
+    path: '/phone',
+    name: 'Phone',
+    component: Phone,
+}, {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
+}]
 
 const router = createRouter({
     history: createWebHistory(),
