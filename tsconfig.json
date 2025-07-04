@@ -6,7 +6,6 @@
         "src/*"
       ]
     },
-    "types": ["vue"],
     "outDir": "./dist",
     "target": "ESNext",
     "module": "ESNext",

@@ -61,7 +61,14 @@ const chatWithCoze = async (messageId: string) => {
   }).stopRequest)
 }
 
-const keydownHandler = debounce(e => e.key === 'Enter' && !e.shiftKey && sendMsg(), 300)
+const debouncedSendMsg = debounce(sendMsg, 300);
+
+const keydownHandler = (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    debouncedSendMsg()
+  }
+}
 
 onUnmounted(() => window.removeEventListener('keydown', keydownHandler))
 onMounted(() => window.addEventListener('keydown', keydownHandler))

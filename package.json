@@ -6,27 +6,25 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "test": "vitest"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@coze/api": "^1.0.17",
     "@icon-park/vue-next": "^1.4.2",
     "@shikijs/markdown-it": "^2.1.0",
-    "@types/markdown-it": "^14.1.2",
-    "@types/node": "^22.10.9",
-    "@vue/babel-plugin-jsx": "^1.4.0",
     "bowser": "^2.11.0",
     "github-markdown-css": "^5.8.1",
     "markdown-it": "^14.1.0",
     "pinia": "^2.3.1",
     "pinia-plugin-persistedstate": "^4.2.0",
-    "shiki": "^2.1.0",
+    "shiki": "^3.7.0",
     "vue": "^3.5.12",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.10.9",
     "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/babel-plugin-jsx": "^1.4.0",
     "sass": "^1.83.4",
     "ts-node": "^10.9.2",
     "typescript": "~5.6.2",
